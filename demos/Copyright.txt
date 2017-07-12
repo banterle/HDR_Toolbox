@@ -1,0 +1,14 @@
+Images Copyright © 2008-2013 Francesco Banterle:
+- Bottles_Small.pfm
+- Oxford_Church.pfm
+- Venice01.png
+- stack/venice_canal_exp_0.jpg
+- stack/venice_canal_exp_1.jpg
+- stack/venice_canal_exp_2.jpg
+- stack_alignment/IMG_4209.jpg
+- stack_alignment/IMG_4210.jpg
+- stack_alignment/IMG_4211.jpg
+- CS_Warwick.pfm (captured using Spheron camera by WMG, Warwick, UK)
+
+If you would like to use these images in publications, demos, or for other
+purposes please contact Francesco Banterle at support@advancedhdrbook.com
