@@ -13,7 +13,7 @@
 
 clear all;
 
-name_folder = 'stack';
+name_folder = 'data/stack';
 format = 'jpg';
 
 disp('1) Read a stack of LDR images');

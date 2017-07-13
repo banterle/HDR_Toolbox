@@ -13,7 +13,8 @@
 clear all;
 
 disp('1) Load "Venice01.png" LDR image');
-img = double(imread('Venice01.png'))/255.0;
+img = ldrimread('Venice01.png');
+
 h = figure(1);
 set(h,'Name','Input LDR image');
 imshow(img);
@@ -26,4 +27,4 @@ disp('3) Show the expanded image in false color');
 FalseColor(imgOut, 'log', 1, -1, 2, 'Inverse tone mapped LDR image in false color');
 
 disp('4) Save the expanded image into a .exr:');
-hdrimwrite(imgOut, 'Venice01_expanded.exr');
+hdrimwrite(imgOut, 'output/Venice01_expanded.exr');

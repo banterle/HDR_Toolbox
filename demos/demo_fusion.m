@@ -24,4 +24,4 @@ set(h,'Name','Exposure fusion by Mertens et al.');
 GammaTMO(imgTMO, 1.0, 0.5, 1);
 
 disp('4) Save the tone mapped image as a PNG.');
-imwrite(imgTMO, 'Bottles_Small_Fusion_TMO.png');
+imwrite(imgTMO, 'output/Bottles_Small_TMO_fusion.png');
