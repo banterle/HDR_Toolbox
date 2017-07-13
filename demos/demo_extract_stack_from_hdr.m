@@ -15,9 +15,9 @@ clear all;
 
 img = hdrimread('Bottles_Small.hdr');
 
-name_folder_h = 'stack_histogram';
-name_folder_u = 'stack_uniform';
-name_folder_s = 'stack_selected';
+name_folder_h = 'output/hdr_to_stack_histogram';
+name_folder_u = 'output/hdr_to_stack_uniform';
+name_folder_s = 'output/hdr_to_stack_selected';
 
 format = 'jpg';
 

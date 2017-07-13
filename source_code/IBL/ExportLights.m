@@ -9,7 +9,7 @@ function ExportLights(lights, name)
 %           -name: file's name
 %
 %
-%     Copyright (C) 2011  Francesco Banterle
+%     Copyright (C) 2011-2017  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ function ExportLights(lights, name)
 
 n = length(lights);
 
-fid = fopen([name, '.txt'], 'w');
+fid = fopen(name, 'w');
 
 %The number of lightsources
 fprintf(fid,'Num: %d\n', n);

@@ -1,16 +1,11 @@
-function imgOut = PeceKautzMerge(imageStack, folder_name, format, weights, iterations, ke_size, kd_size, ward_percentile)
+function imgOut = PeceKautzMerge(imageStack, weights, iterations, ke_size, kd_size, ward_percentile)
 %
 %
-%        imgOut = PeceKautzMerge(imageStack, folder_name, format, weights, iterations, kernelSize, ward_percentile)
+%        imgOut = PeceKautzMerge(imageStack, weights, iterations, kernelSize, ward_percentile)
 %
 %
 %        Input:
 %           -imageStack: an exposure stack of LDR images
-%           -folder_name: the folder where to fetch the exposure imageStack in
-%           the case imageStack=[]
-%           -format: the format of LDR images ('bmp', 'jpg', etc) in case
-%                    imageStack=[] and the tone mapped images is built from a sequence of
-%                    images in the current folder_name
 %           -weights: a three value vector:
 %               -weights(1): the weight for the well exposedness in [0,1]. Well exposed
 %                   pixels are taken more into account if the wE is near 1
@@ -71,10 +66,6 @@ wC = weights(3);
 %imageStack generation
 if(~exist('imageStack', 'var'))
     imageStack = [];
-end
-
-if(isempty(imageStack))
-    imageStack = ReadLDRStack(folder_name, format, 1);
 end
        
 if(isa(imageStack, 'uint8'))

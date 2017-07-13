@@ -68,10 +68,8 @@ if(~exist('imageStack', 'var'))
     imageStack = [];
 end
 
-if(~isempty(img))
-    %convert the HDR image into a imageStack
+if(~isempty(img)) %convert the HDR image into a imageStack
     checkNegative(img);
-
     [imageStack, ~] = CreateLDRStackFromHDR(img, 1);
 else
     if(isa(imageStack, 'single'))
@@ -79,11 +77,11 @@ else
     end
 
     if(isa(imageStack, 'uint8'))
-        imageStack = single(imageStack) / 255.0;
+        imageStack = double(imageStack) / 255.0;
     end
         
     if(isa(imageStack, 'uint16'))
-        imageStack = single(imageStack) / 655535.0;
+        imageStack = double(imageStack) / 655535.0;
     end
 end
 
@@ -105,7 +103,7 @@ for i=1:n
         else
             L = imageStack(:,:,:,i);
         end
-
+        
         weightC = MertensContrast(L);
         weight(:,:,i) = weight(:,:,i) .* (weightC.^wC);
     end
