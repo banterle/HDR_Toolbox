@@ -1,14 +1,14 @@
-function imgLap = LaplacianFilter(img, sigma)
+function H = LaplacianKernel(sigma)
 %
 %
-%       imgBlur = LaplacianFilter(img, sigma)
+%      H = LaplacianKernel(sigma)
 %
 %
 %       Input:
-%           -img: the input image
+%           -sigma: the input image
 %
 %       Output:
-%           -imgLap: a filtered image
+%           -H: 
 %
 %
 %     Copyright (C) 2011-16  Francesco Banterle
@@ -27,8 +27,17 @@ function imgLap = LaplacianFilter(img, sigma)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-H = LaplacianKernel(sigma);
+%Laplacian mask
+window = round(sigma * 7) + 1;
+window_half = round(window / 2);
 
-imgLap = imfilter(img, H, 'replicate');
+[X, Y] = meshgrid((-window_half):window_half, (-window_half):window_half);
+
+sigma_sq_2 = 2 * sigma^2;
+
+p1 = (1 - (X.^2 + Y.^2) / sigma_sq_2);
+p2 = exp( - (X.^2 + Y.^2) / sigma_sq_2);
+w = (-1 / (pi * sigma^4));
+H =  w * p1 .* p2;
 
 end

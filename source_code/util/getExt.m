@@ -1,17 +1,18 @@
-function imgLap = LaplacianFilter(img, sigma)
+function ext = getExt(filename)
 %
 %
-%       imgBlur = LaplacianFilter(img, sigma)
+%        ext = getExt(filename)
 %
 %
-%       Input:
-%           -img: the input image
+%        Description: get file extension
 %
-%       Output:
-%           -imgLap: a filtered image
+%        Input:
+%           -filename: the name of the file
 %
+%        Output:
+%           -ext: the extension of the file
 %
-%     Copyright (C) 2011-16  Francesco Banterle
+%     Copyright (C) 2017  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -27,8 +28,13 @@ function imgLap = LaplacianFilter(img, sigma)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-H = LaplacianKernel(sigma);
+k = strfind(filename, '.');
 
-imgLap = imfilter(img, H, 'replicate');
+if(size(k) == 0) %no extension
+    ext = '';
+else    
+    k = k(end); %get the real extension
+    ext = filename((k + 1):end);   
+end
 
 end

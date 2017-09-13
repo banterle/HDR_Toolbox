@@ -30,10 +30,10 @@ function name = RemoveExt(filename)
 
 k = strfind(filename, '.');
 
-if(size(k) == 0)%no extension
+if(size(k) == 0) %no extension
     name = filename;
 else    
-    k = k(end);%get the real extension
+    k = k(end); %get the real extension
     name = filename(1:(k - 1));   
 end
 
