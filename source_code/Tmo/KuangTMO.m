@@ -77,7 +77,7 @@ sigma_r = 0.35; %as in the original paper
 [imgBase, imgDetail] = BilateralSeparation(imgXYZ, sigma_s, sigma_r);
 
 %computing Chromatic adaptation: Section the 2.3 of the original paper
-img_XYZ_w = GaussianFilter(imgXYZ, max([r, c]) / 2, 8);
+img_XYZ_w = filterGaussian(imgXYZ, max([r, c]) / 2, 8);
 
 imgBase_ca = CIECAM02_ChromaticAdaptation(imgBase, img_XYZ_w);
 

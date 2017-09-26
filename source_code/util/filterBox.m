@@ -1,13 +1,12 @@
-function imgBlur = GaussianFilter(img, sigma, scaling_factor)
+function imgBlur = filterBox(img, radius)
 %
 %
-%       imgBlur = GaussianFilter(img, sigma, scaling_factor)
+%       imgBlur = filterBox(img, radius)
 %
 %
 %       Input:
 %           -img: the input image
-%           -sigma: the value of the Gaussian filter
-%           -scaling_factor: a scaling factor for speeding things up
+%           -radius: the radius of the box filter
 %
 %       Output:
 %           -imgBlur: a filtered image
@@ -29,11 +28,16 @@ function imgBlur = GaussianFilter(img, sigma, scaling_factor)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(~exist('scaling_factor', 'var'))
-    scaling_factor = 1;
+if(~exist('radius', 'var'))
+    radius = 1;
 end
 
-imgBlur = GaussianFilterWindow(img, sigma * 5, scaling_factor);
+if(radius < 1)
+    radius = 1;
+end
+
+H = fspecial('average', round(radius * 2 + 1));
+imgBlur = imfilter(img, H, 'replicate');
 
 end
 

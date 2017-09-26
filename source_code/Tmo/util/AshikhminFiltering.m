@@ -28,22 +28,24 @@ function [L,Ldetail] = AshikhminFiltering(L, Ashikhmin_sMax)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(~exist('Ashikhmin_sMax','var'))
-    Ashikhmin_sMax = 10;%sMax should be one degree of visual angle, the value is set as in the original paper
+%sMax should be one degree of visual angle, the value is set as in the original paper
+if(~exist('Ashikhmin_sMax', 'var'))
+    Ashikhmin_sMax = 10;
 end
 
-if(Ashikhmin_sMax<1)
+if(Ashikhmin_sMax < 1)
     Ashikhmin_sMax = 10;
 end
 
 %precomputing filtered images
-[r,c]=size(L);
-Lfiltered=zeros(r,c,Ashikhmin_sMax); %filtered images
-LC=zeros(r,c,Ashikhmin_sMax);
+[r, c] = size(L);
+Lfiltered = zeros(r,c,Ashikhmin_sMax); %filtered images
+LC = zeros(r,c,Ashikhmin_sMax);
 for i=1:Ashikhmin_sMax
-    Lfiltered(:,:,i) = GaussianFilterWindow(L,i); 
+    Lfiltered(:,:,i) = filterGaussianWindow(L,i); 
     %normalized difference of Gaussian levels
-    LC(:,:,i) = RemoveSpecials(abs(Lfiltered(:,:,i)-GaussianFilterWindow(L,i*2))./Lfiltered(:,:,i)); 
+    LC(:,:,i) = RemoveSpecials(abs(Lfiltered(:,:,i) ...
+        - filterGaussianWindow(L, i * 2)) ./ Lfiltered(:,:,i)); 
 end  
   
 %threshold is a constant for solving the band-limited local contrast LC at a given
@@ -54,7 +56,7 @@ threshold = 0.5;
 L_adapt = -ones(size(L));
 for i=1:Ashikhmin_sMax
     LC_i = LC(:,:,i);
-    ind = find(LC_i<threshold);
+    ind = find(LC_i < threshold);
     if(~isempty(ind))
         Lfiltered_i = Lfiltered(:,:,i);
         L_adapt(ind) = Lfiltered_i(ind);
@@ -62,11 +64,11 @@ for i=1:Ashikhmin_sMax
 end
     
 %set the maximum level
-ind=find(L_adapt<0);
-L_adapt(ind) = Lfiltered(r*c*(Ashikhmin_sMax-1)+ind);
+ind = find(L_adapt < 0);
+L_adapt(ind) = Lfiltered(r * c * (Ashikhmin_sMax - 1) + ind);
     
 %Remove the detail layer
-Ldetail = RemoveSpecials(L./L_adapt);
+Ldetail = RemoveSpecials(L ./ L_adapt);
 L = L_adapt;
 
 end

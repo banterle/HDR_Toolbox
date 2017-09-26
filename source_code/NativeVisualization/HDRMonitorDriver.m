@@ -59,7 +59,7 @@ L = sqrt(lum(img));
 %be measured and employed to have a precise result.
 [r,c] = size(L);
 Ltmp = imresize(L, 1.0 / 6.0, 'bilinear');
-Ltmp = GaussianFilterWindow(Ltmp, 2);
+Ltmp = filterGaussianWindow(Ltmp, 2);
 L = imresize(Ltmp, [r,c], 'bilinear');
 
 %Range reduction and quantization at 8-bit for the luminance layer. In this

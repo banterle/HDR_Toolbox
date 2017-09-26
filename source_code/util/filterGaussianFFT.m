@@ -1,18 +1,18 @@
-function imgBlur = BoxFilter(img, radius)
+function imgBlur = filterGaussianFFT(img, sigma)
 %
 %
-%       imgBlur = BoxFilter(img, radius)
+%       imgBlur = filterGaussianFFT(img, sigma)
 %
 %
 %       Input:
 %           -img: the input image
-%           -radius: the radius of the box filter
+%           -sigma: the value of the Gaussian filter
 %
 %       Output:
 %           -imgBlur: a filtered image
 %
 %
-%     Copyright (C) 2011-15 Francesco Banterle
+%     Copyright (C) 2016 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -28,16 +28,18 @@ function imgBlur = BoxFilter(img, radius)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(~exist('radius', 'var'))
-    radius = 1;
-end
+[r, c, col] = size(img);
 
-if(radius < 1)
-    radius = 1;
-end
+[x, y] = meshgrid(1:c, 1:r);
+kernel = exp(-((x - c / 2).^2 +  (y - r / 2).^2) / (2 * sigma^2));
+kernel = kernel / sum(kernel(:));
+kernel_f = fft2(kernel);
 
-H = fspecial('average', round(radius * 2 + 1));
-imgBlur = imfilter(img, H, 'replicate');
+imgBlur = zeros(size(img));
+
+for i=1:col
+    imgBlur(:,:,i) = fftshift(ifft2(fft2(img(:,:,i)) .* kernel_f));
+end
 
 end
 

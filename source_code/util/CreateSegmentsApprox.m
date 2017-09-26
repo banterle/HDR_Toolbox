@@ -32,7 +32,7 @@ function imgBin = CreateSegmentsApprox(img)
 L = lum(img);
 
 %Filtering the image to avoid noise
-L = GaussianFilter(L, 1);
+L = filterGaussian(L, 1);
 
 min_display = 0.015;
 epsilon = min_display / 2.0;

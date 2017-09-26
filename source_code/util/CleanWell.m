@@ -30,12 +30,12 @@ tmp = bwmorph(img, 'clean');
 img = tmp;
 
 for i=1:iter
-    tmp=bwmorph(tmp, 'erode');
-    tmp=bwmorph(tmp, 'clean');
+    tmp = bwmorph(tmp, 'erode');
+    tmp = bwmorph(tmp, 'clean');
 end
 
 for i=1:(iter + 2)
-    tmp=bwmorph(tmp, 'dilate');
+    tmp = bwmorph(tmp, 'dilate');
 end
 
 imgOut = tmp .* img;

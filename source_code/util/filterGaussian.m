@@ -1,18 +1,19 @@
-function imgBlur = GaussianFilterWindow(img, window, scaling_factor)
+function imgBlur = filterGaussian(img, sigma, scaling_factor)
 %
 %
-%       imgBlur = GaussianFilterWindow(img, window)
+%       imgBlur = filterGaussian(img, sigma, scaling_factor)
 %
 %
 %       Input:
 %           -img: the input image
-%           -window: the size in pixel of the filter; size = 5 * sigma
+%           -sigma: the value of the Gaussian filter
 %           -scaling_factor: a scaling factor for speeding things up
 %
 %       Output:
 %           -imgBlur: a filtered image
 %
-%     Copyright (C) 2011-15  Francesco Banterle
+%
+%     Copyright (C) 2011-15 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -32,17 +33,7 @@ if(~exist('scaling_factor', 'var'))
     scaling_factor = 1;
 end
 
-if(scaling_factor > 1)  
-    window_scaled = window / scaling_factor;
-    H = fspecial('gaussian', max([round(window_scaled), 3]), GKSigma(window_scaled));    
-    [r, c, ~] = size(img);
-
-    tmp_img = imresize(img, 1.0 / scaling_factor, 'bilinear');
-    imgBlur = imfilter(tmp_img, H, 'replicate');
-    imgBlur = imresize(imgBlur, [r, c], 'bilinear');
-else
-    H = fspecial('gaussian', max([round(window), 3]), GKSigma(window));
-    imgBlur = imfilter(img, H, 'replicate');
-end
+imgBlur = filterGaussianWindow(img, sigma * 5, scaling_factor);
 
 end
+
