@@ -39,11 +39,11 @@ if(~exist('dm_patchSize', 'var'))
 end
 
 if(~exist('dm_maxDisparity', 'var'))
-    dm_maxDisparity = dm_patchSize * 4;
+    dm_maxDisparity = -1;
 end
 
 if(~exist('dm_metric', 'var'))
-    dm_metric = 'SSD';    
+    dm_metric = 'SAD';    
 end
 
 if(~exist('dm_alpha', 'var'))
@@ -51,16 +51,44 @@ if(~exist('dm_alpha', 'var'))
 end
 
 if(~exist('dm_regularization', 'var'))
-    dm_regularization = 0.0;
+    dm_regularization = 0.2;
 end
 
-[r, c, ~] = size(imgL);
+if(dm_maxDisparity < 0.0)
+    
+    hf = figure(1);
+    imshow((imgL + imgR) / 2.0);
+    hold on;
+    [x0, y0] = ginput(1);
+    plot(x0, y0, 'r+');
+    [x1, y1] = ginput(1);
+    plot(x1, y1, 'r+');
+    
+    dm_maxDisparity = round(abs(x1 - x0));
+    hold off;
+    
+    disp(dm_maxDisparity);
+    close(hf);
+%    dm_maxDisparity = dm_patchSize * 4;    
+end
+
+[r, c, col] = size(imgL);
+
+if(col == 3) %assuming RGB with gamma
+    imgL = ConvertRGBtosRGB(imgL, 1);
+    imgL = ConvertRGBtoXYZ(imgL, 0);
+    imgL = ConvertXYZtoCIELab(imgL, 0);
+    
+    imgR = ConvertRGBtosRGB(imgR, 1);
+    imgR = ConvertRGBtoXYZ(imgR, 0);
+    imgR = ConvertXYZtoCIELab(imgR, 0);    
+end
 
 halfPatchSize = ceil(dm_patchSize / 2);
 
 disparityMap = zeros(r, c, 2);
 
-kernelX = [0, 0, 0; -0.5, 0, 0.5; 0,  0, 0];
+kernelX = [-1, 0, 1; -2, 0, 2; -1,  0, 1];
 imgL_dx = imfilter(imgL, kernelX, 'same');
 imgR_dx = imfilter(imgR, kernelX, 'same');
 
@@ -71,10 +99,10 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
     for j=(dm_patchSize + 1):(c - dm_patchSize - 1)
         
         err = 1e30;
-        disp = 0;
-        patchL    = imgL((i - halfPatchSize):(i + halfPatchSize), (j - halfPatchSize):(j + halfPatchSize), :);
+        depth = 0;
+        patchL    = imgL   ((i - halfPatchSize):(i + halfPatchSize), (j - halfPatchSize):(j + halfPatchSize), :);
         patchL_dx = imgL_dx((i - halfPatchSize):(i + halfPatchSize), (j - halfPatchSize):(j + halfPatchSize), :);
-        patchL_sq = patchL.^2;        
+        patchL_sq = patchL.^2;
                
         min_j = max([j - dm_maxDisparity, dm_patchSize + 1]);
         max_j = min([j + dm_maxDisparity, c - dm_patchSize - 1]);
@@ -82,38 +110,36 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
         lambda = dm_regularization / (max_j - min_j + 1);
                 
         for k=min_j:max_j
-            patchR    = imgR((i - halfPatchSize):(i + halfPatchSize), (k - halfPatchSize):(k + halfPatchSize), :);
+            patchR    = imgR   ((i - halfPatchSize):(i + halfPatchSize), (k - halfPatchSize):(k + halfPatchSize), :);
             patchR_dx = imgR_dx((i - halfPatchSize):(i + halfPatchSize), (k - halfPatchSize):(k + halfPatchSize), :);
-                
-            tmp_err = 1e30;
-            
+                            
             switch dm_metric
                 case 'SSD'
-                    tmp_err = (patchL - patchR).^2;
+                    delta = (patchL - patchR).^2;
                 case 'SAD'
-                    tmp_err = abs(patchL - patchR);
+                    delta = abs(patchL - patchR);
                 case 'NCC'
                     patchR_sq = patchR.^2;
-                    tmp_err = (patchL .* patchR) / sqrt(sum(patchL_sq(:)) * sum(patchR_sq(:)));
+                    delta = (patchL .* patchR) / sqrt(sum(patchL_sq(:)) * sum(patchR_sq(:)));
                 otherwise
-                    tmp_err = (patchL - patchR).^2;
+                    delta = (patchL - patchR).^2;
             end
             
-            tmp_err_dx = (patchL_dx - patchR_dx).^2;
-                        
+            delta_dx_sq = (patchL_dx - patchR_dx).^2;
+                   
+            tmp_err = dm_alpha * mean(delta(:)) + dm_alpha_inv * mean(delta_dx_sq(:));            
+            
             if(dm_regularization > 0.0)
-                tmp_err = dm_alpha_inv * mean(tmp_err(:)) + dm_alpha * mean(tmp_err_dx(:)); + lambda * abs(k - j);
-            else
-                tmp_err = dm_alpha_inv * sum(tmp_err(:)) + dm_alpha * sum(tmp_err_dx(:));
+                 tmp_err = tmp_err + lambda * abs(k - j);
             end
                 
             if(tmp_err < err)
                 err  = tmp_err;
-                disp = k - j;
+                depth = k - j;
             end            
         end
         
-        disparityMap(i, j, 1) = disp;
+        disparityMap(i, j, 1) = depth;
         disparityMap(i, j, 2) = err;
     end
     
