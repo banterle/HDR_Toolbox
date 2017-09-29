@@ -47,7 +47,7 @@ if(~exist('dm_metric', 'var'))
 end
 
 if(~exist('dm_alpha', 'var'))
-    dm_alpha = 0.9;
+    dm_alpha = 0.05;
 end
 
 if(~exist('dm_regularization', 'var'))
@@ -74,6 +74,9 @@ end
 
 [r, c, col] = size(imgL);
 
+lumL = lum(imgL);
+lumR = lum(imgR);
+
 if(col == 3) %assuming RGB with gamma
     imgL = ConvertRGBtosRGB(imgL, 1);
     imgL = ConvertRGBtoXYZ(imgL, 0);
@@ -89,14 +92,20 @@ halfPatchSize = ceil(dm_patchSize / 2);
 disparityMap = zeros(r, c, 2);
 
 kernelX = [-1, 0, 1; -2, 0, 2; -1,  0, 1];
-imgL_dx = imfilter(imgL, kernelX, 'same');
-imgR_dx = imfilter(imgR, kernelX, 'same');
+imgL_dx(:,:,1) = imfilter(lumL, kernelX,  'same');
+imgL_dx(:,:,2) = imfilter(lumL, kernelX', 'same');
+
+imgR_dx(:,:,1) = imfilter(lumR, kernelX,  'same');
+imgR_dx(:,:,2) = imfilter(lumR, kernelX', 'same');
 
 dm_alpha_inv = (1.0 - dm_alpha);
 
 for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
             
     for j=(dm_patchSize + 1):(c - dm_patchSize - 1)
+               
+        d1 = disparityMap(i - 1, j, 1);        
+        d2 = disparityMap(i, j - 1, 1);
         
         err = 1e30;
         depth = 0;
@@ -129,13 +138,15 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
                    
             tmp_err = dm_alpha * mean(delta(:)) + dm_alpha_inv * mean(delta_dx_sq(:));            
             
+            d3 = k - j;
             if(dm_regularization > 0.0)
-                 tmp_err = tmp_err + lambda * abs(k - j);
+                
+                 tmp_err = tmp_err + lambda * (abs(d3) + abs(d3 - d1) + abs(d3 - d2) );
             end
                 
             if(tmp_err < err)
                 err  = tmp_err;
-                depth = k - j;
+                depth = d3;
             end            
         end
         
