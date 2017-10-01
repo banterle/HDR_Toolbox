@@ -139,8 +139,7 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
             tmp_err = dm_alpha * mean(delta(:)) + dm_alpha_inv * mean(delta_dx_sq(:));            
             
             d3 = k - j;
-            if(dm_regularization > 0.0)
-                
+            if(dm_regularization > 0.0)                
                  tmp_err = tmp_err + lambda * (abs(d3) + abs(d3 - d1) + abs(d3 - d2) );
             end
                 
