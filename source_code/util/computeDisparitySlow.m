@@ -10,8 +10,8 @@ function disparityMap = computeDisparitySlow(imgL, imgR, dm_patchSize, dm_maxDis
 %         - dm_patchSize: size of the patch for comparisons
 %         - dm_maxDisparity: maximum disparity
 %         - dm_metric: the type of metric for computing disparity: 'SSD' (sum of
-%           squared differences), 'SAD' (sum of absolute differences), 'NCC'
-%           (normalized cross-correlation)
+%           squared differences), 'SAD' (sum of absolute differences), and CT
+%           (census transform).
 %         -dm_regularization: regularization value 
 %         -dm_alpha: color vs gradient
 %
@@ -111,8 +111,7 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
         depth = 0;
         patchL    = imgL   ((i - halfPatchSize):(i + halfPatchSize), (j - halfPatchSize):(j + halfPatchSize), :);
         patchL_dx = imgL_dx((i - halfPatchSize):(i + halfPatchSize), (j - halfPatchSize):(j + halfPatchSize), :);
-        patchL_sq = patchL.^2;
-               
+                       
         min_j = max([j - dm_maxDisparity, dm_patchSize + 1]);
         max_j = min([j + dm_maxDisparity, c - dm_patchSize - 1]);
         
@@ -121,22 +120,18 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
         for k=min_j:max_j
             patchR    = imgR   ((i - halfPatchSize):(i + halfPatchSize), (k - halfPatchSize):(k + halfPatchSize), :);
             patchR_dx = imgR_dx((i - halfPatchSize):(i + halfPatchSize), (k - halfPatchSize):(k + halfPatchSize), :);
-                            
-            switch dm_metric
-                case 'SSD'
-                    delta = (patchL - patchR).^2;
+
+            switch dm_metric                    
                 case 'SAD'
                     delta = abs(patchL - patchR);
-                case 'NCC'
-                    patchR_sq = patchR.^2;
-                    delta = (patchL .* patchR) / sqrt(sum(patchL_sq(:)) * sum(patchR_sq(:)));
+                                        
                 otherwise
                     delta = (patchL - patchR).^2;
             end
             
             delta_dx_sq = (patchL_dx - patchR_dx).^2;
                    
-            tmp_err = dm_alpha * mean(delta(:)) + dm_alpha_inv * mean(delta_dx_sq(:));            
+            tmp_err = dm_alpha_inv * mean(delta(:)) + dm_alpha * mean(delta_dx_sq(:));            
             
             d3 = k - j;
             if(dm_regularization > 0.0)                
