@@ -1,4 +1,4 @@
-function disparityMap = computeDisparitySlow(imgL, imgR, dm_patchSize, dm_maxDisparity, dm_metric, dm_regularization, dm_alpha)
+function [disparityMap, dm_maxDisparity] = computeDisparitySlow(imgL, imgR, dm_patchSize, dm_maxDisparity, dm_metric, dm_regularization, dm_alpha)
 %
 %       disparityMap = computeDisparitySlow(imgL, imgR, dm_patchSize, dm_maxDisparity, dm_metric, dm_regularization, dm_alpha)
 %
