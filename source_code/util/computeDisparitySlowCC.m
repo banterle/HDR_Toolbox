@@ -1,6 +1,6 @@
-function [dm_LR, dm_RL] = computeDisparitySlowCC(imgL, imgR, dm_patchSize, dm_maxDisparity, dm_metric, dm_regularization, dm_alpha)
+function [dm_LR, dm_RL, dm_mask_LR, dm_mask_RL] = computeDisparitySlowCC(imgL, imgR, dm_patchSize, dm_maxDisparity, dm_metric, dm_regularization, dm_alpha)
 %
-%       [dm_LR, dm_RL] = computeDisparitySlowCC(imgL, imgR, dm_patchSize, dm_maxDisparity, dm_metric, dm_regularization, dm_alpha)
+%       [dm_LR, dm_RL, dm_mask_LR, dm_mask_RL] = computeDisparitySlowCC(imgL, imgR, dm_patchSize, dm_maxDisparity, dm_metric, dm_regularization, dm_alpha)
 %
 %       This function computes the disparity between two images.
 %
@@ -18,6 +18,8 @@ function [dm_LR, dm_RL] = computeDisparitySlowCC(imgL, imgR, dm_patchSize, dm_ma
 %       output:
 %         - dm_LR: disparity from imgL to imgR
 %         - dm_RL: disparity from imgR to imgL
+%         - dm_mask_LR: mask of valid disparity values;
+%         - dm_mask_RL: mask of valid disparity values;
 %
 %     Copyright (C) 2013-16  Francesco Banterle
 % 
@@ -67,11 +69,18 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
         d = dm_LR(i, j, 1);
         x_d = j + d;
         j_rec = dm_RL(i, x_d, 1) + x_d;
-        
-        if(abs(j - j_rec) > 8)
-            dm_LR(i, j, 2) = abs(j - j_rec);
-        end
+           
+        dm_LR(i, j, 3) = abs(j - j_rec);
+        dm_RL(i, j, 3) = abs(j - j_rec);
     end    
 end
+
+dm_mask_LR = zeros(r, c);
+dm_mask_RL = zeros(r, c);
+
+threshold = 2;
+tmp = dm_LR(:,: , 3);
+dm_mask_LR(tmp < threshold) = 1;
+dm_mask_RL(tmp < threshold) = 1;
 
 end

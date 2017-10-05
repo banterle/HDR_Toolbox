@@ -54,6 +54,10 @@ if(~exist('dm_regularization', 'var'))
     dm_regularization = 0.2;
 end
 
+if(strcmp(dm_metric, 'NCC'))
+    dm_regularization = 0.01;
+end
+
 if(dm_maxDisparity < 0.0)
     
     hf = figure(1);
@@ -111,11 +115,12 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
         depth = 0;
         patchL    = imgL   ((i - halfPatchSize):(i + halfPatchSize), (j - halfPatchSize):(j + halfPatchSize), :);
         patchL_dx = imgL_dx((i - halfPatchSize):(i + halfPatchSize), (j - halfPatchSize):(j + halfPatchSize), :);
+        patchL_sq = patchL.^2;
                        
         min_j = max([j - dm_maxDisparity, dm_patchSize + 1]);
         max_j = min([j + dm_maxDisparity, c - dm_patchSize - 1]);
         
-        lambda = dm_regularization / (max_j - min_j + 1);
+        lambda = dm_regularization / (3 * (max_j - min_j + 1));
                 
         for k=min_j:max_j
             patchR    = imgR   ((i - halfPatchSize):(i + halfPatchSize), (k - halfPatchSize):(k + halfPatchSize), :);
@@ -124,6 +129,16 @@ for i=(dm_patchSize + 1):(r - dm_patchSize - 1)
             switch dm_metric                    
                 case 'SAD'
                     delta = abs(patchL - patchR);
+                    
+                case 'NCC'
+                    patchR_sq = patchR(:,:,1).^2;
+                    patchRL = patchR(:,:,1) .* patchL(:,:,1);
+                    
+                    delta = sum(patchRL(:)) / (...
+                    sqrt(sum(sum(patchL_sq(:,:,1)))) *...
+                    sqrt(sum(sum(patchR_sq(:,:,1)))));
+                
+                    delta = 1.0 - delta;
                                         
                 otherwise
                     delta = (patchL - patchR).^2;
