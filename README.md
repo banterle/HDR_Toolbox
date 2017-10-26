@@ -40,6 +40,14 @@ A few operators (e.g. Mertens et al.'s operator) return gamma encoded values,
 so there is no need to apply gamma to them; in this case a message (e.g. a Warning) is displayed
 after tone mapping alerting that there is no need of gamma encoding.
 
+NOTE ON EXPANSION OPERATORS (INVERSE/REVERSE TONE MAPPING):
+=====================
+The majority of EOs require to have as input LDR images in the range [0,1] that are LINEARIZED.
+This means that the camera response function (CRF) or the gamma encoding has been removed.
+This operation is MANDATORY in order to generate fair comparisons; please do use the gammaRemoval
+parameter to remove gamma if you do not have the CRF of the input image. RAW files do not require 
+this step because they are already linear.
+
 NOTE ON PULL REQUESTS:
 =====================
 Please, send your pull requests to the develop branch.
