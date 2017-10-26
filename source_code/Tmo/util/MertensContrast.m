@@ -21,7 +21,6 @@ function Wc = MertensContrast(L)
 %
 
 H = [0 1 0; 1 -4 1; 0 1 0];
-imgEdge = imfilter(L, H, 'replicate');
-Wc = abs(LaplacianFilter(imgEdge));
+Wc = abs(imfilter(L, H, 'replicate'));
 
 end

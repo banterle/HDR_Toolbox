@@ -32,7 +32,7 @@ function imgBin = CreateSegments(img)
 L = lum(img);
 
 %Filtering the image to avoid noise
-L = GaussianFilter(L, 1);
+L = filterGaussian(L, 1);
 
 %Lmax, Lmin
 Lmin = min(L(L > 0.0));

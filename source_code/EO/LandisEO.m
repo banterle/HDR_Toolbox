@@ -31,23 +31,17 @@ function imgOut = LandisEO(img, l_alpha, l_threshold,  maxOutput, gammaRemoval)
 
 check13Color(img);
 
-if(~exist('maxOutput', 'var'))
-    maxOutput = 3000.0;
-end
+checkIn01(img);
 
 if(maxOutput < 0.0)
-    maxOutput = 3000.0;
-end
-
-if(~exist('gammaRemoval', 'var'))
-    gammaRemoval = -1;
+    error('maxOutput needs to be a positive value');
 end
 
 if(gammaRemoval > 0.0)
     img = img.^gammaRemoval;
 else
-    disp('WARNING: gamma removal has not been applied; img is assumed');
-    disp('to be linear!');        
+    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
+    disp('img is assumed to be linear!');        
 end
 
 %
@@ -55,7 +49,8 @@ end
 %
 
 if(~exist('l_alpha','var'))
-    l_alpha = 2.0;   
+    l_alpha = 2.0;  
+    disp('WARNING: l_alpha is set to 2.0');
 end
 
 if(l_alpha <= 0.0)
@@ -64,10 +59,12 @@ end
 
 if(~exist('l_threshold','var'))
     l_threshold = 0.5;
+    disp('WARNING: l_threshold is set to 0.5');    
 end
 
 if(l_threshold <= 0.0)
     l_threshold = 0.5;
+    disp('WARNING: l_threshold is set to 0.5');        
 end
 
 %Luminance channel

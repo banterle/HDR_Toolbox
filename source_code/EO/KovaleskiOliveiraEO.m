@@ -42,28 +42,16 @@ function [imgOut, e_map] = KovaleskiOliveiraEO(img, type_content, ko_sigma_s, ko
 
 check13Color(img);
 
+checkIn01(img);
+
 if(~exist('ko_sigma_s', 'var'))
     ko_sigma_s = 150; %as in the original paper
+    disp('WARNING: ko_sigma_s is set to 150');            
 end
 
 if(~exist('ko_sigma_r', 'var'))
     ko_sigma_r = 25 / 255; %as in the original paper
-end
-
-if(~exist('type_content', 'var'))
-    type_content = 'image';
-end
-
-if(~exist('ko_display_min', 'var'))
-    ko_display_min = 0.3; %as in the original paper
-end
-
-if(~exist('ko_display_max', 'var'))
-    ko_display_max = 1200; %as in the original paper
-end
-
-if(~exist('gammaRemoval', 'var'))
-    gammaRemoval = -1;
+    disp('WARNING: ko_sigma_r is set to 25 / 255');        
 end
 
 switch type_content
@@ -80,8 +68,16 @@ if(gammaRemoval > 0.0)
     threshold = threshold^gammaRemoval;
     ko_sigma_r = ko_sigma_r^gammaRemoval;
 else
-    disp('WARNING: gamma removal has not been applied; img is assumed');
-    disp('to be linear!');        
+    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
+    disp('img is assumed to be linear!');          
+end
+
+if(ko_display_max < 0.0)
+    error('ko_display_max needs to be a positive value');
+end
+
+if(ko_display_min < 0.0)
+    error('ko_display_min needs to be a positive value');
 end
 
 L = lum(img);

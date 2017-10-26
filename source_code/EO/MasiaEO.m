@@ -1,4 +1,3 @@
-
 function [imgOut, bWarning] = MasiaEO(img, maxOutput, m_noise, m_multi_reg, gammaRemoval)
 %
 %       [imgOut, bWarning] = MasiaEO(img, maxOutput, m_noise, m_multi_reg, gammaRemoval)
@@ -44,23 +43,17 @@ function [imgOut, bWarning] = MasiaEO(img, maxOutput, m_noise, m_multi_reg, gamm
 
 check13Color(img);
 
-if(~exist('maxOutput', 'var'))
-    maxOutput = 3000.0;
-end
+checkIn01(img);
 
 if(maxOutput < 0.0)
-    maxOutput = 3000.0;
-end
-
-if(~exist('gammaRemoval', 'var'))
-    gammaRemoval = -1;
+    error('maxOutput needs to be a positive value');
 end
 
 if(gammaRemoval > 0.0)
     img = img.^gammaRemoval;
 else
-    disp('WARNING: gamma removal has not been applied; img is assumed');
-    disp('to be linear!');        
+    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
+    disp('img is assumed to be linear!');        
 end
 
 %
@@ -69,10 +62,12 @@ end
 
 if(~exist('m_noise', 'var'))
     m_noise = 1;
+    disp('WARNING: m_noise is set to 1.0');        
 end
 
 if(~exist('m_multi_reg', 'var'))
     m_multi_reg = 0;
+    disp('WARNING: m_multi_reg is set to 0.0');    
 end
 
 bWarning = 0;

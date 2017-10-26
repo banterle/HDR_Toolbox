@@ -1,15 +1,13 @@
-function pOut=pyrGaussianBlur(pA,kernelSize)
+function checkIn01(img)
 %
 %
-%        pOut=pyrMul(pA,kernelSize)
+%        checkIn01(img)
 %
 %
 %        Input:
-%           -pA: an image pyramid
-%           -kernelSize: kernel size of the Gaussian blur
+%           -img: check that the images has values in [0,1]
 %
-%        Output:
-%           -pOut: the result of multiplying pA and pB
+%     Copyright (C) 2013  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -25,13 +23,11 @@ function pOut=pyrGaussianBlur(pA,kernelSize)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%multiplying base levels
-pOut.base = filterGaussianWindow(pA.base, kernelSize);
-pOut.list = pA.list;
+indx0 = find(img < 0.0);
+indx1 = find(img > 1.0);
 
-%multiplying the detail of each level
-for i=1:length(pA.list)
-    pOut.list(i).detail = filterGaussianWindow(pA.list(i).detail, kernelSize);
+if(~isempty(indx0) && ~isempty(indx1))
+    error('The image needs to have values in [0,1].');
 end
 
 end

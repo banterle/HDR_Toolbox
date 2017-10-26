@@ -31,7 +31,7 @@ function info = read_raw_info(name)
 %reading info from the raw file
 [~, output] = dos(['dcraw -i -v ', name]);
 
-if(~isempty(strfind(output, 'is not recognized as an internal')))
+if(contains(output, 'is not recognized as an internal'))
     error('ERROR: dcraw is not installed or not present in your path!');
 end
 

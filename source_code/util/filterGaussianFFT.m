@@ -1,7 +1,7 @@
-function imgBlur = GaussianFilterFFT(img, sigma)
+function imgBlur = filterGaussianFFT(img, sigma)
 %
 %
-%       imgBlur = GaussianFilter(img, sigma)
+%       imgBlur = filterGaussianFFT(img, sigma)
 %
 %
 %       Input:

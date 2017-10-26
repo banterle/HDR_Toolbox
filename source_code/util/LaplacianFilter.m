@@ -1,14 +1,14 @@
-function imgEdge = LaplacianFilter(img)
+function imgLap = LaplacianFilter(img, sigma)
 %
 %
-%       imgBlur = LaplacianFilter(img)
+%       imgBlur = LaplacianFilter(img, sigma)
 %
 %
 %       Input:
 %           -img: the input image
 %
 %       Output:
-%           -imgEdge: a filtered image
+%           -imgLap: a filtered image
 %
 %
 %     Copyright (C) 2011-16  Francesco Banterle
@@ -27,8 +27,8 @@ function imgEdge = LaplacianFilter(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%Laplacian mask
-H = [-1 -1 -1; -1 8 -1; -1 -1 -1];
-imgEdge = imfilter(img, H, 'replicate');
+H = LaplacianKernel(sigma);
+
+imgLap = imfilter(img, H, 'replicate');
 
 end

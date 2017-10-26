@@ -1,18 +1,18 @@
-function imgBlur = BoxFilter(img, radius)
+function ext = getExt(filename)
 %
 %
-%       imgBlur = BoxFilter(img, radius)
+%        ext = getExt(filename)
 %
 %
-%       Input:
-%           -img: the input image
-%           -radius: the radius of the box filter
+%        Description: get file extension
 %
-%       Output:
-%           -imgBlur: a filtered image
+%        Input:
+%           -filename: the name of the file
 %
+%        Output:
+%           -ext: the extension of the file
 %
-%     Copyright (C) 2011-15 Francesco Banterle
+%     Copyright (C) 2017  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -28,16 +28,13 @@ function imgBlur = BoxFilter(img, radius)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(~exist('radius', 'var'))
-    radius = 1;
+k = strfind(filename, '.');
+
+if(size(k) == 0) %no extension
+    ext = '';
+else    
+    k = k(end); %get the real extension
+    ext = filename((k + 1):end);   
 end
 
-if(radius < 1)
-    radius = 1;
 end
-
-H = fspecial('average', round(radius * 2 + 1));
-imgBlur = imfilter(img, H, 'replicate');
-
-end
-

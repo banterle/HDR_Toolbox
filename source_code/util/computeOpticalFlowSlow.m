@@ -1,6 +1,6 @@
-function offsetMap = OpticalFlowSlow(img1, img2, patchSize, lambda)
+function offsetMap = computeOpticalFlowSlow(img1, img2, patchSize, lambda)
 %
-%       offsetMap = OpticalFlowSlow(img1, img2, patchSize, lambda)
+%       offsetMap = computeOpticalFlowSlow(img1, img2, patchSize, lambda)
 %
 %
 %       input:

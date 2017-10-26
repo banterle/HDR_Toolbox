@@ -79,7 +79,7 @@ if(~exist('glare_opt', 'var'))
 end
 
 %calculate s
-s = RemoveSpecials(1 ./ (c_k * GaussianFilter(L, c_sigma)));
+s = RemoveSpecials(1 ./ (c_k * filterGaussian(L, c_sigma)));
 
 if(c_clamping > 0) %clamp s
     L_inv = RemoveSpecials(1 ./ L);

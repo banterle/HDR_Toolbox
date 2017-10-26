@@ -1,19 +1,17 @@
-function imgBlur = GaussianFilter(img, sigma, scaling_factor)
+function H = LaplacianKernel(sigma)
 %
 %
-%       imgBlur = GaussianFilter(img, sigma, scaling_factor)
+%      H = LaplacianKernel(sigma)
 %
 %
 %       Input:
-%           -img: the input image
-%           -sigma: the value of the Gaussian filter
-%           -scaling_factor: a scaling factor for speeding things up
+%           -sigma: the input image
 %
 %       Output:
-%           -imgBlur: a filtered image
+%           -H: 
 %
 %
-%     Copyright (C) 2011-15 Francesco Banterle
+%     Copyright (C) 2011-16  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -29,11 +27,17 @@ function imgBlur = GaussianFilter(img, sigma, scaling_factor)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(~exist('scaling_factor', 'var'))
-    scaling_factor = 1;
+%Laplacian mask
+window = round(sigma * 7) + 1;
+window_half = round(window / 2);
+
+[X, Y] = meshgrid((-window_half):window_half, (-window_half):window_half);
+
+sigma_sq_2 = 2 * sigma^2;
+
+p1 = (1 - (X.^2 + Y.^2) / sigma_sq_2);
+p2 = exp( - (X.^2 + Y.^2) / sigma_sq_2);
+w = (-1 / (pi * sigma^4));
+H =  w * p1 .* p2;
+
 end
-
-imgBlur = GaussianFilterWindow(img, sigma * 5, scaling_factor);
-
-end
-

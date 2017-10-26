@@ -1,15 +1,18 @@
-function pOut=pyrGaussianBlur(pA,kernelSize)
+function imgBlur = filterBox(img, radius)
 %
 %
-%        pOut=pyrMul(pA,kernelSize)
+%       imgBlur = filterBox(img, radius)
 %
 %
-%        Input:
-%           -pA: an image pyramid
-%           -kernelSize: kernel size of the Gaussian blur
+%       Input:
+%           -img: the input image
+%           -radius: the radius of the box filter
 %
-%        Output:
-%           -pOut: the result of multiplying pA and pB
+%       Output:
+%           -imgBlur: a filtered image
+%
+%
+%     Copyright (C) 2011-15 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -25,13 +28,16 @@ function pOut=pyrGaussianBlur(pA,kernelSize)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%multiplying base levels
-pOut.base = filterGaussianWindow(pA.base, kernelSize);
-pOut.list = pA.list;
-
-%multiplying the detail of each level
-for i=1:length(pA.list)
-    pOut.list(i).detail = filterGaussianWindow(pA.list(i).detail, kernelSize);
+if(~exist('radius', 'var'))
+    radius = 1;
 end
 
+if(radius < 1)
+    radius = 1;
 end
+
+H = fspecial('average', round(radius * 2 + 1));
+imgBlur = imfilter(img, H, 'replicate');
+
+end
+

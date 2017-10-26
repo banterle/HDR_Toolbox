@@ -52,7 +52,7 @@ function frameOut = BanterleEnhanceLDRFrame(img1, img2, img_back_hdr, blendMode)
     %extended mask
     diff = abs(L2 - L1);
     diff = imresize(diff, 0.125, 'bilinear');
-    diff = GaussianFilter(diff, 2.0);
+    diff = filterGaussian(diff, 2.0);
     diff = imresize(diff, [r, c],'bilinear');
 
     mask(diff > 0.1) = 0;
@@ -75,10 +75,10 @@ function frameOut = BanterleEnhanceLDRFrame(img1, img2, img_back_hdr, blendMode)
     mask = bilateralFilter(mask, L1, 0, 1.0, 64.0, 0.05);
     
     %Avoid inversion      
-    mask = GaussianFilter(mask, 2.0);   
+    mask = filterGaussian(mask, 2.0);   
         
     ref2 = imresize(img_back_hdr, 0.125, 'bilinear');
-    ref2 = GaussianFilter(ref2, 4.0);
+    ref2 = filterGaussian(ref2, 4.0);
     ref2 = imresize(ref2, [r, c], 'bilinear');    
     
     if(debug)
