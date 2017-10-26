@@ -38,17 +38,14 @@ function imgOut = HuoEO(img, hou_s, hou_theta, gammaRemoval)
 
 check13Color(img);
 
-if(~exist('gammaRemoval', 'var'))
-    gammaRemoval = -1.0;
-end
+checkIn01(img);
 
 if(gammaRemoval > 0.0)
     img = img.^gammaRemoval;
 else
-    disp('WARNING: gamma removal has not been applied; img is assumed');
-    disp('to be linear!');        
+    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
+    disp('img is assumed to be linear!');        
 end
-
 
 %
 %

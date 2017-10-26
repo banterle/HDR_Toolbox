@@ -30,32 +30,26 @@ function imgOut = AkyuzEO(img, maxOutput, a_gamma, gammaRemoval)
 
 check13Color(img);
 
-if(~exist('maxOutput', 'var'))
-    maxOutput = 3000.0;
-end
+checkIn01(img);
 
 if(maxOutput < 0.0)
-    maxOutput = 3000.0;
-end
-
-if(~exist('gammaRemoval', 'var'))
-    gammaRemoval = -1;
+    error('maxOutput needs to be a positive value');
 end
 
 if(gammaRemoval > 0.0)
     img = img.^gammaRemoval;
 else
-    disp('WARNING: gamma removal has not been applied; img is assumed');
-    disp('to be linear!');        
+    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
+    disp('img is assumed to be linear!');        
+end
+
+if(a_gamma < 0.0)
+    error('a_gamma needs to be a positive value');
 end
 
 %
 %
 %
-
-if(~exist('a_gamma', 'var'))
-    a_gamma = 1.0;
-end
 
 L = lum(img);
 L_max = max(L(:));

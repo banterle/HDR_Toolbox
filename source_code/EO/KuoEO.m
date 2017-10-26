@@ -33,20 +33,17 @@ function imgOut = KuoEO(img, maxOutput, gammaRemoval)
 
 check13Color(img);
 
-if(~exist('maxOutput', 'var'))
-    maxOutput = 3000.0;
-end
+checkIn01(img);
 
 if(maxOutput < 0.0)
-    maxOutput = 3000.0;
-end
-
-if(~exist('gammaRemoval', 'var'))
-    gammaRemoval = -1;
+    error('maxOutput needs to be a positive value');
 end
 
 if(gammaRemoval > 0.0)
-    img=img.^gammaRemoval;
+    img = img.^gammaRemoval;
+else
+    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
+    disp('img is assumed to be linear!');        
 end
 
 %

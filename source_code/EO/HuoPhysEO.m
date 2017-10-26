@@ -37,32 +37,29 @@ function imgOut = HuoPhysEO(img, maxOutput, hou_n, gammaRemoval)
 
 check13Color(img);
 
-if(~exist('maxOutput', 'var'))
-    maxOutput = 3000.0;
+checkIn01(img);
+
+if(maxOutput < 0.0)
+    error('maxOutput needs to be a positive value');
 end
 
 if(maxOutput < 0.0)
     maxOutput = 3000.0;
 end
 
-if(~exist('gammaRemoval', 'var'))
-    gammaRemoval = -1;
-end
-
 if(gammaRemoval > 0.0)
     img = img.^gammaRemoval;
 else
-    disp('WARNING: gamma removal has not been applied; img is assumed');
-    disp('to be linear!');        
+    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
+    disp('img is assumed to be linear!');        
 end
-
 
 %
 %
 %
 
 if(~exist('hou_n', 'var'))
-    hou_n = 0.86;%as in the original paper
+    hou_n = 0.86; %as in the original paper
 end
 
 L = lum(img);
