@@ -86,6 +86,14 @@ disp('A few operators (e.g. Mertens et al.''s operator) return gamma encoded val
 disp('so there is no need to apply gamma to them; in this case a message (e.g. a Warning) is displayed');
 disp('after tone mapping alerting that there is no need of gamma encoding.');
 
+disp(' ');
+disp('Note on Expansion Operators (Inverse/Reverse Tone Mapping):');
+disp('The majority of EOs require to have as input LDR images in the range [0,1] that are LINEARIZED. ');
+disp('This means that the camera response function (CRF) or the gamma encoding has been removed.');
+disp('This operation is MANDATORY in order to generate fair comparisons; ');
+disp('please do use the gammaRemoval parameter to remove gamma if you do not have the CRF of the input image. ');
+disp('RAW files do not require this step because they are already linear.');
+
 str_cur = pwd();
 try
     cd([str_cur, '/source_code/IO/']);
