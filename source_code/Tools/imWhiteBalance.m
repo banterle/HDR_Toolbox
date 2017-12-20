@@ -41,7 +41,7 @@ if(isempty(color_wb))
     imshow(img);
     [x,y,button] = ginput(1);
     color_wb = mean(mean(img( (y - patchSize):(y + patchSize), (x - patchSize):(x + patchSize), :)));
-    pos_wb = [x, y];    
+    pos_wb = [x y];    
     close(hf);
 end
 
