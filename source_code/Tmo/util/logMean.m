@@ -27,7 +27,7 @@ function Lav = logMean(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-delta = 1e-6;
+delta = 1e-3;
 img_delta = log(img + delta);
 
 Lav = exp(mean(img_delta(:)));

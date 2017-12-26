@@ -28,7 +28,7 @@ function H = histogram_ceiling(H, k)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-tolerance = sum(H) * 0.025;
+tolerance = mean(H) * 0.025;
 trimmings = 0;
 val = 1;
 n = length(H);
