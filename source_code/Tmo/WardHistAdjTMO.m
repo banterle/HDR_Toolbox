@@ -78,12 +78,16 @@ L = lum(img);
 
 %downsample according to fovea...
 L2 = WardDownsampling(L + 1e-6);
+
 %compute stastistics
 LMin = min(L2(:));
 LMax = max(L2(:));
+
 Llog  = log(L2);
+
 LlMin = log(LMin);
 LlMax = log(LMax);
+
 LldMin = log(LdMin);
 LldMax = log(LdMax);
 
