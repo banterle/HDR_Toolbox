@@ -1,4 +1,4 @@
-function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_figure, FC_title)
+function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_figure, FC_title, FC_lin)
 %
 %
 %       [imgOut, FC_MAX_L] = FalseColor(img, compress, FC_Vis, LMax)
@@ -26,6 +26,7 @@ function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_f
 %               This needs to be used when creating false color images with the same scale. 
 %           -FC_figure: index for the figure
 %           -FC_title: title for the false color window
+%           -FC_lin: linear scale or exponential one.
 %           
 %       Output:
 %           -imgOut: the false color LDR and RGB image (no gamma is
@@ -33,7 +34,7 @@ function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_f
 %           -FC_MAX_L: the maxium luminance value in the selected
 %           FC_compress domain
 %
-%     Copyright (C) 2011-15  Francesco Banterle
+%     Copyright (C) 2011-17 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -67,6 +68,10 @@ if(~exist('FC_title', 'var'))
     FC_title = 'False color visualization';
 end
 
+if(~exist('FC_lin', 'var'))
+    FC_lin = 0;
+end
+
 %minimum luminance
 LMin = min(L(:));
 
@@ -74,14 +79,14 @@ LMin = min(L(:));
 if(~exist('FC_LMax', 'var'))
     LMax = max(L(:));
 else
-    if(FC_LMax<0)
+    if(FC_LMax < 0)
         LMax = max(L(:));
     else
         tLMax = max(L(:));
         if(FC_LMax < tLMax)
             LMax = tLMax;
         else
-            LMax = FC_LMax - MinL;
+            LMax = FC_LMax - LMin;
         end
     end
 end
@@ -154,8 +159,14 @@ if(FC_Vis)%Visualization
     set(h, 'Name', FC_title);
     imshow(imgOut, 'InitialMagnification', 'fit');
     colormap(color_map);
-         
-    hcb = colorbar('Ticks', 0:(1/4):1 ,'YtickLabel',{sprintf('%2.1e', yticks(1)), sprintf('%2.1e', yticks(2)), sprintf('%2.1e', yticks(3)), sprintf('%2.1e', yticks(4)), sprintf('%2.1e', yticks(5))});
+    
+    if(FC_lin)
+        str = {sprintf('%2.1f', yticks(1)), sprintf('%2.1f', yticks(2)), sprintf('%2.1f', yticks(3)), sprintf('%2.1f', yticks(4)), sprintf('%2.1f', yticks(5))};
+    else
+        str = {sprintf('%2.1e', yticks(1)), sprintf('%2.1e', yticks(2)), sprintf('%2.1e', yticks(3)), sprintf('%2.1e', yticks(4)), sprintf('%2.1e', yticks(5))};
+    end
+        hcb = colorbar('Ticks', 0:(1/4):1 ,'YtickLabel', str);
+    
     set(hcb,'FontSize', 24);
     set(hcb,'FontName', 'Times New Roman');
     
