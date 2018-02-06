@@ -1,4 +1,4 @@
-function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_figure, FC_title, FC_lin)
+function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_figure, FC_title, FC_lin, FC_title_color_map)
 %
 %
 %       [imgOut, FC_MAX_L] = FalseColor(img, compress, FC_Vis, LMax)
@@ -27,6 +27,7 @@ function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_f
 %           -FC_figure: index for the figure
 %           -FC_title: title for the false color window
 %           -FC_lin: linear scale or exponential one.
+%           -FC_title_color_map: color map unit
 %           
 %       Output:
 %           -imgOut: the false color LDR and RGB image (no gamma is
@@ -70,6 +71,10 @@ end
 
 if(~exist('FC_lin', 'var'))
     FC_lin = 0;
+end
+
+if(~exist('FC_title_color_map', 'var'))
+    FC_title_color_map = 'Lux';
 end
 
 %minimum luminance
@@ -149,6 +154,8 @@ L = L.^(1.0 / contrast);
 n_bit = 8;
 res = 2^n_bit;
 color_map = colormap(jet(res));
+%color_map = ldrimread('fc_colormap.png');
+
 
 %Coloring using the colormap
 L = ClampImg(round(L * res), 1, res);
@@ -156,23 +163,39 @@ imgOut = ind2rgb(L, color_map);
 
 if(FC_Vis)%Visualization  
     h = figure(FC_figure);
+    axes1 = axes('Parent', h);
+    axis off
+    hold(axes1,'on');
+
     set(h, 'Name', FC_title);
-    imshow(imgOut, 'InitialMagnification', 'fit');
+    
+    image(imgOut, 'Parent', axes1);%'InitialMagnification', 'fit');
     colormap(color_map);
     
+    box(axes1,'on');
+    axis(axes1,'ij');
+    set(axes1,'DataAspectRatio',[1 1 1],'Layer','top','TickDir','out');
+
     if(FC_lin)
         str = {sprintf('%2.1f', yticks(1)), sprintf('%2.1f', yticks(2)), sprintf('%2.1f', yticks(3)), sprintf('%2.1f', yticks(4)), sprintf('%2.1f', yticks(5))};
     else
         str = {sprintf('%2.1e', yticks(1)), sprintf('%2.1e', yticks(2)), sprintf('%2.1e', yticks(3)), sprintf('%2.1e', yticks(4)), sprintf('%2.1e', yticks(5))};
     end
-        hcb = colorbar('Ticks', 0:(1/4):1 ,'YtickLabel', str);
+       
+
+
+    hcb = colorbar('peer',axes1, 'Position',...
+    [0.743515850144089 0.299424184261036 0.0374639769452479 0.566218809980805],...
+    'Ticks',[0 0.25 0.5 0.75 1],...    
+    'Ticks', 0:(1/4):1 ,'YtickLabel', str);%, 'Position',...
+%    [0.329470198675497 0.345738295318127 0.302152317880795 0.0261944917126994]);
     
-    set(hcb,'FontSize', 24);
-    set(hcb,'FontName', 'Times New Roman');
+    set(hcb, 'FontSize', 24);
+    set(hcb, 'FontName', 'Times New Roman');
     
     pos = hcb.Position;
-    
-    set(get(hcb,'XLabel'), 'Rotation', 0, 'String', 'Lux', 'FontSize', 24, 'FontName', 'Times New Roman', 'Position', [pos(1), 0.0 , 0.0]);
+    set(get(hcb, 'XLabel'), 'Rotation', 0, 'String', FC_title_color_map, 'FontSize', 24, 'FontName', 'Times New Roman', 'Position', [pos(1), 0.0 , 0.0]);
+    hold off;
 end
 
 end
