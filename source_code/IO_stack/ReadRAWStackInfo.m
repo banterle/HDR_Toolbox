@@ -42,7 +42,7 @@ for i=1:n
         exposure(i) = value;
     
     catch expr
-        disp(expr);        
+        error(struct('message', expr.message, 'identifier', expr.identifier, 'stack', expr.stack));
     end
 end
 

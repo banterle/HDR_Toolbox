@@ -10,7 +10,7 @@ function val = isOctave()
 %        Input:
 %
 %        Output:
-%           -val: a boolean value: 1 if the environment is Ocatve, otherwise 0.
+%           -val: a boolean value: 1 if the environment is Octave, otherwise 0.
 %
 %     Copyright (C) 2015  Francesco Banterle
 % 
@@ -36,7 +36,7 @@ if(isfield(tmp, 'Name'))
     try
         val = (strcmp(tmp(1).Name, 'Octave') == 1);
     catch expr
-        disp(expr);
+        disp(expr); % Should this be changed to error?
     end
 end
 
