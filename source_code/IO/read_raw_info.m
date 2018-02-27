@@ -38,8 +38,16 @@ end
 %getting shutter speed
 i0 = strfind(output, 'Shutter: ');
 i1 = strfind(output, 'sec');
-shutter_str = output((i0 + 8):(i1 - 1));
-shutter_speed = str2num(shutter_str);
+shutter_str = output((i0 + 9):(i1 - 2));
+if (contains(shutter_str, '/') == 1)
+    shutter_arr = strsplit(shutter_str, '/');
+    shutter_speed = str2double(shutter_arr(1)) / str2double(shutter_arr(2));
+else
+    shutter_speed = str2double(shutter_str);
+end
+if (isnan(shutter_speed) == 1)
+    shutter_speed = 1.0;
+end
 
 %getting ISO 
 i0 = strfind(output, 'ISO speed: ');
@@ -48,31 +56,41 @@ tmp = strread(tmp, '%s', 'delimiter', '\n');
 tmp = char(tmp(1));
 
 iso_str = tmp(12:end);
-iso = str2num(iso_str);
+iso = str2double(iso_str);
+if (isnan(iso) == 1)
+    iso = 1.0;
+end
 
-%getting Aperture 
+%getting aperture 
 i0 = strfind(output, 'Aperture: f/');
 tmp = output(i0:end);
 tmp = strread(tmp, '%s', 'delimiter', '\n');
 tmp = char(tmp(1));
 
 aperture_str = tmp(13:end);
-aperture = str2num(aperture_str);
+aperture = str2double(aperture_str);
+if (isnan(aperture) == 1)
+    aperture = 1.0;
+end
 
-%getting Colors 
+%getting color channels
 i0 = strfind(output, 'Raw colors: ');
 tmp = output(i0:end);
 tmp = strread(tmp, '%s', 'delimiter', '\n');
 tmp = char(tmp(1));
 
 colors_str = tmp(13:end);
-colors = str2num(colors_str);
+colors = single(str2double(colors_str));
+%assume 3 color channels if not specified
+if (isnan(colors) == 1)
+    colors = 3;
+end
 
 %getting focal length 
 i0 = strfind(output, 'Focal length: ');
 i1 = strfind(output, 'mm');
-focal_length_str = output((i0 + 14):(i1 - 1));
-focal_length = str2num(focal_length_str);
+focal_length_str = output((i0 + 15):(i1 - 2));
+focal_length = single(str2double(focal_length_str));
 
 %getting image size, output size takes orientation into account
 i0 = strfind(output, 'Output size: ');
@@ -81,11 +99,17 @@ tmp = strread(tmp, '%s', 'delimiter', '\n');
 tmp = char(tmp(1));
 
 i1 = strfind(tmp, 'x');
-width_str = tmp(14:(i1 - 1));
-height_str = tmp((i1 + 1):end);
+width_str = tmp(14:(i1 - 2));
+height_str = tmp((i1 + 2):end);
 
-width = str2num(width_str);
-height = str2num(height_str);
+width = str2double(width_str);
+if (isnan(width) == 1)
+    error(['Image ', name, ' width not found in metadata']);
+end
+height = str2double(height_str);
+if (isnan(height) == 1)
+    error(['Image ', name, ' height not found in metadata']);
+end
 
 info = struct('FNumber', aperture, 'ISOSpeedRatings', iso, 'FocalLength', focal_length, ...
               'ExposureTime', shutter_speed, 'Width', width, 'Height', height, 'NumberOfSamples', colors);

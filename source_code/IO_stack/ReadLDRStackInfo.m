@@ -72,14 +72,14 @@ for i=1:n
         || img_info.DigitalCamera.ISOSpeedRatings == 0)
 
         img_info.DigitalCamera.ISOSpeedRatings = 1.0;
-    end    
+    end
     
     if(~isfield(img_info.DigitalCamera, 'ExposureTime') ...
         || img_info.DigitalCamera.ExposureTime == 0)
 
         img_info.DigitalCamera.ExposureTime = 1.0;
     end
-    
+
     if(~isfield(img_info.DigitalCamera, 'FNumber') ...
         || img_info.DigitalCamera.FNumber == 0)
 
