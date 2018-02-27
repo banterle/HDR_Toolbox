@@ -74,14 +74,14 @@ i1 = strfind(output, 'mm');
 focal_length_str = output((i0 + 14):(i1 - 1));
 focal_length = str2num(focal_length_str);
 
-%getting image size
-i0 = strfind(output, 'Image size: ');
+%getting image size, output size takes orientation into account
+i0 = strfind(output, 'Output size: ');
 tmp = output(i0:end);
 tmp = strread(tmp, '%s', 'delimiter', '\n');
 tmp = char(tmp(1));
 
 i1 = strfind(tmp, 'x');
-width_str = tmp(12:(i1 - 1));
+width_str = tmp(14:(i1 - 1));
 height_str = tmp((i1 + 1):end);
 
 width = str2num(width_str);
