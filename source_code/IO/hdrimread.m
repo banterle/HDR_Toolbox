@@ -60,7 +60,7 @@ switch extension
                 %MATLAB HDR Reader
                 img = double(hdrread(filename));
             catch err
-                disp('Warning: this .hdr/.pic file can not be read.');
+                warning('This .hdr/.pic file cannot be read.');
             end
         end
         
@@ -70,7 +70,7 @@ switch extension
             img = read_exr(filename);
             bLDR = 0;            
         catch err
-            disp('Warning: this .exr file can not be read.');
+            warning('This .exr file cannot be read.');
         end
         
     %Portable float map
@@ -79,7 +79,7 @@ switch extension
             img = read_pfm(filename);
             bLDR = 0;            
         catch
-            disp('Warning: this .pfm file can not be read.');
+            warning('This .pfm file cannot be read.');
         end
         
     %HDR JPEG-2000
@@ -88,14 +88,14 @@ switch extension
             img = HDRJPEG2000Dec(filename);
             bLDR = 0;            
         catch err
-            disp('Warning: this .jpg2 file cannot be read as an HDR JPEG 2000 file.');
+            warning('This .jpg2 file cannot be read as an HDR JPEG 2000 file.');
         end        
 end
 
 if(isempty(img))
     if(bLDR == 1)
         img = ldrimread(filename);
-        disp(['Warning: this image, ', filename,', has been loaded as an LDR image.']);
+        warning(['This image, ', filename,', has been loaded as an LDR image.']);
     else
         error(['This image,',filename,', cannot be loaded with LDR or HDR readers.']);
     end

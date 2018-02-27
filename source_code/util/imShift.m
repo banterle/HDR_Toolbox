@@ -27,7 +27,7 @@ function imgOut = imShift(img, shift_vector)
 %
 
 if(~exist('shift_vector', 'var'))
-    disp('WARNING: no valid shift vector');
+    warning('No valid shift vector');
     return;
 end
 

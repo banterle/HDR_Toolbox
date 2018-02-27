@@ -95,7 +95,7 @@ for i=1:n
             [~, value] = EstimateAverageLuminance(exposure_time, aperture, iso);
             exposure(i) = value;
         else
-            disp('WARNING: The LDR image does not have camera information!');
+            warning('The LDR image does not have camera information');
         end
     end
     

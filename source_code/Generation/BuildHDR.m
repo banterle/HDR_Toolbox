@@ -121,7 +121,7 @@ if(length(stack_exposure) ~= length(stack_exposure_check))
 end
 
 if(min(stack_exposure(:)) <= 0.0)
-    error('The stack contains images with negative or zero exposure value. Please remove this images!');
+    error('The stack contains images with negative or zero exposure value. Please remove these images!');
 end
 
 %merging
@@ -211,7 +211,7 @@ if(~isempty(totWeight <= saturation))
     mask = max(mask, [], 3);
     
     if(max(mask(:)) > 0.5)
-        disp('WARNING: the stack has saturated pixels!');
+        warning('The stack has saturated pixels');
         if(exist('debug_mode', 'var'))
             imwrite(mask, 'mask_sat.bmp');
         end
@@ -233,7 +233,7 @@ if(~isempty(totWeight <= saturation))
     mask = max(mask, [], 3);
     
     if(max(mask(:)) > 0.5)
-        disp('WARNING: the stack has noisy dark pixels!');        
+        warning('The stack has noisy dark pixels');        
         if(exist('debug_mode', 'var'))
             imwrite(mask, 'mask_noisy.bmp');
         end

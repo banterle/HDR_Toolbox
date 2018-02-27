@@ -46,12 +46,12 @@ checkIn01(img);
 
 if(~exist('ko_sigma_s', 'var'))
     ko_sigma_s = 150; %as in the original paper
-    disp('WARNING: ko_sigma_s is set to 150');            
+    warning('ko_sigma_s is set to 150');
 end
 
 if(~exist('ko_sigma_r', 'var'))
     ko_sigma_r = 25 / 255; %as in the original paper
-    disp('WARNING: ko_sigma_r is set to 25 / 255');        
+    warning('ko_sigma_r is set to 25 / 255');
 end
 
 switch type_content
@@ -68,8 +68,8 @@ if(gammaRemoval > 0.0)
     threshold = threshold^gammaRemoval;
     ko_sigma_r = ko_sigma_r^gammaRemoval;
 else
-    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
-    disp('img is assumed to be linear!');          
+    warning(['gammaRemoval < 0.0; gamma removal has not been applied. '
+    'img is assumed to be linear']);
 end
 
 if(ko_display_max < 0.0)
