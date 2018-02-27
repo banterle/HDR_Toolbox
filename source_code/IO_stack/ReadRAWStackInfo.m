@@ -49,7 +49,6 @@ for i=1:n
             img_info.ExposureTime = 1.0;
         end
 
-        disp(['FNumber: ', img_info.FNumber]);
         if(~isfield(img_info, 'FNumber') ...
             || img_info.FNumber == 0)
 
