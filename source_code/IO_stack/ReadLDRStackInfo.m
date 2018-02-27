@@ -64,16 +64,25 @@ for i=1:n
             disp(err);
         end
     end
+    
+    % Check if exposure values don't exist or if they are zero, e.g. manual
+    % lens -> no recorded FNumber
 
-    if(~isfield(img_info.DigitalCamera, 'ISOSpeedRatings'))
+    if(~isfield(img_info.DigitalCamera, 'ISOSpeedRatings') ...
+        || img_info.DigitalCamera.ISOSpeedRatings == 0)
+
         img_info.DigitalCamera.ISOSpeedRatings = 1.0;
     end    
     
-    if(~isfield(img_info.DigitalCamera, 'ExposureTime'))
+    if(~isfield(img_info.DigitalCamera, 'ExposureTime') ...
+        || img_info.DigitalCamera.ExposureTime == 0)
+
         img_info.DigitalCamera.ExposureTime = 1.0;
     end
     
-    if(~isfield(img_info.DigitalCamera, 'FNumber'))
+    if(~isfield(img_info.DigitalCamera, 'FNumber') ...
+        || img_info.DigitalCamera.FNumber == 0)
+
         img_info.DigitalCamera.FNumber = 1.0;
     end
     

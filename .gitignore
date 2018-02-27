@@ -1,2 +1,3 @@
 demos/output
-*mexw64
+*.mexw64
+*.asv
