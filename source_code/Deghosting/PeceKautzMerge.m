@@ -180,6 +180,7 @@ end
 %Clamping
 imgOut = ClampImg(imgOut / max(imgOut(:)), 0.0, 1.0);
 
-disp('This algorithm outputs images with gamma encoding. Inverse gamma is not required to be applied!');
+disp('This algorithm outputs images with gamma encoding. Inverse gamma is not required to be applied.');
+
 end
 
