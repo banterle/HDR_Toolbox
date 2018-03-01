@@ -32,7 +32,7 @@ function info = read_raw_info(name)
 [~, output] = dos(['dcraw -i -v ', name]);
 
 if(contains(output, 'is not recognized as an internal'))
-    error('ERROR: dcraw is not installed or not present in your path!');
+    error('dcraw is not installed or not present in your path!');
 end
 
 %getting shutter speed
