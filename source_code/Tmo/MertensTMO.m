@@ -150,8 +150,8 @@ min_i = min(imgOut(:));
 max_i = max(imgOut(:));
 imgOut = ClampImg((imgOut - min_i) / (max_i - min_i),  0.0, 1.0);
 
-if(bWarning) % What's bWarning being used for?
-    disp('TMO outputs images with gamma encoding. Inverse gamma is not required to be applied.');
+if(bWarning)
+    warning('This algorithm outputs images with gamma encoding. Inverse gamma is not required to be applied.');
 end
 
 end

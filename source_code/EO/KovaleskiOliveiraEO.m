@@ -69,7 +69,7 @@ if(gammaRemoval > 0.0)
     ko_sigma_r = ko_sigma_r^gammaRemoval;
 else
     warning(['gammaRemoval < 0.0; gamma removal has not been applied. '
-    'img is assumed to be linear']);
+    'img is assumed to be linear.']);
 end
 
 if(ko_display_max < 0.0)

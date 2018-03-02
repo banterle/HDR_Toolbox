@@ -36,7 +36,7 @@ if(isfield(tmp, 'Name'))
     try
         val = (strcmp(tmp(1).Name, 'Octave') == 1);
     catch expr
-        disp(expr); % Should this be changed to error?
+        disp(expr);
     end
 end
 

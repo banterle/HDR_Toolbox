@@ -51,7 +51,7 @@ try
     info = read_raw_info(name);
     
 catch expr
-    disp(expr); % Should this be changed to error?
+    disp(expr);
     
     img = [];
     info = [];
