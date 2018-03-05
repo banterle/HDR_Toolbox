@@ -168,7 +168,7 @@ img_min = MaxQuart(imgOut, 0.01);
 img_max = MaxQuart(imgOut, 0.99);
 imgOut = ClampImg((imgOut - img_min) / (img_max - img_min), 0.0, 1.0);
 
-disp('WARNING: the output image has D65 as whitepoint.');
-disp('This is fine if the image will be displayed using sRGB color space.');
+warning(['The output image has D65 as whitepoint.'
+    'This is fine if the image will be displayed using sRGB color space.']);
 
 end

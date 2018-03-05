@@ -52,13 +52,13 @@ checkNegative(img);
 L = lum(img);
 
 if(~isempty(find(L > 3000, 1)))
-    disp('WARNING: the input image has values over 3,000 cd/m^2'); 
-    disp('These values were not tested in the original paper.');
+    warning(['The input image has values over 3,000 cd/m^2.'
+        'These values were not tested in the original paper.']);
 end
 
 if(~isempty(find(L < 0.015, 1)))
-    disp('WARNING: the input image has values under 0.015 cd/m^2'); 
-    disp('These values were not tested in the original paper.');
+    warning(['The input image has values under 0.015 cd/m^2.'
+        'These values were not tested in the original paper.']);
 end
 
 %segmentation

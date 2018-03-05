@@ -108,6 +108,6 @@ end
 
 imgOut = RemoveSpecials(imgOut);
 
-disp('WARNING: suggested gamma correction for displaying imgOut is 1.6.');
+warning('Suggested gamma correction for displaying imgOut is 1.6.');
 
 end

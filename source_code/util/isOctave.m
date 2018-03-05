@@ -10,7 +10,7 @@ function val = isOctave()
 %        Input:
 %
 %        Output:
-%           -val: a boolean value: 1 if the environment is Ocatve, otherwise 0.
+%           -val: a boolean value: 1 if the environment is Octave, otherwise 0.
 %
 %     Copyright (C) 2015  Francesco Banterle
 % 

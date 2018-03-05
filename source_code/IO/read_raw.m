@@ -40,8 +40,8 @@ try
     %reading the raw file    
     [~, output] = dos(['dcraw -6 -w -W -S ', num2str(saturation_level), ' -q 3 -g 1 1 -T ', name]);
 
-    if(~isempty(strfind(output, 'is not recognized as an internal')))
-        error('ERROR: dcraw is not installed or not present in your path!');
+    if(contains(output, 'is not recognized as an internal'))
+        error('dcraw is not installed or not present in your path!');
     end    
     
     name_we = RemoveExt(name);

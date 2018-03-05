@@ -43,8 +43,8 @@ checkIn01(img);
 if(gammaRemoval > 0.0)
     img = img.^gammaRemoval;
 else
-    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
-    disp('img is assumed to be linear!');        
+    warning(['gammaRemoval < 0.0; gamma removal has not been applied. '
+    'img is assumed to be linear.']);
 end
 
 %

@@ -164,11 +164,11 @@ if(n > 0)
             stack = stack / norm_value;
         end
     else
-        disp('WARNING: The stack is empty!');
+        warning('The stack is empty!');
         stack = [];        
     end
 else
-    disp('WARNING: The stack is empty!');
+    warning('The stack is empty!');
     stack = [];
 end
 
