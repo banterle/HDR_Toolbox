@@ -38,7 +38,11 @@ end
 
 try
     %reading the raw file    
-    [~, output] = dos(['dcraw -6 -w -W -S ', num2str(saturation_level), ' -q 3 -g 1 1 -T ', name]);
+    try
+        [~, output] = dos(['dcraw -6 -w -W -S ', num2str(saturation_level), ' -q 3 -g 1 1 -T ', name]);
+    catch expr
+        [~, output] = dos(['./dcraw -6 -w -W -S ', num2str(saturation_level), ' -q 3 -g 1 1 -T ', name]);
+    end
 
     if(contains(output, 'is not recognized as an internal'))
         error('dcraw is not installed or not present in your path!');
