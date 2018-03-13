@@ -67,24 +67,23 @@ if(l_threshold <= 0.0)
     warning('l_threshold is set to 0.5');        
 end
 
-%Luminance channel
+%compute the luminance
 L = lum(img);
 
-
-if(l_threshold <= 0) %Expanding from the mean value
+if(l_threshold <= 0) %expand from the mean value
     l_threshold = mean(L(:));
 end
 
-%Finding pixels needed to be expanded
+%find pixels needed to be expanded
 toExpand = find(L >= l_threshold);
 
-%Exapnsion using a power function
+%expand pixels using a power function
 weights = ((L(toExpand) - l_threshold) / (max(L(:)) - l_threshold)).^l_alpha;
 
 Lexp = L;
 Lexp(toExpand) = L(toExpand) .* (1 - weights) + maxOutput * L(toExpand) .* weights;
 
-%Removing the old luminance
+%remove the old luminance
 imgOut = ChangeLuminance(img, L, Lexp);
 
 end
