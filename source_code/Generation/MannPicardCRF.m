@@ -84,7 +84,7 @@ for c=1:col
         gamma(c) = log(f.p1) / log(k);
         alpha(c) = f.p2 / (1 - k^gamma(c));
     catch expr
-        error(['MannPicardCRF: ', expr]);
+        error(struct('message', expr.message, 'identifier', expr.identifier, 'stack', expr.stack));
     end
 end
 

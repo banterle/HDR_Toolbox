@@ -52,8 +52,8 @@ end
 if(gammaRemoval > 0.0)
     img = img.^gammaRemoval;
 else
-    disp('WARNING: gammaRemoval < 0.0; gamma removal has not been applied');
-    disp('img is assumed to be linear!');        
+    warning(['gammaRemoval < 0.0; gamma removal has not been applied. '
+    'img is assumed to be linear.']);
 end
 
 %
@@ -62,12 +62,12 @@ end
 
 if(~exist('m_noise', 'var'))
     m_noise = 1;
-    disp('WARNING: m_noise is set to 1.0');        
+    warning('m_noise is set to 1.0');        
 end
 
 if(~exist('m_multi_reg', 'var'))
     m_multi_reg = 0;
-    disp('WARNING: m_multi_reg is set to 0.0');    
+    warning('m_multi_reg is set to 0.0');    
 end
 
 bWarning = 0;
@@ -103,7 +103,8 @@ Lexp = Lexp * maxOutput;
 imgOut = ChangeLuminance(img, L, Lexp);
 
 if(m_gamma <= 0.0)
-    disp(['WARNING: m_gamma value is negative (', num2str(m_gamma), ') so the image may have a false color appearance.']);
+    warning(['m_gamma value is negative (', num2str(m_gamma)
+        ') so the image may have a false color appearance.']);
     bWarning = 1;
 end
 

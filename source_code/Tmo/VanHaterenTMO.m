@@ -78,6 +78,6 @@ Ld = ClampImg(1 - Ios / maxIos, 0, 1);
 %Changing luminance
 imgOut = ChangeLuminance(img, Lori, Ld);
 
-disp('WARNING: the image does not require gamma correction.');
+warning('The image does not require gamma correction.');
 
 end

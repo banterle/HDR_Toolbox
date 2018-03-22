@@ -1,17 +1,19 @@
-function imgOut = imWhiteBalance(img)
+function [imgOut, color_wb, pos_wb] = imWhiteBalance(img, color_wb)
 %
-%     imgOut = imWhiteBalance(img)
+%     [imgOut, color_wb, pos_wb] = imWhiteBalance(img, color_wb)
 %
 %     This functions crops an HDR image.
 %
 %     Input:
-%       -img: an input image
+%       -img: an input image that is linearized
+%       -color_wb: color for applying the white balance
+%       -pos_wb: position where to compute white balance color
 %
 %     Output:
-%       -imgOut: an image
+%       -imgOut: an output image
 %
 %
-%     Copyright (C) 2016 Francesco Banterle
+%     Copyright (C) 2016-17 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -26,24 +28,29 @@ function imgOut = imWhiteBalance(img)
 %     You should have received a copy of the GNU General Public License
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
+pos_wb = [];
 
-
-button = 0;
-while(button ~= 3)
-    img_tmo = ReinhardTMO(img);
-    GammaTMO(img_tmo, 2.2, 0.0, 1);
-    [x,y,button] = ginput(1);
-    
-    if(button ~= 3)
-        window = img((y - 16):(y + 16), (x - 16):(x + 16), :);
-        color = mean(mean(window));
-
-        for i=1:size(img, 3)
-            img(:,:,i) = img(:,:,i) / color(i);
-        end
-    end
+if(~exist('color_wb', 'var'))
+    color_wb = [];
 end
 
-imgOut = img;
+if(isempty(color_wb))
+    patchSize = 8;
+    
+    hf = figure(4001);
+    imshow(img);
+    [x,y,button] = ginput(1);
+    color_wb = mean(mean(img( (y - patchSize):(y + patchSize), (x - patchSize):(x + patchSize), :)));
+    pos_wb = [x y];    
+    close(hf);
+end
+
+scale = mean(color_wb);
+scale_wb = scale ./ color_wb;
+
+imgOut = zeros(size(img));
+for i=1:size(img,3)
+    imgOut(:,:,i) = img(:,:,i) * scale_wb(i);
+end
 
 end

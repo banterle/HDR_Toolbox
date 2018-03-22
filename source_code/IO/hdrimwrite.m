@@ -79,7 +79,7 @@ switch extension
     case 'exr'
         try
             if(~isa(img, 'double'))
-                disp('Warning: This image is not a double, automatic cast to double for saving it as EXR.');
+                warning('This image is not a double, automatic cast to double for saving it as EXR.');
                 img = double(img);
             end
             

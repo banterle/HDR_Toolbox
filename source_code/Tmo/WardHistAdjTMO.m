@@ -77,15 +77,19 @@ end
 L = lum(img);
 
 %downsample according to fovea...
-L2 = WardDownsampling(L);
+L2 = WardDownsampling(L + 1e-6);
+
 %compute stastistics
-LMax = max(L2(:));
 LMin = min(L2(:));
+LMax = max(L2(:));
+
 Llog  = log(L2);
-LlMax = log(LMax);
+
 LlMin = log(LMin);
-LldMax = log(LdMax);
+LlMax = log(LMax);
+
 LldMin = log(LdMin);
+LldMax = log(LdMax);
 
 %compute the histogram H 
 H = zeros(nBin, 1);

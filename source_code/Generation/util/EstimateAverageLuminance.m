@@ -36,11 +36,11 @@ if(~exist('K_value', 'var'))
 end
 
 if(~exist('aperture_value', 'var'))
-   aperture_value = 1;
+   aperture_value = 1.0;
 end
 
 if(~exist('iso_value', 'var'))
-   iso_value = 1;
+   iso_value = 1.0;
 end
 
 K_value = ClampImg(K_value, 10.6, 13.4);

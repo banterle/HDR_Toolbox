@@ -27,11 +27,11 @@ function alpha = ReinhardAlpha(L)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-LMax = MaxQuart(L, 0.99);
 LMin = MaxQuart(L, 0.01);
+LMax = MaxQuart(L, 0.99);
 
-log2Max     = log2(LMax + 1e-9);
 log2Min     = log2(LMin + 1e-9);
+log2Max     = log2(LMax + 1e-9);
 logAverage  = logMean(L);
 log2Average = log2(logAverage + 1e-9);
 
