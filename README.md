@@ -60,7 +60,7 @@ Please reference the book in your work or papers if you use this toolbox:
  
  author = {Banterle, Francesco and Artusi, Alessandro and Debattista, Kurt and Chalmers, Alan},
  
- title = {Advanced High Dynamic Range Imaging: Theory and Practice (2nd Edition)},
+ title = {Advanced High Dynamic Range Imaging (2nd Edition)},
  
  year = {2017},
  
@@ -71,4 +71,5 @@ Please reference the book in your work or papers if you use this toolbox:
  publisher = {AK Peters (CRC Press)},
  
  address = {Natick, MA, USA},
+ 
 } 
