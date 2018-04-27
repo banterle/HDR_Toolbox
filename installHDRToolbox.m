@@ -83,19 +83,11 @@ disp('=====================');
 disp('The majority of TMOs return tone mapped images with linear values. This means that gamma encoding');
 disp('needs to be applied to the output of these TMOs before visualization or before writing tone mapped images');
 disp(' on the disk; otherwise these images may appear dark.');
-disp('A few operators (e.g. Mertens et al.'s operator) return gamma encoded values,');
+disp('A few operators (e.g. Mertens et al.''s operator) return gamma encoded values,');
 disp('so there is no need to apply gamma to them; in this case a message (e.g. a Warning) is displayed');
 disp('after tone mapping alerting that there is no need of gamma encoding.');
 
 disp(' ');
-<<<<<<< HEAD
-disp('Note on Expansion Operators (Inverse/Reverse Tone Mapping):');
-disp('The majority of EOs require to have as input LDR images in the range [0,1] that are LINEARIZED. ');
-disp('This means that the camera response function (CRF) or the gamma encoding has been removed.');
-disp('This operation is MANDATORY in order to generate fair comparisons; ');
-disp('please do use the gammaRemoval parameter to remove gamma if you do not have the CRF of the input image. ');
-disp('RAW files do not require this step because they are already linear.');
-=======
 disp('NOTE ON EXPANSION OPERATORS (INVERSE/REVERSE TONE MAPPING):');
 disp('=====================');
 disp('The majority of EOs require to have as input LDR images in the range [0,1] that are LINEARIZED.');
@@ -103,7 +95,6 @@ disp('This means that the camera response function (CRF) or the gamma encoding h
 disp('This operation is MANDATORY in order to generate fair comparisons; please do use the gammaRemoval');
 disp('parameter to remove gamma if you do not have the CRF of the input image. RAW files do not require ');
 disp('this step because they are already linear.');
->>>>>>> develop
 
 str_cur = pwd();
 try

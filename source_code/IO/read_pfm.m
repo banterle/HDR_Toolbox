@@ -71,7 +71,7 @@ fscanf(fid,'%c',1);
 if(endian_selector > 0.0)
     fclose(fid);
     
-    %reopening the file in big-endian mode
+    %reopen the file in big-endian mode
     fid = fopen(filename, 'r', 'b');
     fscanf(fid,'%c',3);
     m = fscanf(fid,'%d',1);
