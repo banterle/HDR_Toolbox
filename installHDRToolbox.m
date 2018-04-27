@@ -68,14 +68,16 @@ disp(' ');
 disp('Check demos in the folder ''demos'' for learning how to use the HDR Toolbox!');
 disp(' ');
 disp('If you use the toolbox in your research, please reference the book in your papers:');
-disp('@book{Banterle:2011,');
+disp('@book{Banterle:2017,');
 disp('      author = {Banterle, Francesco and Artusi, Alessandro and Debattista, Kurt and Chalmers, Alan},');
-disp('      title = {Advanced High Dynamic Range Imaging: Theory and Practice},');
-disp('      year = {2011},');
-disp('      isbn = {9781568817194},');
+disp('      title = {Advanced High Dynamic Range Imaging (2nd Edition)},');
+disp('      year = {2017},');
+disp('      month={July},');
+disp('      isbn = {9781498706940},');
 disp('      publisher = {AK Peters (CRC Press)},');
 disp('      address = {Natick, MA, USA},');
 disp('      }');
+
 
 disp(' ');
 disp('NOTE ON TONE MAPPING:');
