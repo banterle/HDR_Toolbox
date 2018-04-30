@@ -49,7 +49,7 @@ else
 end
 
 if(minL < 1e-6)
-    warning('imDynamicRange: minL is less than 1e-6 cd/m^2');
+    warning('minL is less than 1e-6 cd/m^2');
 end
 
 if(minL > 0.0)
@@ -57,14 +57,12 @@ if(minL > 0.0)
     dr_fstops = log2(dr);
     dr_log10 = log10(dr);
 else
-    if(bRobust == 0)
-        warning('minL is 0.0 is set to the first value > 0');
-    
-        minL = min(min(L(L > 0)));
-        dr = maxL / minL;    
-        dr_fstops = log2(dr);
-        dr_log10 = log10(dr);    
-    end
+    warning('minL is 0.0 is set to the first value greater than zero.');
+
+    minL = min(min(L(L > 0)));
+    dr = maxL / minL;    
+    dr_fstops = log2(dr);
+    dr_log10 = log10(dr);    
 end
 
 
