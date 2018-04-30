@@ -30,7 +30,7 @@ function [dr, dr_fstops, dr_log10] = imDynamicRange(img, bRobust)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(~exisst('bRobust', 'var'))
+if(~exist('bRobust', 'var'))
     bRobust = 0;
 end
 
@@ -48,7 +48,7 @@ else
     maxL = max(L(:));
 end
 
-if(minL < 1-e6)
+if(minL < 1e-6)
     warning('imDynamicRange: minL is less than 1e-6 cd/m^2');
 end
 
@@ -57,7 +57,14 @@ if(minL > 0.0)
     dr_fstops = log2(dr);
     dr_log10 = log10(dr);
 else
-    error('minL is 0.0');
+    if(bRobust == 0)
+        warning('minL is 0.0 is set to the first value > 0');
+    
+        minL = min(min(L(L > 0)));
+        dr = maxL / minL;    
+        dr_fstops = log2(dr);
+        dr_log10 = log10(dr);    
+    end
 end
 
 
