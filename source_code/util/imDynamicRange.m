@@ -1,7 +1,7 @@
-function [dr, dr_log] = imDynamicRange(img, bRobust)
+function [dr, dr_fstops, dr_log10] = imDynamicRange(img, bRobust)
 %
 %
-%        [dr, dr_log] = imDynamicRange(img, bRobust)
+%        [dr, dr_fstops, dr_log10] = imDynamicRange(img, bRobust)
 %
 %
 %        Input:
@@ -11,6 +11,7 @@ function [dr, dr_log] = imDynamicRange(img, bRobust)
 %
 %        Output:
 %           -dr: dynamic range of img
+%           -dr_fstops: dynamic range of img in f-stops
 %           -dr_log: dynamic range of img in log10 space space
 %
 %     Copyright (C) 2011-18  Francesco Banterle
@@ -48,11 +49,16 @@ else
 end
 
 if(minL < 1-e6)
-    warning('imDynamicRange: minL is less than 1e-6');
+    warning('imDynamicRange: minL is less than 1e-6 cd/m^2');
 end
 
-dr = maxL / minL;
+if(minL > 0.0)
+    dr = maxL / minL;    
+    dr_fstops = log2(dr);
+    dr_log10 = log10(dr);
+else
+    error('minL is 0.0');
+end
 
-dr_log = log10(maxL + 1e-6) / log10(minL + 1e-6);
 
 end
