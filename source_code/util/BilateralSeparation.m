@@ -1,7 +1,7 @@
-function [Base, Detail] = BilateralSeparation(img, sigma_s, sigma_r)
+function [Base, Detail] = bilateralSeparation(img, sigma_s, sigma_r)
 %
 %
-%       [Base, Detail] = BilateralSeparation(img, sigma_s, sigma_r)
+%       [Base, Detail] = bilateralSeparation(img, sigma_s, sigma_r)
 %
 %
 %       Input:

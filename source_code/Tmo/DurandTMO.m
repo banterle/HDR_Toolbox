@@ -45,7 +45,7 @@ end
 L = lum(img);
 
 %separate detail and base
-[Lbase, Ldetail] = BilateralSeparation(L);
+[Lbase, Ldetail] = bilateralSeparation(L);
 
 log_base = log10(Lbase);
 max_log_base = max(log_base(:));

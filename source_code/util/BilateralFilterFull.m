@@ -1,6 +1,6 @@
-function imgOut = BilateralFilterFull(img, imgEdges, sigma_s, sigma_r)
+function imgOut = bilateralFilterFull(img, imgEdges, sigma_s, sigma_r)
 %
-%		 imgOut = BilateralFilterFull(img, imgEdges, sigma_s, sigma_r)
+%		 imgOut = bilateralFilterFull(img, imgEdges, sigma_s, sigma_r)
 %
 %        This function implements a bilateral filter without
 %        approximations. Note this function is very slow!
@@ -40,17 +40,17 @@ end
 imgOut = zeros(r,c,col);
 imgWeight = zeros(r,c);
 
-sigma_r2 = 2.0 * (sigma_r^2);
-sigma_s2 = 2.0 * (sigma_s^2);
+sigma_r_2_sq = 2.0 * (sigma_r^2);
+sigma_s_2_sq = 2.0 * (sigma_s^2);
 
 kernelSize = max([round(sigma_s * 5.0), 1]);
-halfKernelSize = max([round(kernelSize / 2),1]);
+halfKernelSize = max([round(kernelSize / 2), 1]);
 
 %computing samples and their weights
 [X,Y] = meshgrid(-halfKernelSize:halfKernelSize, -halfKernelSize:halfKernelSize);
 [h, w] = size(X);
 nSamples = h * w;
-weight_s = exp(-(X.^2 + Y.^2)/sigma_s2);
+weight_s = exp(-(X.^2 + Y.^2) / sigma_s_2_sq);
 weight_s = weight_s / sum(weight_s(:));
 
 %computing the bilateral filter
@@ -64,7 +64,7 @@ for i=1:nSamples
         tmp = (imgFetch_Edge - imgEdges).^2;
     end
     
-    weight = exp(-tmp / sigma_r2) * weight_s(i);
+    weight = exp(-tmp / sigma_r_2_sq) * weight_s(i);
     
     for j=1:col
         imgOut(:,:,j) = imgOut(:,:,j) + imgFetch(:,:,j) .* weight;
@@ -74,9 +74,13 @@ for i=1:nSamples
 end
 
 for j=1:col
-    imgOut(:,:,j) = imgOut(:,:,j) ./ imgWeight;
-end
+    tmp = imgOut(:,:,j);
+    tmpIn = img(:,:,j);
 
-imgOut(isinf(imgOut)) = img(isinf(imgOut));
+    tmp = tmp ./ imgWeight;
+    tmp(imgWeight < 1e-9) = tmpIn(imgWeight < 1e-9);
+    
+    imgOut(:,:,j) = tmp;
+end
 
 end
