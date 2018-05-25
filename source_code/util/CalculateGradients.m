@@ -25,8 +25,8 @@ function I_g = CalculateGradients(I)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-kernelX = [0,0,0; -1,0,1;  0, 0,0];
-kernelY = [0,1,0;  0,0,0;  0,-1,0];
+kernelX = [0, 0, 0; -1, 0, 1; 0,  0, 0];
+kernelY = [0, 1, 0;  0, 0, 0; 0, -1, 0];
 
 I_gx = imfilter(I, kernelX, 'same') / 2;
 I_gy = imfilter(I, kernelY, 'same') / 2;
