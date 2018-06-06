@@ -1,19 +1,19 @@
-function mse = MSE(img_ref, img_dist, bNegativeCheck)
+function psnr = logPSNR(img_ref, img_dist, max_value)
 %
 %
-%      mse = MSE(img_ref, img_dist)
+%      val = logPSNR(img_ref, img_dist, max_value, min_value)
 %
 %
 %       Input:
 %           -img_ref: input reference image
 %           -img_dist: input distorted image
-%           -bNegativeCheck: disable the negativity check
+%           -max_value: maximum value of images domain
 %
 %       Output:
-%           -mse: the Mean Squared Error assuming values in [0,1]. Lower
-%           values means better quality.
+%           -psnr: classic PSNR for images in [0,1]. Higher values means
+%           better quality.
 % 
-%     Copyright (C) 2006  Francesco Banterle
+%     Copyright (C) 2016  Francesco Banterle
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -30,20 +30,34 @@ function mse = MSE(img_ref, img_dist, bNegativeCheck)
 %
 
 %check if images have same size and type
-[img_ref, img_dist] = checkDomains(img_ref, img_dist);
+[img_ref, img_dist, ~, mxt] = checkDomains(img_ref, img_dist);
+checkNegative(img_ref);
+checkNegative(img_dist);
 
-if(~exist('bNegativeCheck', 'var'))
-    bNegativeCheck = 1;
+%determine the maximum value
+if(~exist('max_value', 'var'))
+    max_value = -1000;
 end
 
-if(bNegativeCheck)
-    checkNegative(img_ref);
-    checkNegative(img_dist);
+if(max_value < 0.0)
+    max_value = mxt;
 end
-
-%compute squared differences
-delta_sq = (img_ref - img_dist).^2;
 
 %compute MSE
-mse = mean(delta_sq(:));
+img_ref(img_ref < 1e-5) = 1e-5;
+img_dist(img_dist < 1e-5) = 1e-5;
+
+log_img_ref  = log(img_ref);
+log_img_dist = log(img_dist);
+
+mse = MSE(log_img_ref, log_img_dist, 0);
+
+if(mse > 0.0)
+    %compute PSNR
+    psnr = 20 * log10(max_value / sqrt(mse));
+else
+    disp('PSNR: the images are the same!');
+    psnr = 1000;
+end
+
 end
