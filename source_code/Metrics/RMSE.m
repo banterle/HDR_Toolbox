@@ -1,12 +1,18 @@
-function rmse = RMSE(img_ref, img_dist)
+function rmse = RMSE(img_ref, img_dist, comparison_domain)
 %
 %
-%      rmse = RMSE(img_ref, img_dist)
+%      rmse = RMSE(img_ref, img_dist, comparison_domain)
 %
 %
 %       Input:
 %           -img_ref: input reference image
 %           -img_dist: input distorted image
+%           -comparison_domain: the domain where to compare images
+%                   'lin': linear
+%                   'log2': log base 2
+%                   'log': natural logarithm
+%                   'log10': log base 10
+%                   'pu': perceptual uniform encoding
 %
 %       Output:
 %           -mse: the Root Mean Squared Error assuming values in [0,1]. Lower
@@ -28,9 +34,13 @@ function rmse = RMSE(img_ref, img_dist)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-checkNegative(img_ref);
-checkNegative(img_dist);
+if(~exist('comparison_domain', 'var'))
+    comparison_domain = 'lin';
+end
 
-rmse = sqrt(MSE(img_ref, img_dist));
+[img_ref, ~] = changeComparisonDomain(img_ref, comparison_domain);
+[img_dist, bNeg] = changeComparisonDomain(img_dist, comparison_domain);
+
+rmse = sqrt(MSE(img_ref, img_dist, bNeg));
 
 end

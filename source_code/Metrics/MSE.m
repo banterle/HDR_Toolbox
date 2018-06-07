@@ -1,4 +1,4 @@
-function mse = MSE(img_ref, img_dist, bNegativeCheck)
+function mse = MSE(img_ref, img_dist, bNegativeCheck, comparison_domain)
 %
 %
 %      mse = MSE(img_ref, img_dist)
@@ -8,12 +8,18 @@ function mse = MSE(img_ref, img_dist, bNegativeCheck)
 %           -img_ref: input reference image
 %           -img_dist: input distorted image
 %           -bNegativeCheck: disable the negativity check
+%           -comparison_domain: the domain where to compare images
+%                   'lin': linear
+%                   'log2': log base 2
+%                   'log': natural logarithm
+%                   'log10': log base 10
+%                   'pu': perceptual uniform encoding
 %
 %       Output:
 %           -mse: the Mean Squared Error assuming values in [0,1]. Lower
 %           values means better quality.
 % 
-%     Copyright (C) 2006  Francesco Banterle
+%     Copyright (C) 2006-18  Francesco Banterle
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -39,6 +45,11 @@ end
 if(bNegativeCheck)
     checkNegative(img_ref);
     checkNegative(img_dist);
+end
+
+if(exist('comparison_domain', 'var'))
+    [img_ref,  ~] = changeComparisonDomain(img_ref,  comparison_domain);
+    [img_dist, ~] = changeComparisonDomain(img_dist, comparison_domain);
 end
 
 %compute squared differences
