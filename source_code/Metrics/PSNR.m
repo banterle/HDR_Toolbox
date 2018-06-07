@@ -1,19 +1,24 @@
-function psnr = PSNR(img_ref, img_dist, max_value)
+function psnr = PSNR(img_ref, img_dist, comparison_domain, max_value)
 %
 %
-%      val = PSNR(img_ref, img_dist, max_value)
+%      psnr = PSNR(img_ref, img_dist, comparison_domain, max_value)
 %
 %
 %       Input:
 %           -img_ref: input reference image
 %           -img_dist: input distorted image
-%           -max_value: maximum value of images domain
+%           -comparison_domain: the domain where to compare images
+%                   'lin': linear
+%                   'log2': log base 2
+%                   'log': natural logarithm
+%                   'log10': log base 10
+%                   'pu': perceptual uniform encoding
+%           -max_value: maximum value (in the linear domain) of the images domain
 %
 %       Output:
-%           -psnr: classic PSNR for images in [0,1]. Higher values means
-%           better quality.
+%           -psnr: classic PSNR in dB; i.e., higher values means better quality.
 % 
-%     Copyright (C) 2016  Francesco Banterle
+%     Copyright (C) 2016-18  Francesco Banterle
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -30,7 +35,7 @@ function psnr = PSNR(img_ref, img_dist, max_value)
 %
 
 %check if images have same size and type
-[img_ref, img_dist, ~, mxt] = checkDomains(img_ref, img_dist);
+[img_ref, img_dist, domain, mxt] = checkDomains(img_ref, img_dist);
 checkNegative(img_ref);
 checkNegative(img_dist);
 
@@ -39,12 +44,34 @@ if(~exist('max_value', 'var'))
     max_value = -1000;
 end
 
+if(~exist('comparison_domain', 'var'))
+    comparison_domain = 'lin';
+end
+
+bFlag = strcmp(domain, 'uint8') | strcmp(domain, 'uint16');
+
+if(bFlag && strcmp(comparison_domain, 'pu'))
+    error('PU encoding does not make sense for uint8 or uint16 values. Physical values are required!');
+end
+
+if(bFlag && contains(comparison_domain, 'log'))
+    error('logarithmic encoding does not make sense for uint8 or uint16 values. Please use linear domain!');
+end
+
 if(max_value < 0.0)
     max_value = mxt;
 end
 
+[img_ref, ~] = changeComparisonDomain(img_ref, comparison_domain);
+[img_dist, ~] = changeComparisonDomain(img_dist, comparison_domain);
+[max_value, bNeg] = changeComparisonDomain(max_value, comparison_domain);
+
+if(max_value < 0.0)
+    max_value = -max_value;
+end
+
 %compute MSE
-mse = MSE(img_ref, img_dist);
+mse = MSE(img_ref, img_dist, bNeg);
 
 if(mse > 0.0)
     %compute PSNR
