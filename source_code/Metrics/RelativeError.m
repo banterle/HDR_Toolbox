@@ -29,6 +29,7 @@ function re = RelativeError(img_ref, img_dist)
 %
 
 [img_ref, img_dist, ~] = checkDomains(img_ref, img_dist);
+
 checkNegative(img_ref);
 checkNegative(img_dist);
 
@@ -41,7 +42,7 @@ indx = find(img_ref > 0);
 if(~isempty(indx))
     re = mean(relErr(indx));
 else
-    re = -1;
+    error('all values in img_ref are 0! This function cannot be applied.');
 end
 
 end

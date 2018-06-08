@@ -10,9 +10,9 @@ function mse = MSE(img_ref, img_dist, bNegativeCheck, comparison_domain)
 %           -bNegativeCheck: disable the negativity check
 %           -comparison_domain: the domain where to compare images
 %                   'lin': linear
-%                   'log2': log base 2
-%                   'log': natural logarithm
-%                   'log10': log base 10
+%                   'log2': logarithm in base 2
+%                   'log': logarithm in base e (natural)
+%                   'log10': logarithm in base 10
 %                   'pu': perceptual uniform encoding
 %
 %       Output:

@@ -9,9 +9,9 @@ function rmse = RMSE(img_ref, img_dist, comparison_domain)
 %           -img_dist: input distorted image
 %           -comparison_domain: the domain where to compare images
 %                   'lin': linear
-%                   'log2': log base 2
-%                   'log': natural logarithm
-%                   'log10': log base 10
+%                   'log2': logarithm in base 2
+%                   'log': logarithm in base e (natural)
+%                   'log10': logarithm in base 10
 %                   'pu': perceptual uniform encoding
 %
 %       Output:
@@ -35,12 +35,14 @@ function rmse = RMSE(img_ref, img_dist, comparison_domain)
 %
 
 if(~exist('comparison_domain', 'var'))
-    comparison_domain = 'lin';
+    bNeg = 1;
+else
+    [img_ref, ~] = changeComparisonDomain(img_ref, comparison_domain);
+    [img_dist, bNeg] = changeComparisonDomain(img_dist, comparison_domain);    
 end
 
-[img_ref, ~] = changeComparisonDomain(img_ref, comparison_domain);
-[img_dist, bNeg] = changeComparisonDomain(img_dist, comparison_domain);
-
-rmse = sqrt(MSE(img_ref, img_dist, bNeg));
+%here we have 'lin' as input for MSE because we already changed the domain 
+%if it was specified; see line 40-41.
+rmse = sqrt(MSE(img_ref, img_dist, bNeg, 'lin'));
 
 end
