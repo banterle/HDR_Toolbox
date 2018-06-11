@@ -1,6 +1,6 @@
-function imgOut = BilateralNoiseRemoval(img, sigma_s, sigma_r)
+function imgOut = bilateralNoiseRemoval(img, sigma_s, sigma_r)
 %                                                                                   
-%       imgOut = BilateralNoiseRemoval(img, sigma_s, sigma_r)
+%       imgOut = bilateralNoiseRemoval(img, sigma_s, sigma_r)
 %
 %
 %        Input:
