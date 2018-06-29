@@ -26,8 +26,14 @@ function N = TMQI_StatisticalNaturalness(L_ldr)
 %
 
 u = mean2(L_ldr);
-fun = @(x) std(x(:))*ones(size(x));
-I1 = blkproc(L_ldr,[11 11],fun);
+fun = @(x) std(x(:)) * ones(size(x));
+
+if(~exist('blkproc'))
+    I1 = blockproc(L_ldr,[11 11], fun);
+else
+    I1 = blkproc(L_ldr,[11 11], fun);
+end
+
 sig = (mean2(I1));
 
 %------------------ Contrast ----------

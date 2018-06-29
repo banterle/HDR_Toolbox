@@ -1,14 +1,14 @@
-function imgOut = CalculateWP(img)
+function imgOut = computeWhiteBalanceGrayWorld(img)
 %
 %
-%       imgOut = CalculateWP(img)
+%       imgOut = computeWhiteBalanceGrayWorld(img)
 %
 %
 %       Input:
 %           -img: an image
 %
 %       Output:
-%           -imgOut: a white balanced image using global average
+%           -imgOut: a white balanced image using global average.
 %
 %     Copyright (C) 2011-15  Francesco Banterle
 % 
