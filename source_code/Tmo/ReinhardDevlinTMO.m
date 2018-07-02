@@ -37,6 +37,10 @@ function imgOut = ReinhardDevlinTMO(img, rd_m, rd_f, rd_a, rd_c, bNormalization)
 %     in IEEE Transaction on Computer Graphics and Visualization 2005
 %
 
+if(~exist('bNormalization', 'var'))
+    bNormalization = 1;
+end
+
 %is it a luminance or a three color channels image?
 check13Color(img);
 
@@ -78,10 +82,6 @@ else
     rd_a = ClampImg(rd_a, 0.0, 1.0);
 end
 
-if(~exist('bNormalization', 'var'))
-    bNormalization = 1;
-end
-
 rd_f = exp(-rd_f);
 
 [r, c, col] = size(img);
@@ -102,8 +102,10 @@ if(bNormalization)
     L = lum(imgOut);
     Lmax = max(L(:));
     Lmin = min(L(:));
-    
-    imgOut = ClampImg((imgOut - Lmin) / (Lmax - Lmin), 0, 1);
+    delta = Lmax - LMin;
+    if(delta > 0.0)
+        imgOut = ClampImg((imgOut - Lmin) / delta, 0, 1);
+    end
 end
 
 imgOut = RemoveSpecials(imgOut);
