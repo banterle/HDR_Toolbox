@@ -47,7 +47,7 @@ LLog10 = log10(L + 1e-6);
 [C, totPixels] = KrawczykKMeans(bound, histo);
 
 %partition the image into frameworks
-[framework, distance] = KrawczykImagePartition(C, LLog10, bound, totPixels);
+[framework, distance, C] = KrawczykImagePartition(C, LLog10, bound, totPixels);
 
 %compute P_i
 sigma = KrawczykMaxDistance(C, bound);
