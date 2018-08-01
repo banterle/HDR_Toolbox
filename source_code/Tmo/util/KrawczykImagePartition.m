@@ -1,4 +1,4 @@
-function [framework, distance] = KrawczykImagePartition(C, LLog10, bound, totPixels)
+function [framework, distance, C] = KrawczykImagePartition(C, LLog10, bound, totPixels)
 %
 %
 %       [framework, distance] = KrawczykImagePartition(C, LLog10, bound, totPixels)
