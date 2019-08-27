@@ -67,8 +67,8 @@ ratio_2_1 = RemoveSpecials(img2 ./ img1);
 img1 = img1 * mean(ratio_2_1(:));
 
 try
-    im1g = single(ColorToGrayFusion(img1));
-    im2g = single(ColorToGrayFusion(img2));
+    im1g = single(lum(img1));
+    im2g = single(lum(img2));
 catch e
     disp(e);
     im1g = single(lum(img1));
