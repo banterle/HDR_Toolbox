@@ -1,7 +1,7 @@
-function imgOut = NormalizedGamma(img, gamma_value)
+function imgOut = KuangNormalizedGamma(img, gamma_value)
 %
 %
-%       img = NormalizedGamma(img, gamma_value)
+%       img = KuangNormalizedGamma(img, gamma_value)
 %
 %
 %       Image is clamped if its values are over [a,b]

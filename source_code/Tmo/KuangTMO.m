@@ -158,7 +158,7 @@ for i=2:col
     imgIPT(:,:,i) = imgIPT(:,:,i) .* scale; 
 end
 
-imgIPT(:,:,1) = NormalizedGamma(imgIPT(:,:,1), KuangGamma(average_surrond_param));
+imgIPT(:,:,1) = KuangNormalizedGamma(imgIPT(:,:,1), KuangGamma(average_surrond_param));
 
 %converting the image from IPT to RGB
 imgOut = ConvertRGBtoXYZ(ConvertXYZtoIPT(imgIPT, 1), 1); 
