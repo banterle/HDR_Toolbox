@@ -170,7 +170,7 @@ end
 
 H = H / H(3,3);
 
-%Applying homography H
+%apply homography H
 ur = 1:size(img1, 2);
 vr = 1:size(img1, 1);
 [u, v] = meshgrid(ur,vr) ;

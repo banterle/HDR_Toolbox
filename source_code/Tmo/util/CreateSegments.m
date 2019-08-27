@@ -128,3 +128,12 @@ imgBin = imgBin + l10Min - 1;
 
 end
 
+function [imgBin, nlv] = computeFusionMask(listOfNeighbors, comp, imgBin, j)
+
+nlv = length(listOfNeighbors);
+
+if(nlv > 0) %take the smallest cluster in the list for the merging step
+imgBin(comp == j) = listOfNeighbors(1);
+end
+
+end

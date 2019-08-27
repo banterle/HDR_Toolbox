@@ -34,14 +34,14 @@ end
 
 if(scaling_factor > 1)  
     window_scaled = window / scaling_factor;
-    H = fspecial('gaussian', max([round(window_scaled), 3]), GKSigma(window_scaled));    
+    H = fspecial('gaussian', max([round(window_scaled), 3]), window_scaled / 5);
     [r, c, ~] = size(img);
 
     tmp_img = imresize(img, 1.0 / scaling_factor, 'bilinear');
     imgBlur = imfilter(tmp_img, H, 'replicate');
     imgBlur = imresize(imgBlur, [r, c], 'bilinear');
 else
-    H = fspecial('gaussian', max([round(window), 3]), GKSigma(window));
+    H = fspecial('gaussian', max([round(window), 3]), window / 5);
     imgBlur = imfilter(img, H, 'replicate');
 end
 
