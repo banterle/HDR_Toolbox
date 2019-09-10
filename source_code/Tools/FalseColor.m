@@ -162,6 +162,7 @@ L = ClampImg(round(L * res), 1, res);
 imgOut = ind2rgb(L, color_map);
 
 if(FC_Vis)%Visualization  
+    close(FC_figure);
     h = figure(FC_figure);
     axes1 = axes('Parent', h);
     axis off
@@ -195,7 +196,8 @@ if(FC_Vis)%Visualization
     
     pos = hcb.Position;
     set(get(hcb, 'XLabel'), 'Rotation', 0, 'String', FC_title_color_map, 'FontSize', 24, 'FontName', 'Times New Roman', 'Position', [pos(1), 0.0 , 0.0]);
-    hold off;
+    hold(axes1,'off');
+    
 end
 
 end

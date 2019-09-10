@@ -44,11 +44,11 @@ function [Base, Detail] = bilateralSeparation(img, sigma_s, sigma_r, bilateral_d
 
 %default parameters
 if(~exist('sigma_s', 'var'))
-    sigma_s = max([r, c]) * 0.02;
+    sigma_s = -1;
 end
 
 if(~exist('sigma_r', 'var'))
-    sigma_r = 0.4;
+    sigma_r = -1;
 end
 
 if(~exist('bilateral_type', 'var'))
@@ -57,6 +57,14 @@ end
 
 if(~exist('bilateral_domain', 'var'))
    bilateral_domain = 'log_10'; 
+end
+
+if(sigma_s <= 0.0)
+    sigma_s = max([r, c]) * 0.02;
+end
+
+if(sigma_r <= 0.0)
+    sigma_r = 0.4;
 end
     
 %Base Layer

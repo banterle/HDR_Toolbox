@@ -39,7 +39,7 @@ if(~exist('cc_s', 'var'))
     cc_s = 0.5;
 end
 
-if(cc_s <= 0.0)
+if(cc_s < 0.0)
     cc_s = 0.5;
 end
 

@@ -103,6 +103,7 @@ end
 %apply the histogram ceiling
 maxH = max(H);
 x_vis = LlMin:((LlMax - LlMin) / (nBin -1)):LlMax;
+
 if(bPlotHistogram)
     bar(x_vis, H/maxH);
     hold on;

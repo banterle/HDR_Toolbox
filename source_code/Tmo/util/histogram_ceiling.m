@@ -32,7 +32,6 @@ tolerance = sum(H) * 0.025;
 trimmings = 0;
 val = 1;
 n = length(H);
-bar(H);
 
 trimmed_vec = [];
 

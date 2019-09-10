@@ -45,16 +45,18 @@ end
 L = lum(img);
 
 %separate detail and base
-[Lbase, Ldetail] = bilateralSeparation(L);
+[Lbase, Ldetail] = bilateralSeparation(L, -1.0, -1.0, 'log_10', 'approx_bil_grid');
 
-log_base = log10(Lbase);
+eps = 1e-6;
+log_base = log10(Lbase + eps);
 max_log_base = max(log_base(:));
 log_detail = log10(Ldetail);
 c_factor = log10(target_contrast) / (max_log_base - min(log_base(:)));
 log_absolute = c_factor * max_log_base;
 
 log_Ld = log_base * c_factor + log_detail  - log_absolute;
-Ld = 10.^(log_Ld); 
+Ld = 10.^(log_Ld) - eps;
+Ld(Ld < 0.0) = 0.0;
 
 %change luminance
 imgOut = ChangeLuminance(img, L, Ld);
