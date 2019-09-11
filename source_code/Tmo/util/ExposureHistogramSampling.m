@@ -57,11 +57,7 @@ end
 removingBins = (nBit / (1.0 / (2^nBit * dMM)) + eh_overlap);
 removingBins_h = round(removingBins / 2);
 
-p = 0;
 while(sum(histo) > 0)
-    p = p + 1;
-    figure(p);
-    bar(histo);
     total = -1;
     index = -1;    
     ind_min = -1;
