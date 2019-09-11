@@ -79,7 +79,7 @@ L = lum(img);
 
 switch(sampling_mode)
     case 'histogram'
-        img_tmp = ApplyCRF(img, lin_type, lin_fun);
+        img_tmp = img;
         stack_exposure = 2.^ExposureHistogramSampling(img_tmp, 8, 1);
         
     case 'uniform'

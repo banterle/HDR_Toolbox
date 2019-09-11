@@ -43,10 +43,11 @@ end
 
 nBit_half = round(nBit / 2);
 
-nBin = 1024;
+nBin = 2^nBit;
 
 fstops = [];
 [histo, bound, ~] = HistogramHDR(img, nBin, 'log2', [], 0, 0);
+
 dMM = (bound(2) - bound(1)) / nBin;
 
 if(eh_overlap > nBit_half)
@@ -56,8 +57,11 @@ end
 removingBins = (nBit / (1.0 / (2^nBit * dMM)) + eh_overlap);
 removingBins_h = round(removingBins / 2);
 
-
+p = 0;
 while(sum(histo) > 0)
+    p = p + 1;
+    figure(p);
+    bar(histo);
     total = -1;
     index = -1;    
     ind_min = -1;
@@ -71,14 +75,14 @@ while(sum(histo) > 0)
         if(tSum > total)
             index = i;
             total = tSum;
-            ind_min = max([1, (i - removingBins_h)]);
-            ind_max = min([(i + removingBins_h), nBin]);
+            ind_min = i_min;
+            ind_max = i_max;
         end
     end
         
     if(index > 0)
         histo(ind_min:ind_max) = 0;
-        value = -(index * dMM + bound(1)) - 1.0;
+        value = -(index * dMM + bound(1)) - nBit_half;
         fstops = [fstops, value];    
     end
     

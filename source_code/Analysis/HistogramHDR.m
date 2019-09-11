@@ -81,8 +81,8 @@ end
 histo = zeros(nBins, 1);
 
 if(isempty(bounds))
-    Lmax = max(L);
     Lmin = min(L);
+    Lmax = max(L);
     bounds(1) = Lmin;
     bounds(2) = Lmax;
 else
