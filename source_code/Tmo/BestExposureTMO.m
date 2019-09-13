@@ -33,7 +33,7 @@ checkNegative(img);
 
 fstops = ExposureHistogramSampling(img, 8, 0);
 
-exposure_value = 2^(fstops(1) - 2);
+exposure_value = 2^fstops(1);
 
 imgOut = ClampImg(img * exposure_value, 0.0, 1.0);
 
