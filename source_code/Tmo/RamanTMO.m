@@ -44,7 +44,7 @@ if(~isempty(img))
     %Convert the HDR image into a imageStack
     checkNegative(img);
 
-    [imageStack, ~] =  CreateLDRStackFromHDR(img, 1);
+    [imageStack, ~] =  CreateLDRStackFromHDR(img, 1, 'uniform');
 else
     if(isa(imageStack, 'single'))
         imageStack = double(imageStack);
