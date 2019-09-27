@@ -97,7 +97,7 @@ if(c_clamping > 0) %clamp s
 end
 
 %tone map the luminance
-Ld = ChiuGlare(L .* blurred, glare_opt);
+Ld = ChiuGlare(L .* s, glare_opt);
 
 %change luminance
 imgOut = ChangeLuminance(img, L, Ld);
