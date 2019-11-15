@@ -51,7 +51,7 @@ if(~exist('LdMin', 'var'))
     LdMin = 1; %cd/m^2
 end
 
-if(LdMin <= 0.0)
+if(LdMin < 0.0)
     LdMin = 1;
 end
 
@@ -73,6 +73,8 @@ if(~exist('bPlotHistogram', 'var'))
     bPlotHistogram = 0;
 end
 
+epsilon = 1e-6;
+
 %compute luminance channel
 L = lum(img);
 
@@ -88,8 +90,8 @@ Llog  = log(L2);
 LlMin = log(LMin);
 LlMax = log(LMax);
 
-LldMin = log(LdMin);
-LldMax = log(LdMax);
+LldMin = log(LdMin + epsilon);
+LldMax = log(LdMax + epsilon);
 
 %compute the histogram H 
 H = zeros(nBin, 1);
