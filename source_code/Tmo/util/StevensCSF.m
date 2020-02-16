@@ -28,7 +28,7 @@ function y = StevensCSF(x)
 %
 
 y = zeros(size(x));
-y(x <= 100) = 1.855 + 0.4 * log10(x(x <= 100) + 2.3 * 1e-5);
+y(x <= 100) = 1.855 + 0.4 * log10(x(x <= 100) + 2.3e-5);
 y(x > 100) = 2.655;
 
 end
