@@ -5,10 +5,10 @@ function k = WalravenValeton_k(Lwa, wv_sigma)
 %
 %        Input:
 %           -Lwa: world adaptation luminance in cd/m^2
-%           -wv_sigma: 
+%           -wv_sigma: cd/m^2
 %
 %        Output:
-%           -k: k value
+%           -k: WalravenValeton's k value
 % 
 %     Copyright (C) 2016 Francesco Banterle
 %  
@@ -32,7 +32,7 @@ function k = WalravenValeton_k(Lwa, wv_sigma)
 %
 
 if(~exist('wv_sigma', 'var'))
-    wv_sigma = 100;
+    wv_sigma = 100; %cd/m^2
 end
 
 k = (wv_sigma - Lwa / 4) ./ (wv_sigma + Lwa);
