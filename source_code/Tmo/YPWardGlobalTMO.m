@@ -45,6 +45,6 @@ end
 
 L_wa = YeePattanaikLuminanceAdaptation(img, maxLayers);
 
-[imgOut, ~] = WardGlobalTMO(img, Ld_max, L_wa);
+imgOut = WardGlobalTMO(img, Ld_max, L_wa);
 
 end
