@@ -1,6 +1,6 @@
-function imgOut = WardGlobalTMO(img, Ld_max, L_wa)
+function [imgOut, L_wa] = YPWardGlobalTMO(img, Ld_max)
 %
-%       imgOut = WardGlobalTMO(img, Ld_max, L_wa)
+%       [imgOut, L_wa] = YPWardGlobalTMO(img, Ld_max)
 %
 %
 %       Input:
@@ -10,8 +10,9 @@ function imgOut = WardGlobalTMO(img, Ld_max, L_wa)
 %
 %       Output
 %           -imgOut: tone mapped image
+%           -L_wa: luminance adaptation
 % 
-%     Copyright (C) 2010-2020 Francesco Banterle
+%     Copyright (C) 2020 Francesco Banterle
 %  
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -26,16 +27,9 @@ function imgOut = WardGlobalTMO(img, Ld_max, L_wa)
 %     You should have received a copy of the GNU General Public License
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-%     The paper describing this technique is:
-%     "A Contrast-Based Scalefactor for Luminance Display"
-% 	  by Greg J. Ward
-%     in Graphics Gems IV
+%     This is the TumblinTMO with Yee and Pattanaik Luminance Adaptation;
+%     see the file tmo/util/YeePattanaikLuminanceAdaptation.m
 %
-
-%is it a gray/three color channels image?
-check13Color(img);
-
-checkNegative(img);
 
 if(~exist('Ld_max', 'var'))
     Ld_max = 100;
@@ -45,21 +39,8 @@ if(Ld_max <= 0.0)
     Ld_max = 100;
 end
 
-%compute luminance channel
-L = lum(img);
+L_wa = YeePattanaikLuminanceAdaptation(img, maxLayers);
 
-if(~exist('L_wa', 'var'))
-    L_wa = logMean(L); %compute geometry mean
-else
-    if(min(L_wa(:)) < 0.0)
-        L_wa = logMean(L);
-    end
-end
-
-
-%contrast scale
-m = (((1.219 + (Ld_max / 2)^0.4) ./ (1.219 + L_wa.^0.4)).^2.5);
-
-imgOut = ClampImg(img .* m / Ld_max, 0.0, 1.0);
+[imgOut, ~] = WardGlobalTMO(img, Ld_max, L_wa);
 
 end
