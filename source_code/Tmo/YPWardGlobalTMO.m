@@ -1,6 +1,6 @@
-function [imgOut, L_wa] = YPWardGlobalTMO(img, Ld_max)
+function [imgOut, L_wa] = YPWardGlobalTMO(img, Ld_max, maxLayers)
 %
-%       [imgOut, L_wa] = YPWardGlobalTMO(img, Ld_max)
+%       [imgOut, L_wa] = YPWardGlobalTMO(img, Ld_max, maxLayers)
 %
 %
 %       Input:
@@ -33,6 +33,10 @@ function [imgOut, L_wa] = YPWardGlobalTMO(img, Ld_max)
 
 if(~exist('Ld_max', 'var'))
     Ld_max = 100;
+end
+
+if(~exist('maxLayers', 'var'))
+    Ld_max = 32;
 end
 
 if(Ld_max <= 0.0)
