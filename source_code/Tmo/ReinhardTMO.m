@@ -85,7 +85,7 @@ else
 end
 
 %scale luminance using alpha and logarithmic mean
-Lscaled = (pAlpha * L) / Lwa;
+Lscaled = (pAlpha * L) ./ Lwa;
 
 %compute adaptation
 switch pLocal
