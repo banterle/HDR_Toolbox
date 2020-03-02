@@ -40,8 +40,6 @@ for i=1:nLevels
         tmpBin = zeros(r, c);
         tmpBin(indx) = 1;
         layer(:,:,i) = bwlabel(tmpBin, 8); 
-    else
-        layer(:,:,i) = 0;
     end
 end
 

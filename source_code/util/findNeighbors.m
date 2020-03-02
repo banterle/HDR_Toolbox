@@ -49,7 +49,7 @@ for k=1:tot
             n1 = imgBin(cY, cX);
         end
         
-        if(n1 ~= i)%inserting in the list of neighbors
+        if(n1 ~= i) %insert in the list of neighbors
             queryLV = find(listOfNeighbors == n1);
             if(min(size(queryLV)) == 0)
                 listOfNeighbors = [listOfNeighbors, n1];
