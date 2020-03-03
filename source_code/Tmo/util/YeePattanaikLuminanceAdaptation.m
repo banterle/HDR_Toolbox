@@ -75,7 +75,7 @@ for i=0:(maxLayers - 1)
     end
 end
 
-La = exp(La / maxLayers);
+La = 10.^(La / maxLayers);
 La(La < 0.0) = 0.0;
 
 end
