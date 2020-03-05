@@ -69,7 +69,7 @@ LMax_s = LMax ./ Lwa;
 c1 = log(d_b) / log(0.5);
 p1 = (d_Ld_Max / 100.0) ./ (log10(1 + LMax_s));
 p2 = log(1.0 + L_s) ./ log(2.0 + 8.0 * ((L_s ./ LMax_s).^c1));
-Ld = p1 * p2;
+Ld = p1 .* p2;
 
 %change luminance
 imgOut = ChangeLuminance(img, L, Ld);
