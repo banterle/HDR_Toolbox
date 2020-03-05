@@ -1,13 +1,15 @@
-function imgOut = DragoTMO(img, d_Ld_Max, d_b, bWarning)
+function imgOut = DragoTMO(img, d_Ld_Max, d_b, Lwa, bWarning)
 %
 %
-%        imgOut = DragoTMO(img, d_Ld_Max, d_b, bWarning)
+%        imgOut = DragoTMO(img, d_Ld_Max, d_b, Lwa, bWarning)
 %
 %
 %        Input:
 %           -img: input HDR image
 %           -d_Ld_Max: maximum output luminance of the LDR display
-%           -d_b: bias parameter to be in (0,1]. The default value is 0.85 
+%           -d_b: bias parameter to be in (0,1]. The default value is 0.85
+%           -Lwa:
+%           -bWarning:
 %
 %        Output:
 %           -imgOut: tone mapped image
@@ -53,16 +55,20 @@ end
 %compute luminance 
 L = lum(img);
 
-Lwa = logMean(L);
+if(~exist('Lwa', 'var'))
+    Lwa = logMean(L);
+end
+
 Lwa = Lwa / ((1.0 + d_b - 0.85)^5);
+
 LMax = max(L(:));
 
-L_s = L / Lwa; %scale by Lwa
-LMax_s = LMax / Lwa;
+L_s = L ./ Lwa; %scale by Lwa
+LMax_s = LMax ./ Lwa;
 
 c1 = log(d_b) / log(0.5);
-p1 = (d_Ld_Max / 100.0) / (log10(1 + LMax_s));
-p2 = log(1.0 + L_s) ./ log(2.0 + 8.0 * ((L_s / LMax_s).^c1));
+p1 = (d_Ld_Max / 100.0) ./ (log10(1 + LMax_s));
+p2 = log(1.0 + L_s) ./ log(2.0 + 8.0 * ((L_s ./ LMax_s).^c1));
 Ld = p1 * p2;
 
 %change luminance

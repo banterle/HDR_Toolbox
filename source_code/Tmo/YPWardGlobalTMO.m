@@ -36,7 +36,7 @@ if(~exist('Ld_max', 'var'))
 end
 
 if(~exist('maxLayers', 'var'))
-    Ld_max = 32;
+    maxLayers = 32;
 end
 
 if(Ld_max <= 0.0)
