@@ -73,13 +73,13 @@ eps = 0.0;
 switch bilateral_domain
     case 'sigmoid'
         img_log = img ./ (img + 1);
-    case 'log2'
+    case 'log_2'
         eps = 1e-6;
         img_log = log2(img + eps);
-    case 'loge'
+    case 'log_e'
         eps = 1e-6;
         img_log = log(img + eps);
-    case 'log10'
+    case 'log_10'
         eps = 1e-6;
         img_log = log10(img + eps);
     otherwise
