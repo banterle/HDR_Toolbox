@@ -41,22 +41,18 @@ end
 L = lum(img);
 
 if(bRobust) %compute the max luminance
-    maxValue = MaxQuart(L, 0.99);
     minValue = MaxQuart(L, 0.01);
+    maxValue = MaxQuart(L, 0.99);
 else
-    maxValue = max(L(:));
     minValue = min(L(:));
+    maxValue = max(L(:));
 end
 
-if(maxValue <= 0.0)
-    maxValue = 1.0;
+delta = maxValue - minValue;
+if(delta > 0.0)
+    imgOut = (img - minValue) / delta;
 end
 
-if(minValue <= 0.0)
-    minValue = 0.0;
-end
-
-imgOut = (img - minValue) / (maxValue - minValue);
 imgOut = ClampImg(imgOut, 0.0, 1.0);
 
 end
