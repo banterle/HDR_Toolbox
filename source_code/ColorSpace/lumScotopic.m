@@ -5,7 +5,7 @@ function V = lumScotopic(imgXYZ)
 %       This function calculates the scotopic luminance
 %
 %       input:
-%           img: an XYZ image
+%           img: an image in the XYZ color space
 %
 %       output:
 %           V: scotopic luminance approximation by Larson, Rushmeier and Piatko 1997

@@ -26,9 +26,9 @@ function imgOut = KrawczykTMO(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 %     The paper describing this technique is:
-%     "A Model of Visual Adaptation for Realistic Image Synthesis"
-% 	  by Grzegorz Krawczyk, Karol Myszkowski, Hans-Peter Seidel
-%     in Proceedings of EUROGRAPHICS 2005
+%     "Lightness Perception in Tone Reproduction for High Dynamic Range Images"
+% 	 by Grzegorz Krawczyk, Karol Myszkowski, Hans-Peter Seidel
+%      in Proceedings of EUROGRAPHICS 2005
 %
 
 %is it a luminance or a three color channels image?
