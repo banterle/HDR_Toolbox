@@ -67,12 +67,13 @@ A few operators (e.g., Mertens et al.'s operator) return gamma encoded values,
 so there is no need to apply gamma to them; in this case a message (e.g., a Warning) is displayed
 after tone mapping alerting that there is no need of gamma encoding.
 
-NOTE ON PULL REQUESTS:
-=====================
-Please, send your pull requests to the develop branch. Requests sent to the Master branch will be ignored.
+diff --git a/README.md b/README.md
+index c209fbf..1113260 100644
+--- a/README.md
++++ b/README.md
+@@ -76,3 +76,4 @@ Contact:
+ e-mail: support@advancedhdrbook.com
+ 
+ facebook: https://www.facebook.com/pages/Advanced-High-Dynamic-Range-Imaging-Book/166905003358276
++
 
-Contact:
-========
-e-mail: support@advancedhdrbook.com
-
-facebook: https://www.facebook.com/pages/Advanced-High-Dynamic-Range-Imaging-Book/166905003358276
