@@ -1,4 +1,4 @@
-function [imgOut, exposure_value] = BestExposureTMO(img)
+function [imgOut, exposure_value] = BestExposureTMO(img, type)
 %
 %        imgOut = BestExposureTMO(img)
 %
@@ -7,6 +7,9 @@ function [imgOut, exposure_value] = BestExposureTMO(img)
 %
 %        Input:
 %           -img: input HDR image
+%           -type: 
+%               -'histogram' using histogram sampling
+%               -'mean' using mean on luminance
 %
 %        Output:
 %           -imgOut: a tone mapped image
@@ -28,12 +31,24 @@ function [imgOut, exposure_value] = BestExposureTMO(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
+if(~exist('type', 'var'))
+   type = 'histogram';
+end
+
 check13Color(img);
 checkNegative(img);
 
-fstops = ExposureHistogramSampling(img, 8, 0);
-
-exposure_value = 2^fstops(1);
+switch type
+    case 'histogram'
+        fstops = ExposureHistogramSampling(img, 8, 0);
+        exposure_value = 2^fstops(1);
+        
+    case 'mean'
+        L = lum(img);
+        L_mean = mean(L(:));
+        exposure_value = 1.0 / (4.0 * L_mean);
+        
+end
 
 imgOut = ClampImg(img * exposure_value, 0.0, 1.0);
 
