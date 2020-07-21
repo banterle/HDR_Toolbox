@@ -59,6 +59,7 @@ switch extension
             try 
                 %MATLAB HDR Reader
                 img = double(hdrread(filename));
+                bLDR = 0;
             catch err
                 warning('This .hdr/.pic file cannot be read.');
             end
@@ -70,6 +71,7 @@ switch extension
             img = read_exr(filename);
             bLDR = 0;            
         catch err
+            hdr_info = struct('loaded', 0);
             warning('This .exr file cannot be read.');
         end
         
@@ -79,6 +81,7 @@ switch extension
             img = read_pfm(filename);
             bLDR = 0;            
         catch
+            hdr_info = struct('loaded', 0);
             warning('This .pfm file cannot be read.');
         end
         
@@ -88,6 +91,7 @@ switch extension
             img = HDRJPEG2000Dec(filename);
             bLDR = 0;            
         catch err
+            hdr_info = struct('loaded', 0);            
             warning('This .jpg2 file cannot be read as an HDR JPEG 2000 file.');
         end        
 end
@@ -95,10 +99,19 @@ end
 if(isempty(img))
     if(bLDR == 1)
         img = ldrimread(filename);
-        warning(['This image, ', filename,', has been loaded as an LDR image.']);
+        if(isempty(img))
+            hdr_info = struct('loaded', 0);                
+            warning(['This image, ', filename,', cannot be loaded as an LDR image.']);
+        else
+            hdr_info = struct('loaded', 1);                
+            warning(['This image, ', filename,', has been loaded as an LDR image.']);
+        end
     else
-        error(['This image,',filename,', cannot be loaded with LDR or HDR readers.']);
+        hdr_info = struct('loaded', 0);        
+        error(['This image, ',filename,', cannot be loaded with LDR or HDR readers.']);
     end
+else
+    hdr_info.loaded = 1;
 end
 
 %Remove specials

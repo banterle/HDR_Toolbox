@@ -37,6 +37,7 @@ end
 
 check13Color(img);
 checkNegative(img);
+exposure_value  = 1.0;
 
 switch type
     case 'histogram'
@@ -46,8 +47,7 @@ switch type
     case 'mean'
         L = lum(img);
         L_mean = mean(L(:));
-        exposure_value = 1.0 / (4.0 * L_mean);
-        
+        exposure_value = 1.0 / (4.0 * L_mean);  
 end
 
 imgOut = ClampImg(img * exposure_value, 0.0, 1.0);

@@ -132,6 +132,6 @@ else
 end
 fclose(fid);
 
-hdr_info = struct('exposure', exposure, 'gamma', gamma);
+hdr_info = struct('loaded', 1, 'exposure', exposure, 'gamma', gamma);
 
 end
