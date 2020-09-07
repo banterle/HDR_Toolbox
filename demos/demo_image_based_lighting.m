@@ -13,7 +13,7 @@
 clear all;
 
 disp('1) Load "CS_Warwick.hdr" HDR image');
-img = hdrimread('CS_Warwick.hdr');
+img = hdrimread('demos/CS_Warwick.hdr');
 
 disp('2) Tone Mapping the HDR image');
 imgTMO = ReinhardTMO(img, 0.15, 1e8, 0,8);
@@ -29,7 +29,7 @@ disp('5) Calculate/Show/Save a Diffuse Map');
 h = figure(2);
 set(h,'Name','Diffuse map with gamma encoding, 2.2');
 GammaTMO(imgOut * 0.5, 2.2, 0, 1);
-hdrimwrite(imgOut,'output/ibl_diffuse_map.hdr');
+hdrimwrite(imgOut,'demos/output/ibl_diffuse_map.hdr');
 
 disp('6) Calculate/Show/Save a Light sources');
 
@@ -40,7 +40,7 @@ set(h,'Name','Uniform-sampling algorithm sampling for light sources');
 imgOut = filterGaussian(imgUS * 0.25, 1.0);
 imwrite(imgOut, 'output/ibl_uniform_sampling.png');
 GammaTMO(imgOut, 1.0, 0, 1);
-ExportLights(lightsUS, 'output/light_sources_us.txt');
+ExportLights(lightsUS, 'demos/output/light_sources_us.txt');
 
 %median-cut
 [imgMC, lightsMC] = MedianCut(img, 256, 1);
@@ -49,4 +49,4 @@ set(h,'Name','Median-Cut algorithm sampling for light sources');
 imgOut = filterGaussian(imgMC * 0.25, 1.0);
 imwrite(imgOut, 'output/ibl_median_cut.png');
 GammaTMO(imgOut, 1.0, 0, 1);
-ExportLights(lightsMC, 'output/ubl_light_sources_mc.txt');
+ExportLights(lightsMC, 'demos/output/ubl_light_sources_mc.txt');

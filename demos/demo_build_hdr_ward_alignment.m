@@ -14,7 +14,7 @@
 
 clear all;
 
-name_folder = 'stack_alignment';
+name_folder = 'demos/stack_alignment';
 format = 'jpg';
 
 disp('1) Read a stack of LDR images');
@@ -36,12 +36,12 @@ disp('5) Build the radiance map using the stack and stack_exposure');
 [imgHDR, lin_fun] = BuildHDR(stackOut, stack_exposure, 'LUT', lin_fun, 'Deb97', 'log', 0);
 
 disp('6) Save the radiance map in the .hdr format');
-hdrimwrite(imgHDR, 'output/stack_alignment_hdr_ward_alignment.hdr');
+hdrimwrite(imgHDR, 'demos/output/stack_alignment_hdr_ward_alignment.hdr');
 
 disp('7) Show the tone mapped version of the radiance map');
 h = figure(2);
 set(h, 'Name', 'Tone mapped built HDR Image from stack_alignment');
 imgTMO = GammaTMO(ReinhardTMO(imgHDR), 2.2, 0, 1);
-imwrite(imgTMO, 'output/stack_alignment_hdr_ward_alignment_tmo.png');
+imwrite(imgTMO, 'demos/output/stack_alignment_hdr_ward_alignment_tmo.png');
 
 disp('Note that the image needs to be cropped due to alignment');

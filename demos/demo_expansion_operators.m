@@ -13,7 +13,7 @@
 clear all;
 
 disp('1) Load "Venice01.png" LDR image');
-img = ldrimread('Venice01.png');
+img = ldrimread('demos/Venice01.png');
 
 h = figure(1);
 set(h,'Name','Input LDR image');
@@ -41,10 +41,10 @@ FalseColor(imgLEO, 'log', 1, -1, 7, 'Expanded image using LandisEO');
 FalseColor(imgMEO, 'log', 1, -1, 8, 'Expanded image using imgMEO');
 
 disp('4) Save the expanded images into .exr files:');
-hdrimwrite(imgAEO, 'output/Venice01_aeo.exr');
-hdrimwrite(imgHEO, 'output/Venice01_heo.exr');
-hdrimwrite(imgHPEO, 'output/Venice01_hpeo.exr');
-hdrimwrite(imgKOEO, 'output/Venice01_koeo.exr');
-hdrimwrite(imgKEO, 'output/Venice01_keo.exr');
-hdrimwrite(imgLEO, 'output/Venice01_leo.exr');
-hdrimwrite(imgMEO, 'output/Venice01_meo.exr');
+hdrimwrite(imgAEO, 'demos/output/Venice01_aeo.exr');
+hdrimwrite(imgHEO, 'demos/output/Venice01_heo.exr');
+hdrimwrite(imgHPEO, 'demos/output/Venice01_hpeo.exr');
+hdrimwrite(imgKOEO, 'demos/output/Venice01_koeo.exr');
+hdrimwrite(imgKEO, 'demos/output/Venice01_keo.exr');
+hdrimwrite(imgLEO, 'demos/output/Venice01_leo.exr');
+hdrimwrite(imgMEO, 'demos/output/Venice01_meo.exr');

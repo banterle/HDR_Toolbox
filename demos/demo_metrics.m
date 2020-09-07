@@ -11,7 +11,7 @@
 clear all;
 
 disp('1) Load the image Bottles_Small.pfm using hdrimread');
-img = hdrimread('Bottles_Small.hdr');
+img = hdrimread('demos/Bottles_Small.hdr');
 
 disp('2) Apply different levels of distortions (i.e., gassian blur)');
 img_dist = {};

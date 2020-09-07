@@ -15,7 +15,7 @@
 % 
 
 clear all;
-[stack, norm_value] = ReadLDRStack('stack', 'jpg', 1);
+[stack, norm_value] = ReadLDRStack('demos/stack', 'jpg', 1);
 
 %Raman's method
 disp('1) Applying Fusion Operator by Raman and Chaudhuri to images in stack folder');
@@ -27,7 +27,7 @@ set(h, 'Name', 'Raman and Chaudhuri exposure fusion (no need of gamma encoding)'
 GammaTMO(imgTMO, 1.0, 0, 1);
 
 disp('3) Saving the tone mapped image as a PNG.');
-imwrite(imgTMO, 'office_raman_TMO.png');
+imwrite(imgTMO, 'demos/output/office_raman_TMO.png');
 
 %Mertens's method
 disp('4) Applying Fusion Operator by Mertens et al to images in stack folder');
@@ -39,7 +39,7 @@ set(h,'Name','Mertens et al. exposure fusion (no need of gamma encoding)');
 GammaTMO(imgTMO, 1.0, 0, 1);
 
 disp('6) Saving the tone mapped image as a PNG.');
-imwrite(imgTMO, 'office_mertens_TMO.png');
+imwrite(imgTMO, 'demos/output/office_mertens_TMO.png');
 
 %Bruce's method
 disp('7) Applying Fusion Operator by Bruce to images in stack folder');
@@ -51,5 +51,5 @@ set(h,'Name','Bruce exposure blend (no need of gamma encoding)');
 GammaTMO(imgTMO, 1.0, 0, 1);
 
 disp('9) Saving the tone mapped image as a PNG.');
-imwrite(imgTMO, 'office_bruce_TMO.png');
+imwrite(imgTMO, 'demos/output/office_bruce_TMO.png');
 

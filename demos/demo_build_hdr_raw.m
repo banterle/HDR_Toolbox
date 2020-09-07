@@ -1,6 +1,6 @@
 %
 %      This HDR Toolbox demo creates an HDR radiance map:
-%	   1) Read a stack of raw LDR images
+%	   1) Read a stack of RAW images
 %	   2) Read exposure values from the EXIF
 %	   4) Build the radiance map using the stack and stack_exposure
 %	   5) Save the radiance map in .hdr format
@@ -12,6 +12,8 @@
 
 clear all;
 
+disp('Note: this demo does not have RAW files due to room limits in the repository');
+disp('please add a folder with RAW files in the variable ''name_folder''.');
 name_folder = ''; %Insert your raw stack folder
 format = ''; %Insert your raw image format
 
@@ -29,10 +31,10 @@ disp('4) Build the radiance map using the stack and stack_exposure');
 imgHDR = BuildHDR(stack, stack_exposure, 'linear', [], 'Deb97', 'log');
 
 disp('5) Save the radiance map in the .hdr format');
-hdrimwrite(imgHDR, 'output/stack_hdr_image_raw.exr');
+hdrimwrite(imgHDR, 'demos/output/stack_hdr_image_raw.exr');
 
 disp('6) Show the tone mapped version of the radiance map with gamma encoding');
 h = figure(2);
 set(h, 'Name', 'Tone mapped version of the built HDR image');
 imgTMO = GammaTMO(ReinhardTMO(imgHDR, 0.18), 2.2, 0, 1);
-imwrite(imgTMO, 'output/stack_hdr_image_tmo.png');
+imwrite(imgTMO, 'demos/output/stack_hdr_image_tmo.png');

@@ -13,7 +13,7 @@
 
 clear all;
 
-name_folder = 'stack';
+name_folder = 'demos/stack';
 format = 'jpg';
 
 disp('1) Read a stack of LDR images');
@@ -32,10 +32,10 @@ disp('4) Build the radiance map using the stack and stack_exposure');
 imgHDR = BuildHDR(stack, stack_exposure, 'LUT', lin_fun, 'Deb97', 'log');
 
 disp('5) Save the radiance map in the .hdr format');
-hdrimwrite(imgHDR, 'output/stack_hdr_image.exr');
+hdrimwrite(imgHDR, 'demos/output/stack_hdr_image.exr');
 
 disp('6) Show the tone mapped version of the radiance map with gamma encoding');
 h = figure(2);
 set(h, 'Name', 'Tone mapped version of the built HDR image');
 imgTMO = GammaTMO(ReinhardTMO(imgHDR, 0.18), 2.2, 0, 1);
-imwrite(imgTMO, 'output/stack_hdr_image_tmo.png');
+imwrite(imgTMO, 'demos/output/stack_hdr_image_tmo.png');

@@ -56,6 +56,11 @@ for i=1:length(folder)
 end
 
 addpath([pwd(), '/demos/'], '-begin');
+addpath([pwd(), '/demos/ldr_v'], '-begin');
+addpath([pwd(), '/demos/output'], '-begin');
+addpath([pwd(), '/demos/stack'], '-begin');
+addpath([pwd(), '/demos/stack_alignment'], '-begin');
+addpath([pwd(), '/demos/stack_ghost'], '-begin');
 
 savepath
 
