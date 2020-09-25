@@ -28,8 +28,8 @@ function imgOut = RotateLLGUI(img)
 %
 
 
-if(size(img, 2) > 1024)
-   img = imresize(img, [1024, 512], 'bilinear');
+if(size(img, 2) > 2048)
+   img = imresize(img, [2048, 1024], 'bilinear');
 end
 
 [r, c, col] = size(img);
@@ -72,15 +72,15 @@ D = LL2Direction(r, c);
 D_rot = RotateMap(D, M');
 
 [X1, Y1] = Direction2LL(D_rot, r, c);
-[X, Y] = meshgrid(1:c, 1:r);
+[X, Y] = meshgrid(0:(c-1), 0:(r-1));
 X1 = real(round(X1));
 Y1 = real(round(Y1));
 imgOut = zeros(size(img));
-
+size(X)
+size(X1)
 for i=1:col
     imgOut(:,:,i) = interp2(X, Y, img(:,:,i), X1, Y1, 'spline');
 end
-imgOut(imgOut < 0.0) = 0;
 
 hold on;
 imshow(imgOut.^0.45);
