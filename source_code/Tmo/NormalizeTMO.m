@@ -31,8 +31,6 @@ function imgOut = NormalizeTMO(img, bRobust)
 %is it a three color channels image?
 check13Color(img);
 
-checkNegative(img);
-
 if(~exist('bRobust', 'var'))
     bRobust = 1;
 end

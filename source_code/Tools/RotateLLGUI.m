@@ -28,14 +28,14 @@ function imgOut = RotateLLGUI(img)
 %
 
 
-if(size(img, 2) > 2048)
-   img = imresize(img, [1024, 2048], 'bilinear');
+if(size(img, 2) > 1024)
+   img = imresize(img, [1024, 512], 'bilinear');
 end
 
 [r, c, col] = size(img);
 
 figure(1);
-imshow(img);
+imshow(img.^0.45);
 hold on;
 
 r_h = round(r / 2);
@@ -48,6 +48,7 @@ plot(x0, y0, 'r+');
 [x1, y1] = ginput(1);
 
 plot(x1, y1, 'r+');
+hold off;
 
 %theta1 = ( (x1 - c/2) / c ) * pi;
 %phi1   = ( (r/2 - y1) / r ) * pi * 0.5;
@@ -62,13 +63,12 @@ vecr1 = PolarVec3(thetar1, phir1);
 
 M = getMatrixForVectorRotation(vec1, vecr1);
 
-% disp(M)
+disp(M)
 % disp(vec1);
 % disp(vecr1);
 % disp((M*vec1')');
 
 D = LL2Direction(r, c);
-
 D_rot = RotateMap(D, M');
 
 [X1, Y1] = Direction2LL(D_rot, r, c);
@@ -80,8 +80,14 @@ imgOut = zeros(size(img));
 for i=1:col
     imgOut(:,:,i) = interp2(X, Y, img(:,:,i), X1, Y1, 'spline');
 end
+imgOut(imgOut < 0.0) = 0;
 
-imshow(imgOut);
+hold on;
+imshow(imgOut.^0.45);
+plot([x0, x1], [y0, y1], 'r');
+plot(x0, y0, 'go');
+plot(x1, y1, 'go');
+hold off;
 
 end
 
@@ -90,20 +96,24 @@ function [theta, phi] = getThetaPhi(x,y,r,c)
     theta =  pi * (y / r);
 end
 
-
 function M = getMatrixForVectorRotation(u, v)
     a = cross(u, v);
-    a = a / norm(a);
-    
-    alpha = acos(dot(u, v));
-    c = cos(alpha);
-    s = sin(alpha);
-   
-    ci = 1.0 - c;
-    
-    M = [a(1)^2*ci + c, a(1)*a(2)*ci - s * a(3), a(1)*a(3)*ci+s*a(2);...
-         a(1)*a(2) * ci + s * a(3), a(2)^2 * ci + c, a(2)*a(3)*ci-s*a(1);...
-         a(1)*a(3) * ci - s*a(2), a(1)*a(3)*ci+s*a(1), a(3)^2 * ci + c];    
+    len_a = norm(a);
+    if(len_a > 0.0)
+        a = a / len_a;
+
+        alpha = acos(dot(u, v));
+        c = cos(alpha);
+        s = sin(alpha);
+
+        ci = 1.0 - c;
+
+        M = [a(1)^2*ci + c, a(1)*a(2)*ci - s * a(3), a(1)*a(3)*ci+s*a(2);...
+             a(1)*a(2) * ci + s * a(3), a(2)^2 * ci + c, a(2)*a(3)*ci-s*a(1);...
+             a(1)*a(3) * ci - s*a(2), a(1)*a(3)*ci+s*a(1), a(3)^2 * ci + c];    
+    else
+        M = diag([1.0,1.0,1.0]);
+    end
 end
 
 function D_rot = RotateMap(D, M)
