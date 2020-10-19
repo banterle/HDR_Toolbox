@@ -59,6 +59,10 @@ if(~exist('Lwa', 'var'))
     Lwa = logMean(L);
 end
 
+if(Lwa < 0.0) 
+    Lwa = logMean(L);
+end
+
 Lwa = Lwa / ((1.0 + d_b - 0.85)^5);
 
 LMax = max(L(:));

@@ -1,7 +1,7 @@
-function [histo, bounds, haverage] = HistogramHDR(img, nBins, typeLog, bounds, bNormalized, bPlot, epsilon)
+function [histo, bounds, haverage, x] = HistogramHDR(img, nBins, typeLog, bounds, bNormalized, bPlot, epsilon)
 %
 %
-%        [histo, bounds, haverage] = HistogramHDR(img, nBins, typeLog, bounds, bNormalized, bPlot, epsilon)
+%        [histo, bounds, haverage, x] = HistogramHDR(img, nBins, typeLog, bounds, bNormalized, bPlot, epsilon)
 %
 %
 %        Input:
@@ -107,7 +107,11 @@ for i=1:nBins
 end
 
 if(bNormalized)
-    norm = sum(histo);
+    if(bNormalized == 2)
+        norm = max(histo);
+    else
+        norm = sum(histo);
+    end
     if(norm > 0)
         histo = histo / norm;
     end
@@ -115,8 +119,8 @@ end
 
 haverage = haverage / (total);
 
+x = ((1:nBins) / nBins) * (Lmax - Lmin) + Lmin;
 if(bPlot)
-    x = ((1:nBins) / nBins) * (Lmax - Lmin) + Lmin;
     bar(x, histo);
 end
 

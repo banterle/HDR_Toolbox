@@ -19,6 +19,7 @@ function [Base, Detail] = bilateralSeparation(img, sigma_s, sigma_r, bilateral_d
 %               'full': slow but accurate
 %               'approx_bil_grid': fast approximation
 %               'approx_importance': fast approximation
+%               'guided': guided filter
 %
 %       Output:
 %           -Base: the low frequency image
@@ -97,7 +98,10 @@ try
             end
             
         case 'approx_importance'
-            imgFil = bilateralFilterS(img_log, [], sigma_s, sigma_r);    
+            imgFil = bilateralFilterS(img_log, [], sigma_s, sigma_r);   
+            
+        case 'guided'           
+            imgFil = imguidedfilter(img_log);  
             
         otherwise
             imgFil = bilateralFilterFull(img_log, [], sigma_s, sigma_r);

@@ -1,6 +1,6 @@
-function imgOut = DurandTMO(img, target_contrast)
+function imgOut = DurandTMO(img, target_contrast, filter_type)
 %
-%       imgOut = DurandTMO(img, target_contrast)  
+%       imgOut = DurandTMO(img, target_contrast, filter_type)  
 %
 %
 %        Input:
@@ -41,11 +41,15 @@ if(~exist('target_contrast', 'var'))
     target_contrast = 5; %as in the original paper
 end
 
+if(~exist('filter_type', 'var'))
+    filter_type = 'approx_bil_grid';
+end
+
 %compute luminance channel
 L = lum(img);
 
 %separate detail and base
-[Lbase, Ldetail] = bilateralSeparation(L, -1.0, -1.0, 'log_10', 'approx_bil_grid');
+[Lbase, Ldetail] = bilateralSeparation(L, -1.0, -1.0, 'log_10', filter_type);
 
 eps = 1e-6;
 log_base = log10(Lbase + eps);
