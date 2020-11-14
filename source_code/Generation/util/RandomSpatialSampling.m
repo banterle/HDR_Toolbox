@@ -45,6 +45,7 @@ stackOut = zeros(nSamples, stackSize, col);
 X = ClampImg(round(rand(nSamples, 1) * c), 1, c);
 Y = ClampImg(round(rand(nSamples, 1) * r), 1, r);
 
+c = 1;
 for i=1:nSamples
     tmp = zeros(stackSize, col);
     for j=1:col
