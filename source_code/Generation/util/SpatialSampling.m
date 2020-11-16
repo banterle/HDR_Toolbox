@@ -1,13 +1,13 @@
-function stackOut = RegularSpatialSampling(stack, sort_index, nSamples, type)
+function stackOut = SpatialSampling(stack, sort_index, nSamples, type)
 %
-%       stackOut = RegularSpatialSampling(stack, sort_index, nSamples)
+%       stackOut = SpatialSampling(stack, sort_index, nSamples)
 %
 %
 %        Input:
 %           -stack_exposure:
 %           -stack: a stack of LDR images; 4-D array where values are
 %           -nSamples: the number of samples for sampling the stack
-%           -type: kind of sampling: 'regular' or 'random'
+%           -type: kind of sampling: 'RegularSpatial' or 'RandomSpatial'
 %
 %        Output:
 %           -stackOut: a stack of LDR samples for Debevec and Malik method
@@ -38,19 +38,22 @@ if(~exist('nSamples', 'var'))
 end
 
 if(~exist('type', 'var'))
-    type = 'regular';
+    type = 'RegularSpatial';
 end
 
 if(nSamples < 1)
     nSamples = minSamples;
 end
 
+X = [];
+Y = [];
+
 switch type
-    case 'regular'
+    case 'RandomSpatial'
         X = ClampImg(round(rand(nSamples, 1) * c), 1, c);
         Y = ClampImg(round(rand(nSamples, 1) * r), 1, r);
 
-    case 'random'
+    case 'RegularSpatial'
         f = round(sqrt(nSamples) + 1);
         rate_x = max([ceil(c / f), 1]);
         rate_y = max([ceil(r / f), 1]);
@@ -61,6 +64,7 @@ switch type
         Y = round(Y(:));
 
         nSamples = length(X);
+end
 
 stackOut = zeros(nSamples, stackSize, col);
 
@@ -82,8 +86,5 @@ for i=1:nSamples
 end
 
 stackOut(c : end, :, :) = [];
-t_min = 0.05;
-t_max = 1.0 - t_min;
-stackOut(stackOut < t_min | stackOut > t_max) = -1.0;
 
 end

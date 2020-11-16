@@ -37,7 +37,7 @@ end
 for j=1:col
     val = 1;
     for i=1:n
-        if(values(i,j) < values(i + 1,j))
+        if(values(i,j) <= values(i + 1,j))
             val = 0;
             break;
         end    

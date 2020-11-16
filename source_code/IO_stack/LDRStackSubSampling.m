@@ -60,11 +60,11 @@ switch sampling_strategy
         stack_samples = GrossbergSampling(stack_hist, nSamples);
         
     case 'RandomSpatial'
-        stack_samples = SpatialSampling(stack, sort_index, nSamples, 'random');
+        stack_samples = SpatialSampling(stack, sort_index, nSamples, sampling_strategy);
         stack_samples = round(stack_samples * 255);
 
     case 'RegularSpatial'
-        stack_samples = SpatialSampling(stack, sort_index, nSamples, 'regular');
+        stack_samples = SpatialSampling(stack, sort_index, nSamples, sampling_strategy);
         stack_samples = round(stack_samples * 255);
         
     otherwise
