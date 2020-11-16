@@ -1,18 +1,19 @@
-function stackOut = RandomSpatialSampling(stack, sort_index, nSamples)
+function stackOut = RegularSpatialSampling(stack, sort_index, nSamples, type)
 %
-%       stackOut = RandomSpatialSampling(stack, nSamples)
+%       stackOut = RegularSpatialSampling(stack, sort_index, nSamples)
 %
 %
 %        Input:
+%           -stack_exposure:
 %           -stack: a stack of LDR images; 4-D array where values are
-%           -sort_index: 
 %           -nSamples: the number of samples for sampling the stack
+%           -type: kind of sampling: 'regular' or 'random'
 %
 %        Output:
 %           -stackOut: a stack of LDR samples for Debevec and Malik method
 %           (gsolve.m)
 %
-%     Copyright (C) 2015  Francesco Banterle
+%     Copyright (C) 2015-2020  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -36,14 +37,32 @@ if(~exist('nSamples', 'var'))
     nSamples = minSamples;
 end
 
+if(~exist('type', 'var'))
+    type = 'regular';
+end
+
 if(nSamples < 1)
     nSamples = minSamples;
 end
 
-stackOut = zeros(nSamples, stackSize, col);
+switch type
+    case 'regular'
+        X = ClampImg(round(rand(nSamples, 1) * c), 1, c);
+        Y = ClampImg(round(rand(nSamples, 1) * r), 1, r);
 
-X = ClampImg(round(rand(nSamples, 1) * c), 1, c);
-Y = ClampImg(round(rand(nSamples, 1) * r), 1, r);
+    case 'random'
+        f = round(sqrt(nSamples) + 1);
+        rate_x = max([ceil(c / f), 1]);
+        rate_y = max([ceil(r / f), 1]);
+
+        [X, Y] = meshgrid(1:rate_x:c, 1:rate_y:r);
+
+        X = round(X(:));
+        Y = round(Y(:));
+
+        nSamples = length(X);
+
+stackOut = zeros(nSamples, stackSize, col);
 
 c = 1;
 for i=1:nSamples
@@ -59,9 +78,10 @@ for i=1:nSamples
     if(check > 0)
         stackOut(c,:,:) = tmp;
         c = c + 1;
-    end 
+    end
 end
 
+stackOut(c : end, :, :) = [];
 t_min = 0.05;
 t_max = 1.0 - t_min;
 stackOut(stackOut < t_min | stackOut > t_max) = -1.0;
