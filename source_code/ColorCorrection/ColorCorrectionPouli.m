@@ -57,7 +57,7 @@ imgTMO_ICh = ConvertIPTtoICh(imgTMO_IPT, 0);
 imgHDR_ICh = ConvertIPTtoICh(imgHDR_IPT, 0);
 
 %the main algorithm
-C_TMO_prime = imgHDR_ICh(:,:,2) .* imgHDR_ICh(:,:,1) ./ imgTMO_ICh(:,:,1);
+C_TMO_prime = imgTMO_ICh(:,:,2) .* imgHDR_ICh(:,:,1) ./ imgTMO_ICh(:,:,1);
 r1 = SaturationPouli(imgHDR_ICh(:,:,2), imgHDR_ICh(:,:,1));
 r2 = SaturationPouli(C_TMO_prime, imgTMO_ICh(:,:,1));
 r = r1 ./ r2; %final scale
