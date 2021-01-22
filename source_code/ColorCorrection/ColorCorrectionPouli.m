@@ -49,17 +49,21 @@ imgTMO = imgTMO / max_TMO;
 %conversion from RGB to XYZ
 imgTMO_XYZ = ConvertRGBtoXYZ(imgTMO, 0);
 imgHDR_XYZ = ConvertRGBtoXYZ(imgHDR, 0);
-%conversion from XYZ to LMS
-imgTMO_LMS = ConvertXYZtoLMS(imgTMO_XYZ, 0);
-imgHDR_LMS = ConvertXYZtoLMS(imgHDR_XYZ, 0);
-%conversion from LMS to IPT
-imgTMO_IPT = ConvertLMStoIPT(imgTMO_LMS, 0);
-imgHDR_IPT = ConvertLMStoIPT(imgHDR_LMS, 0);
+%conversion from XYZ to IPT
+imgTMO_IPT = ConvertXYZtoIPT(imgTMO_XYZ, 0);
+imgHDR_IPT = ConvertXYZtoIPT(imgHDR_XYZ, 0);
 %conversion from IPT to ICh
 imgTMO_ICh = ConvertIPTtoICh(imgTMO_IPT, 0);
 imgHDR_ICh = ConvertIPTtoICh(imgHDR_IPT, 0);
 
 %the main algorithm
+I = imgTMO_ICh(:,:,1);
+
+imgTMO_ICh(:,:,1) = imgTMO_ICh(:,:,1) + 1e-5;
+imgTMO_ICh(:,:,2) = imgTMO_ICh(:,:,2) + 1e-5;
+imgHDR_ICh(:,:,1) = imgHDR_ICh(:,:,1) + 1e-5;
+imgHDR_ICh(:,:,2) = imgHDR_ICh(:,:,2) + 1e-5;
+
 C_TMO_prime = imgTMO_ICh(:,:,2) .* imgHDR_ICh(:,:,1) ./ imgTMO_ICh(:,:,1);
 s1 = SaturationPouli(imgHDR_ICh(:,:,2), imgHDR_ICh(:,:,1));
 s2 = SaturationPouli(C_TMO_prime, imgTMO_ICh(:,:,1));
@@ -70,10 +74,9 @@ imgTMO_ICh(:,:,3) = imgHDR_ICh(:,:,3); %same hue of HDR
 %conversion from IPT to XYZ
 imgTMO_c_IPT = ConvertIPTtoICh(imgTMO_ICh, 1);
 %conversion from IPT to LMS
-imgTMO_c_LMS = ConvertLMStoIPT(imgTMO_c_IPT, 1);
-%conversion from LMS to XYZ
-imgTMO_c_XYZ = ConvertXYZtoLMS(imgTMO_c_LMS, 1);
+imgTMO_c_XYZ = ConvertXYZtoIPT(imgTMO_c_IPT, 1);
 %conversion from XYZ to RGB
-imgTMO_c = ConvertRGBtoXYZ(imgTMO_c_XYZ, 1);
+imgTMO_c = RemoveSpecials(ConvertRGBtoXYZ(imgTMO_c_XYZ, 1));
+imgTMO_c(imgTMO_c < 0.0) = 0.0;
 
 end
