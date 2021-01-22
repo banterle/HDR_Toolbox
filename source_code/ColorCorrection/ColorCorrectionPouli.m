@@ -74,6 +74,6 @@ imgTMO_c_LMS = ConvertLMStoIPT(imgTMO_c_IPT, 1);
 %conversion from LMS to XYZ
 imgTMO_c_XYZ = ConvertXYZtoLMS(imgTMO_c_LMS, 1);
 %conversion from XYZ to RGB
-imgTMO_c = ConvertXYZtoRGB(imgTMO_c_XYZ, 1);
+imgTMO_c = ConvertRGBtoXYZ(imgTMO_c_XYZ, 1);
 
 end
