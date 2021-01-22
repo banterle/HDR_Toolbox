@@ -61,9 +61,9 @@ imgHDR_ICh = ConvertIPTtoICh(imgHDR_IPT, 0);
 
 %the main algorithm
 C_TMO_prime = imgTMO_ICh(:,:,2) .* imgHDR_ICh(:,:,1) ./ imgTMO_ICh(:,:,1);
-r1 = SaturationPouli(imgHDR_ICh(:,:,2), imgHDR_ICh(:,:,1));
-r2 = SaturationPouli(C_TMO_prime, imgTMO_ICh(:,:,1));
-r = r1 ./ r2; %final scale
+s1 = SaturationPouli(imgHDR_ICh(:,:,2), imgHDR_ICh(:,:,1));
+s2 = SaturationPouli(C_TMO_prime, imgTMO_ICh(:,:,1));
+r = s1 ./ s2; %final scale
 imgTMO_ICh(:,:,2) = r .* C_TMO_prime; %final scale
 imgTMO_ICh(:,:,3) = imgHDR_ICh(:,:,3); %same hue of HDR
 
@@ -72,8 +72,8 @@ imgTMO_c_IPT = ConvertIPTtoICh(imgTMO_ICh, 1);
 %conversion from IPT to LMS
 imgTMO_c_LMS = ConvertLMStoIPT(imgTMO_c_IPT, 1);
 %conversion from LMS to XYZ
-imgTMO_c_XYZ = ConvertXYZtoLMS(imgTMO_c_XYZ, 1);
+imgTMO_c_XYZ = ConvertXYZtoLMS(imgTMO_c_LMS, 1);
 %conversion from XYZ to RGB
-imgTMO_c_XYZ = ConvertXYZtoRGB(imgTMO_c_XYZ, 1);
+imgTMO_c = ConvertXYZtoRGB(imgTMO_c_XYZ, 1);
 
 end
