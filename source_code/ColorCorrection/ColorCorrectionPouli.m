@@ -76,7 +76,7 @@ imgTMO_c_IPT = ConvertIPTtoICh(imgTMO_ICh, 1);
 %conversion from IPT to LMS
 imgTMO_c_XYZ = ConvertXYZtoIPT(imgTMO_c_IPT, 1);
 %conversion from XYZ to RGB
-imgTMO_c = RemoveSpecials(ConvertRGBtoXYZ(imgTMO_c_XYZ, 1));
+imgTMO_c = RemoveSpecials(ConvertRGBtoXYZ(imgTMO_c_XYZ, 1)) * max_TMO;
 imgTMO_c(imgTMO_c < 0.0) = 0.0;
 
 end
