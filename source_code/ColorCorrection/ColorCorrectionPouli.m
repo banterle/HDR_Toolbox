@@ -40,10 +40,18 @@ end
 
 check3Color(imgHDR);
 
+checkNegative(imgTMO);
+checkNegative(imgHDR);
+
 %normalization step
 max_TMO = max(imgTMO(:));
 max_HDR = max(imgHDR(:));
 imgHDR = imgHDR / max_HDR;
+
+if(max_TMO > 1.0)
+   imgTMO = ClampImg(imgTMO, 0.0, 1.0);
+   max_TMO = 1.0;
+end
 imgTMO = imgTMO / max_TMO;
 
 %conversion from RGB to XYZ
