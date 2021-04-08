@@ -1,16 +1,17 @@
-function imgOut = imShift(img, shift_vector)
+function imgOut = imShift(img, shift_vector, bFill)
 %
-%		 imgOut = imShift(img, shift_vector)
+%		 imgOut = imShift(img, shift_vector, bFill)
 %
 %
 %		 Input:
 %           -img: an input image to be shifted
 %           -shift_vector: a 2D shift vector;  amount (in pixels)
+%           -bFill: filling value
 %
 %		 Output:
 %			-imgOut: the final shifted image
 %
-%     Copyright (C) 2012-15  Francesco Banterle
+%     Copyright (C) 2012-21  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -31,17 +32,27 @@ if(~exist('shift_vector', 'var'))
     return;
 end
 
+if(~exist('bFill', 'var'))
+    bFill = 0;
+end
+
 is_dx = shift_vector(1);
 is_dy = shift_vector(2);
 
 imgOut = zeros(size(img));
 img_tmp = zeros(size(img));
 
+[r,c,col] = size(img);
+
 if(abs(is_dx) > 0)
     if(is_dx > 0)
-        img_tmp(:,(is_dx + 1):end,:) = img(:,1:(end - is_dx),:);
+        img = padarray(img, [0, is_dx], 'replicate', 'pre'); 
+        img_tmp(:,1:end,:) = img(:,1:c,:);    
+        %img_tmp(:,(is_dx + 1):end,:) = img(:,1:(end - is_dx),:);
     else
-        img_tmp(:,1:(end + is_dx),:) = img(:,(1 - is_dx):end,:);    
+        img = padarray(img, [0, -is_dx], 'replicate', 'post');   
+        img_tmp(:,1:end,:) = img(:,(1 - is_dx):(c - is_dx),:);    
+        %img_tmp(:,1:(end + is_dx),:) = img(:,(1 - is_dx):end,:);  
     end
 else
     img_tmp = img;
@@ -50,9 +61,13 @@ end
 if(abs(is_dy) > 0)
     
     if(is_dy > 0)
-        imgOut((is_dy + 1):end,:,:) = img_tmp(1:(end - is_dy),:,:);
+        img_tmp = padarray(img_tmp, [is_dy, 0], 'replicate', 'pre'); 
+        imgOut(1:end,:,:) = img_tmp(1:r,:,:);
+        %imgOut((is_dy + 1):end,:,:) = img_tmp(1:(end - is_dy),:,:);
     else
-        imgOut(1:(end + is_dy),:,:) = img_tmp((1 - is_dy):end,:,:);    
+        img_tmp = padarray(img_tmp, [-is_dy, 0], 'replicate', 'post'); 
+        imgOut(1:end,:,:) = img_tmp((1 - is_dy):(r - is_dy),:,:); 
+        %imgOut(1:(end + is_dy),:,:) = img_tmp((1 - is_dy):end,:,:);    
     end
 else
     imgOut = img_tmp;

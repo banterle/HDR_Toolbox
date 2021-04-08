@@ -156,14 +156,35 @@ if(strcmp(lin_type, 'gamma') == 1)
 end
 
 %this value is added for numerical stability
-delta_value = 1.0 / 65536.0;
+delta_value = 1.0 / 65535.0;
+
+[~, i_sat] = min(stack_exposure);
+[~, i_noisy] = max(stack_exposure);
+threshold = 0.9;
 
 %for each LDR image...
 for i=1:n
     tmpStack = ClampImg(single(stack(:,:,:,i)) / scale, 0.0, 1.0);
     
-    %computing the weight function    
-    weight  = WeightFunction(tmpStack, weight_type, bMeanWeight);
+    %compute the weight function
+    weight_type_i = weight_type;
+    if(i == i_sat)
+        if(~isempty(find(tmpStack > threshold, 1)))
+            weight_type_i = 'identity';
+        end
+    end
+    
+    if(i == i_noisy)
+        threshold_i = 1.0 - threshold;
+        disp(min(tmpStack(:)))
+        if(~isempty(find(tmpStack < threshold_i, 1)))
+            weight_type_i = 'reverse';
+        end
+    end
+        
+    weight = WeightFunction(tmpStack, weight_type_i, bMeanWeight);
+    
+    weight(tmpStack <= delta_value) = 0.0;
 
     %linearization of the image
     tmpStack = RemoveCRF(tmpStack, lin_type, lin_fun);
@@ -196,8 +217,6 @@ end
 saturation = 1e-4;
 
 if(~isempty(totWeight <= saturation))
-    [~, i_sat] = min(stack_exposure);
-    [~, i_noisy] = max(stack_exposure);
 
     i_med = round(length(stack_exposure) / 2);
     med = ClampImg(single(stack(:,:,:,i_med)) / scale, 0.0, 1.0);

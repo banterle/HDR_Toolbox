@@ -7,8 +7,10 @@ function weight = WeightFunction(img, weight_type, bMeanWeight, bounds, pp)
 %           -img: input LDR image in [0,1]
 %           -weight_type:
 %               - 'all': weight is set to 1
-%               - 'hat': hat function 1-(2x-1)^12
-%               - 'poly': 
+%               - 'identity': it returns img
+%               - 'reverse': it returns (1 - img)
+%               - 'hat': hat function 1 - (2 * img - 1)^12
+%               - 'poly': a polynomial where x is img
 %               - 'box': weight is set to 1 in [bounds(1), bounds(2)]
 %               - 'Deb97': Debevec and Malik 97 weight function
 %               - 'Robertson': a Gaussian with shifting and scaling
@@ -61,6 +63,12 @@ switch weight_type
     case 'all'
         weight = ones(size(img));
 
+    case 'identity'
+        weight = img;
+        
+    case 'reverse'
+        weight = 1.0 - img;
+
     case 'box'
         weight = ones(size(img));
         weight(img < bounds(1)) = 0.0;
@@ -99,11 +107,12 @@ switch weight_type
             weight = weight / tr;
         end
         
-        weight(weight < 0) = 0;
-        weight(weight > 1) = 1;
         
     otherwise 
         weight = -1;
 end
+
+weight(weight < 0.0) = 0.0;
+weight(weight > 1.0) = 1.0;
 
 end

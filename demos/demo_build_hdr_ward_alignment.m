@@ -33,7 +33,7 @@ set(h, 'Name', 'The Camera Response Function (CRF)');
 plot(0:255, lin_fun(:,1), 'r', 0:255, lin_fun(:,2),'g', 0:255, lin_fun(:,3), 'b');
 
 disp('5) Build the radiance map using the stack and stack_exposure');
-[imgHDR, lin_fun] = BuildHDR(stackOut, stack_exposure, 'LUT', lin_fun, 'Deb97', 'log', 0);
+[imgHDR, lin_fun] = BuildHDR(stackOut, stack_exposure, 'LUT', lin_fun, 'Deb97', 'log', 1);
 
 disp('6) Save the radiance map in the .hdr format');
 hdrimwrite(imgHDR, 'demos/output/stack_alignment_hdr_ward_alignment.hdr');

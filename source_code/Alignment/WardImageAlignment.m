@@ -19,7 +19,7 @@ function [imgOut, alignment_info] = WardImageAlignment(img1, img2, bRotation, wa
 %           -alignment_info: 
 %
 %
-%     Copyright (C) 2015  Francesco Banterle
+%     Copyright (C) 2015-2021  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -56,8 +56,8 @@ if(bRotation)
     alignment_info(2, :) = [rot_ret, bCheck];
     
     if(bCheck)
-        imgOut = imrotate(imgOut, rot_ret, 'bilinear', 'crop');
-
+        imgOut = imrotate(imgOut, rot_ret, 'nearest', 'crop');
+        
         %final shift
         shift_ret = WardGetExpShift(img1, imgOut);
         imgOut = imShift(imgOut, shift_ret);
