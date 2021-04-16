@@ -58,10 +58,15 @@ if(~exist('bHistogram', 'var'))
     bHistogram = 0;
 end
 
-nBins = 4096;
-
 stats_v = zeros(ldrv.totalFrames, 6);
-hists_v = zeros(ldrv.totalFrames, nBins);
+
+if(bHistogram)
+    nBins = 256;
+    hists_v = zeros(ldrv.totalFrames, nBins);
+else
+    nBins = 0;
+    hists_v = [];
+end
 
 ldrv = ldrvopen(ldrv);
 for i=1:ldrv.totalFrames
