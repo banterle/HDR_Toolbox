@@ -27,18 +27,7 @@ function hdrv = hdrvopen(hdrv)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(hdrv.streamOpen == 0) 
-    
-    if(strfind(hdrv.type, 'TYPE_HDR_VIDEO') == 1)
-        if(~isempty(hdrv.streamTMO))
-           open(ldrv.streamTMO);            
-        end
-        
-        if(~isempty(hdrv.streamR))
-           open(ldrv.streamR);            
-        end
-    end 
-    
+if(hdrv.streamOpen == 0)     
     hdrv.streamOpen = 1;
 end
 

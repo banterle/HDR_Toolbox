@@ -56,21 +56,6 @@ switch hdrv.type
     
     case 'TYPE_HDR_JPEG_2000'
         frame = hdrimread([hdrv.path,'/',hdrv.list(frameCounter).name]);
-
-    case 'TYPE_HDR_VIDEO'
-        if(~isempty(hdrv.streamTMO))
-            frameTMO = read(hdrv.streamTMO, frameCounter); 
-        else
-            frameTMO = [];
-        end
-        
-        if(~isempty(hdrv.streamR))
-            frameR   = read(hdrv.streamR, frameCounter);       
-        else
-            frameR = [];
-        end
-        
-        frame = HDRvDecodeFrame(frameTMO, frameR, hdrv.info);        
 end
 
 %update the counter

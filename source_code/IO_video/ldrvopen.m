@@ -11,7 +11,7 @@ function ldrv = ldrvopen(ldrv)
 %
 %        This function opens the video stream for reading frames
 %
-%     Copyright (C) 2013-17  Francesco Banterle
+%     Copyright (C) 2013-21  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -27,11 +27,7 @@ function ldrv = ldrvopen(ldrv)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-if(ldrv.streamOpen == 0)    
-    if(permission == 'r' && (strfind(ldrv.type, 'TYPE_LDR_VIDEO') == 1))
-        open(ldrv.stream);
-    end
-    
+if(ldrv.streamOpen == 0)        
     ldrv.streamOpen = 1;
 end
 

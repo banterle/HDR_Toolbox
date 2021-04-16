@@ -1,22 +1,22 @@
-function [hdrv, stats_v, hists_v] = hdrvAnalysis(hdrv, percentile, crop_rect, bHistogram)
+function [ldrv, stats_v, hists_v] = ldrvAnalysis(ldrv, percentile, crop_rect, bHistogram)
 %
-%         [hdrv, stats_v, hists_v] = hdrvAnalysis(hdrv, percentile, crop_rect, bHistogram)
+%         [ldrv, stats_v, hists_v] = ldrvAnalysis(ldrv, percentile, crop_rect, bHistogram)
 %
 %        This function computes the statistics of all frames of an HDR
 %        video.
 %
 %        Input:
-%           -hdrv: a open HDR video structure
+%           -ldrv: a open HDR video structure
 %           -percentile: the percentile for robust statistics
 %           -crop_rect:
 %           -bHistogram:
 %
 %        Output:
-%           -hdrv  : a close HDR video structure
+%           -ldrv  : a close HDR video structure
 %           -stats_v  : harmonic mean of each frame
 %           -hists_v : max of each frame
 %
-%     Copyright (C) 2013-17  Francesco Banterle
+%     Copyright (C) 2021  Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -60,13 +60,12 @@ end
 
 nBins = 4096;
 
-stats_v = zeros(hdrv.totalFrames, 6);
-hists_v = zeros(hdrv.totalFrames, nBins);
+stats_v = zeros(ldrv.totalFrames, 6);
+hists_v = zeros(ldrv.totalFrames, nBins);
 
-hdrv = hdrvopen(hdrv);
-
-for i=1:hdrv.totalFrames
-    [frame, hdrv] = hdrvGetFrame(hdrv, i);    
+ldrv = ldrvopen(ldrv);
+for i=1:ldrv.totalFrames
+    [frame, ldrv] = ldrvGetFrame(ldrv, i);    
         
     if(bCR)
         [r,c,~] = size(frame);    
@@ -78,7 +77,7 @@ for i=1:hdrv.totalFrames
     frame = RemoveSpecials(frame); 
     
     %avoid negative values
-    L = lum(frame);
+    L = lum(frame.^2.2);
     indx = find(L >= 0.0);
     if(~isempty(indx))
         stats_v(i, 1) = min(L(indx));
@@ -93,6 +92,6 @@ for i=1:hdrv.totalFrames
     end
 end
 
-hdrv = hdrvclose(hdrv);
+ldrv = hdrvclose(ldrv);
 
 end

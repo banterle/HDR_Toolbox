@@ -56,42 +56,8 @@ if(isdir(filename))
     
     hdrv = struct('type', type, 'path', filename, 'list', tmp_list, ...
                   'totalFrames', length(tmp_list), 'FrameRate', 24, ...
-                  'frameCounter', 1, 'streamOpen', 0, ...
+                  'frameCounter', 1, 'streamOpen', 1, ...
                   'permission', 'r');
-else
-    nameER = RemoveExt(filename);
-    fileExt = fileExtension(filename);
-
-    if(~isempty(fileExt))
-        type = 'TYPE_HDR_VIDEO';
-        
-        streamTMO = VideoReader(filename);
-            
-        nameR = [nameER, '_r.', fileExt];
-        if(exist(nameR, 'file') == 2)
-            streamR = VideoReader(nameR);
-        else
-            streamR = [];
-        end
-        
-        nameInfo = [nameER, '_info.mat'];
-        if(exist(nameInfo, 'file') == 2)
-            info = load(nameInfo);
-        else
-            info = [];
-        end        
-
-        hdrv = struct('type', type, 'path', nameER, ...
-                      'totalFrames', streamTMO.NumberOfFrames, ...
-                      'FrameRate', streamTMO.FrameRate, 'frameCounter', 1, ...
-                      'streamOpen', 0, ...
-                      'streamTMO', streamTMO, ...
-                      'streamR',  streamR, ...
-                      'info', info, ...
-                      'permission', 'r');      
-    else
-        error('hdrvread: not a valid file!');
-    end    
 end
 
 end
