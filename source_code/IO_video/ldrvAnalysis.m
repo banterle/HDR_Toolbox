@@ -58,7 +58,7 @@ if(~exist('bHistogram', 'var'))
     bHistogram = 0;
 end
 
-stats_v = zeros(ldrv.totalFrames, 6);
+stats_v = zeros(ldrv.totalFrames, 7);
 
 if(bHistogram)
     nBins = 256;
@@ -90,7 +90,8 @@ for i=1:ldrv.totalFrames
         stats_v(i, 3) = MaxQuart(L(indx), 1 - percentile);
         stats_v(i, 4) = MaxQuart(L(indx), percentile);
         stats_v(i, 5) = mean(L(indx));
-        stats_v(i, 6) = logMean(L(indx));       
+        stats_v(i, 6) = MaxQuart(L(indx), 0.5);
+        stats_v(i, 7) = logMean(L(indx));       
         if(bHistogram)
             hists_v(i, :) = HistogramHDR(L(indx), nBins, 'log10', [-6, 6], 0, 0, 1e-6);
         end

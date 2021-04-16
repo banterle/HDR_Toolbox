@@ -58,10 +58,15 @@ if(~exist('bHistogram', 'var'))
     bHistogram = 0;
 end
 
-nBins = 4096;
+stats_v = zeros(hdrv.totalFrames, 7);
 
-stats_v = zeros(hdrv.totalFrames, 6);
-hists_v = zeros(hdrv.totalFrames, nBins);
+if(bHistogram)
+    nBins = 4096;
+    hists_v = zeros(ldrv.totalFrames, nBins);
+else
+    nBins = 0;
+    hists_v = [];
+end
 
 hdrv = hdrvopen(hdrv);
 
@@ -86,7 +91,8 @@ for i=1:hdrv.totalFrames
         stats_v(i, 3) = MaxQuart(L(indx), 1 - percentile);
         stats_v(i, 4) = MaxQuart(L(indx), percentile);
         stats_v(i, 5) = mean(L(indx));
-        stats_v(i, 6) = logMean(L(indx));       
+        stats_v(i, 6) = MaxQuart(L(indx), 0.5);
+        stats_v(i, 7) = logMean(L(indx));       
         if(bHistogram)
             hists_v(i, :) = HistogramHDR(L(indx), nBins, 'log10', [-6, 6], 0, 0, 1e-6);
         end
