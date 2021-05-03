@@ -46,6 +46,14 @@ HOW TO INSTALL:
 
 4) Write the command installHDRToolbox in the Command Window, and wait for the installation process to end.
 
+NOTE ON CODE USE:
+=================
+When you use parts or the full source code of this project in your own project, please remember to cite this project
+both in your project webpage and in its source code. This SHOULD be done even when you convert this code into another
+programming language.
+ 
+Be kind.
+
 NOTE ON EXPANSION OPERATORS (INVERSE/REVERSE TONE MAPPING):
 =====================
 The majority of EOs require to have as input LDR/SDR images that are NORMALZIED (i.e., in the range [0,1])
