@@ -46,6 +46,10 @@ HOW TO INSTALL:
 
 4) Write the command installHDRToolbox in the Command Window, and wait for the installation process to end.
 
+Note: some functionalities are written in C++ (I/O .exr files, and bilateralFilterS). Therefore, they need
+a C++ compiler installed on the machine in order to be compiled and used. In the case you want to use
+such such functionalities, you have to install a C++ compiler on your machine and to setup the [MATLAB MEX](https://www.mathworks.com/help/matlab/ref/mex.html).
+
 NOTE ON CODE USE:
 =================
 When you use parts or the full source code of this project in your own project, please remember to cite this project
