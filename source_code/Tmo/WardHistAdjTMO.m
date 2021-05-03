@@ -1,6 +1,6 @@
-function imgOut = WardHistAdjTMO(img, nBin, LdMin, LdMax, bPlotHistogram)
+function imgOut = WardHistAdjTMO(img, nBin, LdMin, LdMax, bPlotHistogram, bDownsampling)
 %
-%        imgOut = WardHistAdjTMO(img, nBin, LdMin, LdMax, bPlotHistogram)
+%        imgOut = WardHistAdjTMO(img, nBin, LdMin, LdMax, bPlotHistogram, bDownsampling)
 %
 %
 %        Input:
@@ -13,7 +13,7 @@ function imgOut = WardHistAdjTMO(img, nBin, LdMin, LdMax, bPlotHistogram)
 %        Output:
 %           -imgOut: tone mapped image
 % 
-%     Copyright (C) 2010-16  Francesco Banterle
+%     Copyright (C) 2010-21  Francesco Banterle
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -73,13 +73,21 @@ if(~exist('bPlotHistogram', 'var'))
     bPlotHistogram = 0;
 end
 
+if(~exist('bDownsampling', 'var'))
+    bDownsampling = 0;
+end
+
 epsilon = 1e-6;
 
 %compute luminance channel
 L = lum(img);
 
 %downsample according to fovea...
-L2 = WardDownsampling(L + 1e-6);
+if(bDownsampling)
+    L2 = WardDownsampling(L + epsilon);
+else
+    L2 = L + 1e-6;
+end
 
 %compute stastistics
 LMin = min(L2(:));
@@ -114,7 +122,7 @@ end
 H = histogram_ceiling(H, delta / (LldMax - LldMin));
 
 if(bPlotHistogram)
-    bar(x_vis, H/maxH);
+    bar(x_vis, H / maxH);
     hold off;
 end
 
