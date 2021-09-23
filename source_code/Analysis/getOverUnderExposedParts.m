@@ -1,4 +1,4 @@
-function [mask, pO, pU] = getOverUnderExposedParts(img)
+function [mask, pO, pU] = getOverUnderExposedParts(img, tue, toe)
 %
 %
 %        mask = getOverUnderExposedParts(img)
@@ -6,6 +6,8 @@ function [mask, pO, pU] = getOverUnderExposedParts(img)
 %
 %        Input:
 %           -img: an 8-bit image with values in [0,1]
+%           -tue: threshold for under exposed values; e.g., 0.05
+%           -toe: threshold for over exposed values; e.g., 0.95
 %
 %        Output:
 %   `       -mask: a mask with over-exposed pixels (1), and under-exposed
@@ -29,8 +31,13 @@ function [mask, pO, pU] = getOverUnderExposedParts(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-toe = 248 / 255;
-tue =   7 / 255;
+if(~exist('toe', 'var'))
+    toe = 248 / 255;
+end
+
+if(~exist('tue', 'var'))
+    tue =   7 / 255;
+end
 
 [r, c, ~] = size(img);
 
