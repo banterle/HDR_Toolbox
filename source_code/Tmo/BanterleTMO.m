@@ -1,4 +1,4 @@
-function [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_segments)
+function [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_segments, BTMO_rescale)
 %
 %
 %        [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_segments)
@@ -11,6 +11,7 @@ function [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_se
 %           -BTMO_segments: a segmented image, each value in a segment is a
 %           dynamic range zone; i.e. integer values in [-6,9]. If it is not
 %           provided this will be computed with the function CreateSegments
+%           -BTMO_rescale:
 %
 %       Output:
 %           -imgOut: the tone mapped image using the HybridTMO
@@ -49,7 +50,21 @@ function [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_se
 
 checkNegative(img);
 
+if(~exist('BTMO_rescale', 'var'))
+    BTMO_rescale = 1;
+end
+
 L = lum(img);
+
+if(BTMO_rescale)
+    L_max = MaxQuart(L, 0.999);
+
+    if(L_max > 0.0)
+        img = img / L_max * 3000.0;
+        img = ClampImg(img, 0.015, 3000.0);
+        L = lum(img);
+    end
+end
 
 indx = find(L > 3000);
 if(~isempty(indx))

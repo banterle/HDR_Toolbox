@@ -36,6 +36,8 @@ function imgOut = SchlickTMO(img, s_mode, p, nBit, L0, k)
 %     in "Photorealistic Rendering Techniques" 1995 
 %
 
+checkNegative(img);
+
 check13Color(img);
 
 check3Color(img);
@@ -60,14 +62,14 @@ if(~exist('p', 'var'))
     p = 1 / 0.005;
 end
 
-%Luminance channel
+%compute the luminance channel
 L = lum(img);
 
-%comput min luminance
-LMin = MaxQuart(L(L > 0.0), 0.01);
+%compute the min luminance
+LMin = min(L(L > 0.0));
 
-%compute max luminance
-LMax = MaxQuart(L, 0.99);
+%compute the max luminance
+LMax = max(L(L>0.0));
 
 %mode selection
 switch s_mode
@@ -85,7 +87,7 @@ end
 %dynamic range reduction
 Ld = p .* L ./ ((p - 1) .* L + LMax);
 
-%Changing luminance
+%change luminance
 imgOut = ChangeLuminance(img, L, Ld);
 
 end

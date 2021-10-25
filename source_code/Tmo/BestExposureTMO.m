@@ -47,7 +47,11 @@ switch type
     case 'mean'
         L = lum(img);
         L_mean = mean(L(:));
-        exposure_value = 1.0 / (4.0 * L_mean);  
+        if L_mean > 0.0
+            exposure_value = 1.0 / (4.0 * L_mean);
+        else
+            exposure_value = 1.0;
+        end
 end
 
 imgOut = ClampImg(img * exposure_value, 0.0, 1.0);
