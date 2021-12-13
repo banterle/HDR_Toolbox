@@ -1,6 +1,6 @@
 function imgTMO_c = ColorCorrectionPouli(imgHDR, imgTMO)
 %
-%       imgTMO_c = ColorCorrection(imgHDR, imgTMO)
+%       imgTMO_c = ColorCorrectionPouli(imgHDR, imgTMO)
 %
 %       This function saturates/desaturates colors in an imgTMO
 %
@@ -78,6 +78,8 @@ s2 = SaturationPouli(C_TMO_prime, imgTMO_ICh(:,:,1));
 r = s1 ./ s2; %final scale
 imgTMO_ICh(:,:,2) = r .* C_TMO_prime; %final scale
 imgTMO_ICh(:,:,3) = imgHDR_ICh(:,:,3); %same hue of HDR
+
+imgTMO_ICh(:,:,1) = I;
 
 %conversion from IPT to XYZ
 imgTMO_c_IPT = ConvertIPTtoICh(imgTMO_ICh, 1);
