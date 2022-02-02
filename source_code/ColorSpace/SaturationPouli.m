@@ -35,6 +35,7 @@ function s = SaturationPouli(C, I)
 %
 %
 
-s = C ./ (sqrt(C.^2 + I.^2));
+D = sqrt(C.^2 + I.^2);
+s = C ./ D;
 
 end

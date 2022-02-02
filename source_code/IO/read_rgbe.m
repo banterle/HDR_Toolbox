@@ -32,7 +32,7 @@ fid = fopen(filename,'r');
 %is it a RGBE file?
 while(~feof(fid))
     line = fgetl(fid);
-    if(contains(line,'#?'))
+    if(rr_contains(line,'#?'))
         break;
     end
 end
@@ -51,8 +51,8 @@ while(~isempty(line))
     %Properties of the RGBE image:
     
     %Compression format
-	if(~isempty(strfind(line, 'FORMAT=')))
-       if(~isempty(strfind(line, '32-bit_rle_rgbe')))
+	if(rr_contains(line, 'FORMAT='))
+       if(rr_contains(line, '32-bit_rle_rgbe'))
            RLE = 1;
        end
     end
@@ -134,4 +134,9 @@ fclose(fid);
 
 hdr_info = struct('loaded', 1, 'exposure', exposure, 'gamma', gamma);
 
+end
+
+function ret = rr_contains(str_a, str_b)
+    lst = strfind(str_a, str_b);
+    ret = ~isempty(lst);
 end

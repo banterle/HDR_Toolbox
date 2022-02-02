@@ -35,7 +35,7 @@ if(inverse == 1)
     
     imgOut = 10.^(ConvertLinearSpace(img, mtx) - 0.001);
     
-else
+end
 
 if(inverse == 0)
     mtx1 = [1 1 1; 1 1 -1; 1 -2 0];
