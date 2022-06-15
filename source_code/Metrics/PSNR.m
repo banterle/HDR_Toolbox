@@ -1,7 +1,7 @@
-function psnr = PSNR(img_ref, img_dist, comparison_domain, max_value)
+function psnr = PSNR(img_ref, img_dist, comparison_domain, max_value, mask)
 %
 %
-%      psnr = PSNR(img_ref, img_dist, comparison_domain, max_value)
+%      psnr = PSNR(img_ref, img_dist, comparison_domain, max_value, mask)
 %
 %
 %       Input:
@@ -14,6 +14,7 @@ function psnr = PSNR(img_ref, img_dist, comparison_domain, max_value)
 %                   'log10': log base 10
 %                   'pu': perceptual uniform encoding
 %           -max_value: maximum value (in the linear domain) of the images domain
+%           -mask: a binary image for masked computations.
 %
 %       Output:
 %           -psnr: classic PSNR in dB; i.e., higher values means better quality.
@@ -48,6 +49,10 @@ if(~exist('comparison_domain', 'var'))
     comparison_domain = 'lin';
 end
 
+if(~exist('mask', 'var'))
+    mask = [];
+end
+
 bFlag = strcmp(domain, 'uint8') | strcmp(domain, 'uint16');
 
 if(bFlag && strcmp(comparison_domain, 'pu'))
@@ -65,13 +70,14 @@ end
 [img_ref, ~] = changeComparisonDomain(img_ref, comparison_domain);
 [img_dist, ~] = changeComparisonDomain(img_dist, comparison_domain);
 [max_value, bNeg] = changeComparisonDomain(max_value, comparison_domain);
+comparison_domain = '';
 
 if(max_value < 0.0)
     max_value = -max_value;
 end
 
 %compute MSE
-mse = MSE(img_ref, img_dist, bNeg);
+mse = MSE(img_ref, img_dist, bNeg, comparison_domain, mask);
 
 if(mse > 0.0)
     %compute PSNR
