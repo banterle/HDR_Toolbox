@@ -1,18 +1,21 @@
-function imgOut = NormalizeTMO(img, bRobust)
+function [out, img_min, img_max] = normalizeImg(img, img_min, img_max)
 %
-%        imgOut = NormalizeTMO(img, bRobust)
+%        [out, img_min, img_max] = normalizeImg(img, img_min, img_max)
 %
 %       
-%        Simple TMO, which divides an image by the maximum
+%        Simple TMO, which divides an image by the best exposure
 %
 %        Input:
 %           -img: input HDR image
-%           -bRobust: to enable the use of robust statistics
+%           -img_min: the minimum of img
+%           -img_max: the maximum of img
 %
 %        Output:
-%           -imgOut: tone mapped image
+%           -out: the normalized image in [0,1]
+%           -img_min: the minimum of img
+%           -img_max: the maximum of img
 % 
-%     Copyright (C) 2010-15 Francesco Banterle
+%     Copyright (C) 2010-22 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -28,25 +31,21 @@ function imgOut = NormalizeTMO(img, bRobust)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%is it a three color channels image?
-check13Color(img);
-
-if(~exist('bRobust', 'var'))
-    bRobust = 1;
+if(~exist('img_min', 'var'))
+   img_min = MaxQuart(img, 0.01);
 end
 
-%Luminance channel
-L = lum(img);
-
-if bRobust
-    [L_n, L_min, L_max] = normalizeImg(L);
-else
-    
-    [L_n, L_min, L_max] = normalizeImg(L, min(L(:)), max(L(:)));
+if(~exist('img_max', 'var'))
+   img_max = MaxQuart(img, 0.99);
 end
-    
 
-imgOut = ChangeLuminance(img, L, L_n);
-imgOut = ClampImg(imgOut, 0.0, 1.0);
+delta = img_max - img_min;
+
+out = img;
+
+if(delta > 0.0)
+    out = (img - img_min) / delta;
+    out = ClampImg(out, img_min, img_max);
+end
 
 end
