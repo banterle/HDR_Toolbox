@@ -36,16 +36,24 @@ if(~exist('img_min', 'var'))
 end
 
 if(~exist('img_max', 'var'))
-   img_max = MaxQuart(img, 0.99);
+   img_max = MaxQuart(img, 0.999);
+end
+
+if img_min < 0.0
+   img_min = min(img(:));
+end
+
+if img_max < 0.0
+   img_max = max(img(:));
 end
 
 delta = img_max - img_min;
 
-out = img;
-
 if(delta > 0.0)
     out = (img - img_min) / delta;
-    out = ClampImg(out, img_min, img_max);
+    out = ClampImg(out, 0.0, 1.0);
+else
+    out = img;
 end
 
 end
