@@ -37,15 +37,18 @@ if(inverse == 0)%forward transform
     for i=1:3
         norm = norm + img(:,:,i);
     end
+    
     imgOut(:,:,1) = img(:,:,2);
+    
     imgOut(:,:,2) = img(:,:,1) ./ (norm);
     imgOut(:,:,3) = img(:,:,2) ./ (norm);
 end
 
 if(inverse == 1)%inverse transform
-    imgOut(:,:,1) = (img(:,:,2) ./ img(:,:,3)) .* img(:,:,1);
+    Y_over_y = img(:,:,1) ./ img(:,:,3); 
+    imgOut(:,:,1) = Y_over_y .* img(:,:,2);
     imgOut(:,:,2) = img(:,:,1);
-    imgOut(:,:,3) = img(:,:,1) ./ img(:,:,3) - imgOut(:,:,1) - imgOut(:,:,2);
+    imgOut(:,:,3) = Y_over_y .* (1.0 - img(:,:,2) - img(:,:,3));
 end
 
 imgOut = RemoveSpecials(imgOut);
