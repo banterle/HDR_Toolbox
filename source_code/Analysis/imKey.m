@@ -40,14 +40,29 @@ L = lum(img);
 Lav  = logMean(L);
 
 if(bRobust > 0.0)
-    maxL = MaxQuart(L, 1 - bRobust);
-    minL = MaxQuart(L(L > 0), bRobust);
+    index = find(L > 0.0);
+    
+    if ~isempty(index)
+        minL = MaxQuart(L(index), bRobust);
+        maxL = MaxQuart(L(index), 1 - bRobust);
+    else
+        minL = 1.0;
+        maxL = 1.0;
+    end
 else
-    maxL = max(L(:));
     minL = min(L(:));
+    maxL = max(L(:));    
 end
 
-key = (log(Lav) - log(minL)) / (log(maxL) - log(minL));
+maxL = log(maxL);
+minL = log(minL);
+delta = maxL - minL;
+
+if (delta > 0.0) && (~isnan(maxL)) && (~isnan(minL)) && (~isinf(maxL)) && (~isinf(minL))
+    key = (log(Lav) - minL) / delta;
+else
+    key = -1.0;
+end
 
 end
 

@@ -27,7 +27,15 @@ function imgOut = AkyuzAbsoluteCalibration(img)
 
 L = lum(img);
 [key, ~] = imKey(img, 0.05);
-f = 10^4 * key / MaxQuart(L, 0.95);
+
+max_L_Q95 = MaxQuart(L, 0.95);
+
+if (max_L_Q95 > 0.0) && (key > 0.0)
+    f = 10^4 * key / max_L_Q95;
+else
+    f = 1.0;
+end
+
 imgOut = img * f;
 
 end
