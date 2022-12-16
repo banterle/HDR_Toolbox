@@ -40,11 +40,15 @@ gamma_inv = 1.0 / 2.2;
 
     function err = residual(c)    
         
-        tmp = ClampImg((img * c).^gamma_inv, 0.0, 1.0); 
-        L = lum(tmp);
-        tmp_percent = length(find(L >= 0.95)) / numel(L);
+        if c > 0.0
+            tmp = ClampImg((img * c).^gamma_inv, 0.0, 1.0); 
+            L = lum(tmp);
+            tmp_percent = length(find(L >= 0.95)) / numel(L);
         
-        err = abs(tmp_percent - percent);
+            err = abs(tmp_percent - percent);
+        else
+            err = 1e9;
+        end
     end
 
 exposure_start = 1.0;
