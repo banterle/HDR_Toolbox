@@ -1,6 +1,6 @@
-function [imgOut, color_wb, pos_wb] = imWhiteBalance(img, color_wb)
+function [imgOut, color_wb_out, pos_wb] = imWhiteBalance(img, color_wb)
 %
-%     [imgOut, color_wb, pos_wb] = imWhiteBalance(img, color_wb)
+%     [imgOut, color_wb_out, pos_wb] = imWhiteBalance(img, color_wb)
 %
 %     This functions crops an HDR image.
 %
@@ -11,9 +11,11 @@ function [imgOut, color_wb, pos_wb] = imWhiteBalance(img, color_wb)
 %
 %     Output:
 %       -imgOut: an output image
+%       -color_wb_out:
+%       -pos_wb:
 %
 %
-%     Copyright (C) 2016-17 Francesco Banterle
+%     Copyright (C) 2016-22 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -45,8 +47,24 @@ if(isempty(color_wb))
     close(hf);
 end
 
-scale = mean(color_wb);
-scale_wb = scale ./ color_wb;
+if isa(color_wb, 'char')
+    color_wb_out = ones(1, 1, 3);
+    switch color_wb
+        case 'gray_world'
+            color_wb_out = mean(mean(img));
+        case 'gray_world_center'
+            x = round(size(img, 2) / 2);
+            y = round(size(img, 1) / 2);
+            patchSize = round(max(size(img)) * 0.05);
+            color_wb_out = mean(mean(img( (y - patchSize):(y + patchSize), (x - patchSize):(x + patchSize), :)));
+    end
+else
+    color_wb_out = color_wb;
+end
+
+
+scale = mean(color_wb_out);
+scale_wb = scale ./ color_wb_out;
 
 imgOut = zeros(size(img));
 for i=1:size(img,3)
