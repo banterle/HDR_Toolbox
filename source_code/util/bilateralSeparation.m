@@ -108,11 +108,13 @@ try
     end
 catch exception
     disp(['BilateralSeparation:', exception.message]);
+    disp('Re-running BilateralSeparation with Importance Sampling Approximation');
+    imgFil = bilateralFilterS(img_log, [], sigma_s, sigma_r);
 end
 
 switch bilateral_domain
     case 'sigmoid'
-        Base = imgFil ./ (1 - imgFil);
+        Base = imgFil ./ (1.0 - imgFil);
         Base(imgFil <= 0.0) = 0.0;
     case 'log2'
         Base = 2.^(imgFil) - eps;
@@ -126,9 +128,12 @@ end
 
 
 %compute the detail Layer
-Detail = img;
-Detail(Base > 0.0) = RemoveSpecials(img(Base > 0.0) ./ Base(Base > 0.0));
-
 Base(Base < 0.0) = 0.0;
+
+Detail = img;
+Detail(Base > 0.0) = img(Base > 0.0) ./ Base(Base > 0.0);
+
+Base = RemoveSpecials(Base);
+Detail = RemoveSpecials(Detail);
 
 end

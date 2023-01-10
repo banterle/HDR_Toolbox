@@ -42,14 +42,16 @@ if(~exist('target_contrast', 'var'))
 end
 
 if(~exist('filter_type', 'var'))
-    filter_type = 'approx_bil_grid';
+    filter_type = 'approx_importance';
 end
 
 %compute luminance channel
 L = lum(img);
 
+sigma_s = max(size(L)) * 0.02;
+
 %separate detail and base
-[Lbase, Ldetail] = bilateralSeparation(L, -1.0, -1.0, 'log_10', filter_type);
+[Lbase, Ldetail] = bilateralSeparation(L, sigma_s, 0.4, 'log10', filter_type);
 
 eps = 1e-6;
 log_base = log10(Lbase + eps);
