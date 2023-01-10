@@ -53,62 +53,62 @@
 function output = bilateralFilter( data, edge, edgeMin, edgeMax, sigmaSpatial, sigmaRange, ...
     samplingSpatial, samplingRange )
 
-if( ndims( data ) > 2 ),
+if( ndims( data ) > 2 )
     error( 'data must be a greyscale image with size [ height, width ]' );
 end
 
-if( ~isa( data, 'double' ) ),
+if( ~isa( data, 'double' ) )
     error( 'data must be of class "double"' );
 end
 
-if ~exist( 'edge', 'var' ),
+if ~exist( 'edge', 'var' )
     edge = data;
-elseif isempty( edge ),
+elseif isempty( edge )
     edge = data;
 end
 
-if( ndims( edge ) > 2 ),
+if( ndims( edge ) > 2 )
     error( 'edge must be a greyscale image with size [ height, width ]' );
 end
 
-if( ~isa( edge, 'double' ) ),
+if( ~isa( edge, 'double' ) )
     error( 'edge must be of class "double"' );
 end
 
 inputHeight = size( data, 1 );
 inputWidth = size( data, 2 );
 
-if ~exist( 'edgeMin', 'var' ),
+if ~exist( 'edgeMin', 'var' )
     edgeMin = min( edge( : ) );
     warning( 'edgeMin not set!  Defaulting to: %f\n', edgeMin );
 end
 
-if ~exist( 'edgeMax', 'var' ),
+if ~exist( 'edgeMax', 'var' )
     edgeMax = max( edge( : ) );
     warning( 'edgeMax not set!  Defaulting to: %f\n', edgeMax );
 end
 
 edgeDelta = edgeMax - edgeMin;
 
-if ~exist( 'sigmaSpatial', 'var' ),
+if ~exist( 'sigmaSpatial', 'var' )
     sigmaSpatial = min( inputWidth, inputHeight ) / 16;
     fprintf( 'Using default sigmaSpatial of: %f\n', sigmaSpatial );
 end
 
-if ~exist( 'sigmaRange', 'var' ),
+if ~exist( 'sigmaRange', 'var' )
     sigmaRange = 0.1 * edgeDelta;
     fprintf( 'Using default sigmaRange of: %f\n', sigmaRange );
 end
 
-if ~exist( 'samplingSpatial', 'var' ),
+if ~exist( 'samplingSpatial', 'var' )
     samplingSpatial = sigmaSpatial;
 end
 
-if ~exist( 'samplingRange', 'var' ),
+if ~exist( 'samplingRange', 'var' )
     samplingRange = sigmaRange;
 end
 
-if size( data ) ~= size( edge ),
+if size( data ) ~= size( edge )
     error( 'data and edge must be of the same size' );
 end
 
@@ -124,8 +124,8 @@ downsampledWidth = floor( ( inputWidth - 1 ) / samplingSpatial ) + 1 + 2 * paddi
 downsampledHeight = floor( ( inputHeight - 1 ) / samplingSpatial ) + 1 + 2 * paddingXY;
 downsampledDepth = floor( edgeDelta / samplingRange ) + 1 + 2 * paddingZ;
 
-gridData = zeros( downsampledHeight, downsampledWidth, downsampledDepth );
-gridWeights = zeros( downsampledHeight, downsampledWidth, downsampledDepth );
+gridData = zeros( downsampledHeight, downsampledWidth, downsampledDepth);
+gridWeights = zeros( downsampledHeight, downsampledWidth, downsampledDepth);
 
 % compute downsampled indices
 [ jj, ii ] = meshgrid( 0 : inputWidth - 1, 0 : inputHeight - 1 );
@@ -150,10 +150,10 @@ dz = round( ( edge - edgeMin ) / samplingRange ) + paddingZ + 1;
 % perform scatter (there's probably a faster way than this)
 % normally would do downsampledWeights( di, dj, dk ) = 1, but we have to
 % perform a summation to do box downsampling
-for k = 1 : numel( dz ),
+for k = 1 : numel( dz )
        
     dataZ = data( k ); % traverses the image column wise, same as di( k )
-    if ~isnan( dataZ  ),
+    if ~isnan( dataZ  )
         
         dik = di( k );
         djk = dj( k );

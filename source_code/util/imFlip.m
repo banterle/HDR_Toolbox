@@ -29,7 +29,7 @@ function imgOut = imFlip(img)
 
 imgOut = img;
 
-for i=1:size(img,3)
+for i=1:size(img, 3)
     imgOut(:,:,i) = fliplr(imgOut(:,:,i));    
 end
 

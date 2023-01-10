@@ -50,8 +50,8 @@ end
 %
 %
 
-disp('Note the SVM classifier is missing, please select maxOutput carefully.');
-disp('This has to be chosen based on the content such as indoor, outdoor, daylight, etc.');
+warning(['Note the SVM classifier is missing, please select maxOutput carefully.', ...
+         'This has to be chosen based on the content such as indoor, outdoor, daylight, etc.']);
 
 %Calculate luminance
 Ld = lum(img);

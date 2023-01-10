@@ -38,19 +38,15 @@ end
 %Luminance channel
 L = lum(img);
 
-if(bRobust) %compute the max luminance
-    minValue = MaxQuart(L, 0.01);
-    maxValue = MaxQuart(L, 0.99);
+if bRobust
+    [L_n, L_min, L_max] = normalizeImg(L);
 else
-    minValue = min(L(:));
-    maxValue = max(L(:));
+    
+    [L_n, L_min, L_max] = normalizeImg(L, min(L(:)), max(L(:)));
 end
+    
 
-delta = maxValue - minValue;
-if(delta > 0.0)
-    imgOut = (img - minValue) / delta;
-end
-
+imgOut = ChangeLuminance(img, L, L_n);
 imgOut = ClampImg(imgOut, 0.0, 1.0);
 
 end

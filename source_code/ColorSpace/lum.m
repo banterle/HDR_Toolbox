@@ -6,7 +6,7 @@ function l = lum(img)
 %
 %
 %       input:
-%           img: an RGB image
+%           img: an RGB image encoded with sRGB primaries
 %
 %       output:
 %           l: luminance as XYZ color 

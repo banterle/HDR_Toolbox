@@ -91,7 +91,7 @@ end
 
 if(m_noise)%noise removal using bilateral filter
     %note that the original paper does not provide parameters for filtering
-    Lbase = bilateralFilter(L);
+    Lbase = bilateralFilter(L, [], 0.0, 1.0, 32.0, 0.01);
     Ldetail = RemoveSpecials(L ./ Lbase);
     Lexp = Ldetail .* (Lbase.^m_gamma);
 else
