@@ -98,7 +98,7 @@ try
             end
             
         case 'approx_importance'
-            imgFil = bilateralFilterS(img_log, [], sigma_s, sigma_r);   
+            imgFil = bilateralFilterSI(img_log, [], sigma_s, sigma_r);   
             
         case 'guided'           
             imgFil = imguidedfilter(img_log);  

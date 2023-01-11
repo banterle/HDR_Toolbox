@@ -94,12 +94,12 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
     int nSamples = 2 * KernelSize(sigma_s);
 
     std::mt19937 m(std::chrono::system_clock::now().time_since_epoch().count());
-    float *tmp_out = new float[channels];
-    float *tmp_cur = new float[channels];
-    float *tmp_cur_edge = new float[channels];
+    double *tmp_out = new float[channels];
+    double *tmp_cur = new float[channels];
+    double *tmp_cur_edge = new float[channels];
 
-    float sigma_s_sq_2 = sigma_s * sigma_s * 2.0;
-    float sigma_r_sq_2 = sigma_r * sigma_r * 2.0;
+    double sigma_s_sq_2 = sigma_s * sigma_s * 2.0;
+    double sigma_r_sq_2 = sigma_r * sigma_r * 2.0;
 
     int stride = height * width;
 
@@ -107,7 +107,7 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
     int tile_sq = tile * tile;
     int *x = new int [nSamples * tile_sq];
     int *y = new int [nSamples * tile_sq];
-    float C_PI_2 = C_PI * 2.0f;
+    float C_PI_2 = C_PI * 2.0;
     
     for(int i=0; i<tile; i++) {
         int tmp = i * tile;
@@ -115,12 +115,12 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
             int index = tmp + j;
             for(int k=0; k<nSamples; k++) {
 
-                float u1, u2;
-                do {
+                float u1 = -1.0f;
+                while (u1 <= 0.0f) {
                     u1 = Random(m());
-                } while(u1 < 0.0f);
+                }
 
-                u2 = Random(m());
+                float u2 = Random(m());
                 
                 float r_sq = -logf(u1) * sigma_s_sq_2;                
                 float r = sqrtf(MAX(r_sq, 0.0f)) * cosf(u2 * C_PI_2);
@@ -163,11 +163,11 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
                 //compute range weight
                 float weight = 0.0;
                 for(int c = 0; c < channels; c++) {
-                    float diff = img_edge[address_samples + c * stride] - tmp_cur_edge[c];
+                    double diff = img_edge[address_samples + c * stride] - tmp_cur_edge[c];
                     weight += diff * diff;
                 }
 
-                weight = expf(-weight / sigma_r_sq_2);
+                weight = exp(-weight / sigma_r_sq_2);
 
                 sum_weight += weight;
 
