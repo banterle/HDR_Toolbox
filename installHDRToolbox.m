@@ -109,6 +109,13 @@ try
     mex('write_exr.cpp');
 catch err    
     disp('read_exr.cpp and write_exr.cpp were not compiled');
+    mex -setup cpp;
+    try 
+        mex('read_exr.cpp');
+        mex('write_exr.cpp');
+    catch err
+        disp('read_exr.cpp and write_exr.cpp were not compiled');
+    end
 end
 
 try
@@ -116,6 +123,12 @@ try
     mex('bilateralFilterS.cpp');
 catch err
     disp('bilateralFilterS.cpp was not compiled');
+    mex -setup cpp;
+    try 
+        mex('bilateralFilterS.cpp');
+    catch err
+        disp('bilateralFilterS.cpp was not compiled');
+    end    
 end
 
 cd(str_cur);
