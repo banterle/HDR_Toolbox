@@ -48,7 +48,15 @@ if(bNegativeCheck)
     checkNegative(img_dist);
 end
 
-if(exist('comparison_domain', 'var') || ~strcmp(mask , ''))
+if(~exist('mask', 'var'))
+    mask = [];
+end
+
+if(~exist('comparison_domain', 'var'))
+   comparison_domain = '';
+end
+
+if(exist('comparison_domain', 'var') || ~strcmp(comparison_domain , ''))
     [img_ref,  ~] = changeComparisonDomain(img_ref,  comparison_domain);
     [img_dist, ~] = changeComparisonDomain(img_dist, comparison_domain);
 end
