@@ -5,8 +5,8 @@ function [mpsnr, eMax, eMin] = mPSNR(img_ref, img_dist, eMin, eMax)
 %
 %
 %       Input:
-%           -img_ref: input reference image
-%           -img_dist: input distorted image
+%           -img_ref: input HDR reference image
+%           -img_dist: input HDR distorted image
 %           -eMin: the minimum exposure for computing mPSNR. If not given it is
 %           automatically inferred.
 %           -eMax: the maximum exposure for computing mPSNR. If not given it is
