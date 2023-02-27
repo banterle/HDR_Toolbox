@@ -30,17 +30,16 @@ function [imgOut, imgGlare, PSF] = RemoveGlare( img )
 %
 %
 
-%estimating the PSF
+%estimate the PSF
 [PSF, C, hot_pixels_pos] = EstimatePSF( img );
-
 [r, c, ~] = size(img);
-Icr = imresize(img, [round(r * 256 / c), 256], 'bilinear');
+Icr = imresize(img, [round(r * 512 / c), 512], 'lanczos3');
 
-%computing the glare image
+%compute the glare image
 imgGlare = ComputeGlareImage(Icr, PSF, hot_pixels_pos, C);
 
-%upsampling the glare image
-imgGlare = imresize(imgGlare, [size(img, 1), size(img, 2)], 'bilinear');
+%upsample the glare image
+imgGlare = imresize(imgGlare, [size(img, 1), size(img, 2)], 'lanczos3');
 
 %removing glare
 imgOut = (img - imgGlare);
