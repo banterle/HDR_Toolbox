@@ -44,18 +44,13 @@ end
 
 [stack, stack_exposure] = SortStack( stack, stack_exposure, 'ascend');
 
+%find the image with most pixels in the range [0.05, 0.95]
 if(n > 2)
     vec = zeros(n - 1, 1);
     
     for i=2:n             
-        tot = 0;
-        for c=1:col
-            img = stack(:,:,c,i);
-
-            tot = tot + length(find(img > 0.05 & img < 0.95));
-        end
-        
-        vec(i - 1) = tot;
+        img = stack(:,:,:,i);
+        vec(i - 1) = length(find(img > 0.05 & img < 0.95));        
     end
 
     [~, i] = max(vec);
