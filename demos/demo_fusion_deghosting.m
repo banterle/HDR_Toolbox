@@ -7,7 +7,17 @@
 
 clear all;
 disp('0) Reading an LDR stack');
-[stack, norm_value] = ReadLDRStack('demos/stack_ghost', 'jpg', 1);
+
+folder = 'demos/stack_ghost';
+
+if ~isfolder(folder)
+   folder = 'stack_ghost';
+   output_folder = 'output';
+else
+    output_folder = 'demos/output';
+end
+
+[stack, norm_value] = ReadLDRStack(folder, 'jpg', 1);
 
 %Pence and Kautz
 disp('1) Applying fusion + deghosting operator by Pece and Kautz to images in a stack folder');
@@ -19,7 +29,7 @@ set(h, 'Name', 'Pece and Kautz exposure fusion with deghosting (no need of gamma
 GammaTMO(img_merged, 1.0, 0, 1);
 
 disp('3) Saving the tone mapped image as a PNG.');
-imwrite(img_merged, 'demos/output/hong_kong_TMO_fusion_pece_kautz.png');
+imwrite(img_merged, [output_folder, '/output/TMO_fusion_pece_kautz.png']);
 
 %Mertens et al.
 disp('4) Comparison with the Mertens et al. fusion operator');
@@ -31,4 +41,4 @@ set(h, 'Name', 'Mertens et al. exposure fusion without deghosting (no need of ga
 GammaTMO(img_merged, 1.0, 0, 1);
 
 disp('6) Saving the tone mapped image as a PNG.');
-imwrite(img_merged, 'demos/output/hong_kong_TMO_fusion_mertens.png');
+imwrite(img_merged, [output_folder, '/TMO_fusion_mertens.png']);

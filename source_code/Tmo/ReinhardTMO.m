@@ -98,6 +98,9 @@ switch pLocal
     case 'bilateral'
         L_adapt = ReinhardBilateralFiltering(Lscaled, pAlpha, pPhi);
         
+    case 'mean'
+        L_adapt = filterGaussian(Lscaled, pPhi);
+        
     otherwise
         L_adapt = Lscaled;        
 end

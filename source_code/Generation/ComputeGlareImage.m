@@ -42,7 +42,7 @@ for i=1:m
     x_p = hot_pixels_pos(1, i);
     y_p = hot_pixels_pos(2, i);
 
-    r = max(sqrt((X-x_p).^2 + (Y-y_p).^2), 2);
+    r = max(sqrt((X-x_p).^2 + (Y-y_p).^2), 1);
     value = C(1) + C(2)./r + C(3)./(r.^2) + C(4)./(r.^3);
     
     tmp_glare = zeros(size(img));
