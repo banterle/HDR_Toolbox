@@ -29,7 +29,7 @@ set(h, 'Name', 'Pece and Kautz exposure fusion with deghosting (no need of gamma
 GammaTMO(img_merged, 1.0, 0, 1);
 
 disp('3) Saving the tone mapped image as a PNG.');
-imwrite(img_merged, [output_folder, '/output/TMO_fusion_pece_kautz.png']);
+imwrite(img_merged, [output_folder, '/TMO_fusion_pece_kautz.png']);
 
 %Mertens et al.
 disp('4) Comparison with the Mertens et al. fusion operator');
