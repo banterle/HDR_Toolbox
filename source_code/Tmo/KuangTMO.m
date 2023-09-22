@@ -1,7 +1,7 @@
-function imgOut = KuangTMO(img, type_param, p_param, average_surrond_param)
+function imgOut = KuangTMO(img, type_param, p_param, average_surrond_param, bilateral_type)
 %
 %
-%       imgOut = KuangTMO(img, type_param, p_param, average_surrond_param)
+%       imgOut = KuangTMO(img, type_param, p_param, average_surrond_param, bilateral_type)
 %
 %       Input:
 %           -img: an HDR image in the RGB color space
@@ -63,6 +63,10 @@ if(~exist('average_surrond_param', 'var'))
     average_surrond_param = 'average';
 end
 
+if(~exist('bilateral_type', 'var'))
+   bilateral_type = 'approx_importance';
+end
+
 %converting from RGB to XYZ
 imgXYZ = ConvertRGBtoXYZ(img, 0);
 
@@ -74,7 +78,7 @@ minSize = min([r, c]);
 sigma_s = minSize * 0.02; %as in the original paper
 sigma_r = 0.35; %as in the original paper
 
-[imgBase, imgDetail] = bilateralSeparation(imgXYZ, sigma_s, sigma_r);
+[imgBase, imgDetail] = bilateralSeparation(imgXYZ, sigma_s, sigma_r, 'log_10', bilateral_type);
 
 %computing Chromatic adaptation: Section the 2.3 of the original paper
 img_XYZ_w = filterGaussian(imgXYZ, max([r, c]) / 2, 8);
