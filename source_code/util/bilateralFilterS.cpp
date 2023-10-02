@@ -94,9 +94,9 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
     int nSamples = 2 * KernelSize(sigma_s);
 
     std::mt19937 m(std::chrono::system_clock::now().time_since_epoch().count());
-    double *tmp_out = new float[channels];
-    double *tmp_cur = new float[channels];
-    double *tmp_cur_edge = new float[channels];
+    double *tmp_out = new double[channels];
+    double *tmp_cur = new double[channels];
+    double *tmp_cur_edge = new double[channels];
 
     double sigma_s_sq_2 = sigma_s * sigma_s * 2.0;
     double sigma_r_sq_2 = sigma_r * sigma_r * 2.0;
@@ -107,7 +107,7 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
     int tile_sq = tile * tile;
     int *x = new int [nSamples * tile_sq];
     int *y = new int [nSamples * tile_sq];
-    float C_PI_2 = C_PI * 2.0;
+    float C_PI_2 = C_PI * 2.0f;
     
     for(int i=0; i<tile; i++) {
         int tmp = i * tile;
