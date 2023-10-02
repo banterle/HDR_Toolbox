@@ -31,6 +31,7 @@
 const float C_PI = 3.141592653589793f;
 
 #define MAX(a,b) a > b ? a : b
+#define MIN(a,b) a < b ? a : b
 
 /**
  * @brief KernelSize
@@ -53,17 +54,12 @@ inline float Random(unsigned int n)
     return float(n) / 4294967295.0f;
 }
 
+/**
+ *
+ */
 inline int Clamp(int x, int a, int b)
 {
-    if(x > b) {
-        return b;
-    } else {
-        if(x < a) {
-            return a;
-        } else {
-            return x;
-        }
-    }
+    return MIN(MAX(x, a), b);
 }
 
 /**
