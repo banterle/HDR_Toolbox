@@ -31,6 +31,7 @@
 const float C_PI = 3.141592653589793f;
 
 #define MAX(a,b) a > b ? a : b
+#define MIN(a,b) a < b ? a : b
 
 /**
  * @brief KernelSize
@@ -53,17 +54,12 @@ inline float Random(unsigned int n)
     return float(n) / 4294967295.0f;
 }
 
+/**
+ *
+ */
 inline int Clamp(int x, int a, int b)
 {
-    if(x > b) {
-        return b;
-    } else {
-        if(x < a) {
-            return a;
-        } else {
-            return x;
-        }
-    }
+    return MIN(MAX(x, a), b);
 }
 
 /**
@@ -94,9 +90,9 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
     int nSamples = 2 * KernelSize(sigma_s);
 
     std::mt19937 m(std::chrono::system_clock::now().time_since_epoch().count());
-    double *tmp_out = new float[channels];
-    double *tmp_cur = new float[channels];
-    double *tmp_cur_edge = new float[channels];
+    double *tmp_out = new double[channels];
+    double *tmp_cur = new double[channels];
+    double *tmp_cur_edge = new double[channels];
 
     double sigma_s_sq_2 = sigma_s * sigma_s * 2.0;
     double sigma_r_sq_2 = sigma_r * sigma_r * 2.0;
@@ -107,7 +103,7 @@ void bilateralFilterS(double *img_in, double *img_edge, double *out, int width, 
     int tile_sq = tile * tile;
     int *x = new int [nSamples * tile_sq];
     int *y = new int [nSamples * tile_sq];
-    float C_PI_2 = C_PI * 2.0;
+    float C_PI_2 = C_PI * 2.0f;
     
     for(int i=0; i<tile; i++) {
         int tmp = i * tile;

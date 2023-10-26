@@ -1,7 +1,7 @@
 function [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_segments, BTMO_rescale)
 %
 %
-%        [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_segments)
+%        [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_segments, BTMO_rescale)
 %
 %
 %       Input:
@@ -11,7 +11,8 @@ function [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_se
 %           -BTMO_segments: a segmented image, each value in a segment is a
 %           dynamic range zone; i.e. integer values in [-6,9]. If it is not
 %           provided this will be computed with the function CreateSegments
-%           -BTMO_rescale:
+%           -BTMO_rescale: the img luminance values are display-referred to
+%           the DR37P monitor used in the experiments.
 %
 %       Output:
 %           -imgOut: the tone mapped image using the HybridTMO
@@ -22,7 +23,7 @@ function [imgOut, BTMO_segments, BTMO_which_operator] = BanterleTMO(img, BTMO_se
 %           BanterleTMO is used.
 % 
 %       This TMO is an hybrid operator which merges different
-%       Tone Mapping Operators: DragoTMO and ReinhardTMO
+%       Tone Mapping Operators: DragoTMO and ReinhardTMO.
 %
 %     Copyright (C) 2013-15  Francesco Banterle
 % 

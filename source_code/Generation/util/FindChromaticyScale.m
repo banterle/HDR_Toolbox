@@ -43,7 +43,7 @@ end
         err = sum((I_c_n - M_n).^2);
     end
 
-    opts = optimset('Display', 'none', 'TolFun', 1e-8, 'TolX', 1e-8);
+    opts = optimset('Display', 'none', 'TolFun', 1e-12, 'TolX', 1e-12);
     scale = fminsearch(@residualFunction, ones(1, l_m), opts);
 
 

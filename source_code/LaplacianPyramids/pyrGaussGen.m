@@ -1,7 +1,7 @@
-function p = pyrGaussGen(img)
+function p = pyrGaussGen(img, maxLevels)
 %
 %
-%        p = pyrGaussGen(img)
+%        p = pyrGaussGen(img, maxLevels)
 %
 %
 %        Input:
@@ -24,8 +24,20 @@ function p = pyrGaussGen(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
+if ~exist('maxLevels', 'var')
+    maxLevels = -1;
+end
+
 [r, c, ~] = size(img);
-levels = floor(log2(min(r, c)));
+
+levels_log2 = floor(log2(min(r, c)));
+
+if maxLevels < 0 
+    levels = levels_log2;
+else
+    levels = min([levels_log2, maxLevels]);
+end
+
 list = [];
 for i=1:levels
     %Detail layer
