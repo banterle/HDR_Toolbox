@@ -1,7 +1,7 @@
 function imgOut = ReinhardDevlinTMO(img, rd_m, rd_f, rd_a, rd_c, bNormalization)
 %
 %
-%      imgOut = ReinhardDevlinTMO(img, pAlpha, pWhite, pLocal, phi)
+%      imgOut = ReinhardDevlinTMO(img, rd_m, rd_f, rd_a, rd_c, bNormalization)
 %
 %
 %       Input:

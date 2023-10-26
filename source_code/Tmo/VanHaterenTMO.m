@@ -1,7 +1,7 @@
-function imgOut = VanHaterenTMO(img, pupil_area)
+function imgOut = VanHaterenTMO(img, pupil_area, bWarning)
 %
 %
-%        imgOut = VanHaterenTMO(img, pupil_area)
+%        imgOut = VanHaterenTMO(img, pupil_area, bWarning)
 %
 %
 %        Input:
@@ -34,6 +34,10 @@ function imgOut = VanHaterenTMO(img, pupil_area)
 % 	  by J. Hans Van Hateren
 %     in ACM Transaction on Graphics 2006
 %
+
+if ~exist('bWarning', 'var')
+    bWarning = 1;
+end
 
 check13Color(img);
 
@@ -78,6 +82,8 @@ Ld = ClampImg(1 - Ios / maxIos, 0, 1);
 %Changing luminance
 imgOut = ChangeLuminance(img, Lori, Ld);
 
-warning('The image does not require gamma correction.');
+if bWarning
+    warning('The image does not require gamma correction.');
+end
 
 end

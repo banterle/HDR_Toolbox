@@ -1,7 +1,7 @@
-function lstOut = pyrImg3(img, fun)
+function lstOut = pyrImg3(img, fun, maxLevels)
 %
 %
-%        lstOut = pyrImg3(img, fun)
+%        lstOut = pyrImg3(img, fun, maxLevels)
 %
 %
 %        Input:
@@ -29,8 +29,18 @@ col = size(img, 3);
 
 lstOut = [];
 
-for i=1:col
-    lstOut = [lstOut, fun(img(:,:,i))];    
+if ~exist('maxLevels', 'var')
+    maxLevels = -1;
+end
+
+if maxLevels > 0
+    for i=1:col
+        lstOut = [lstOut, fun(img(:,:,i), maxLevels)];    
+    end        
+else
+    for i=1:col
+        lstOut = [lstOut, fun(img(:,:,i))];    
+    end    
 end
 
 end
