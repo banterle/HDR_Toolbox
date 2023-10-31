@@ -80,8 +80,32 @@ L = lum(img);
 switch(sampling_mode)
     case 'histogram'
         img_tmp = img;
-        stack_exposure = 2.^ExposureHistogramSampling(img_tmp, 8, 1);
+        stack_exposure = 2.^ExposureHistogramSampling(img_tmp, 8, fstops_distance);
         
+    case 'zone'
+        L = lum(img);
+        zones = floor(log2(L + 2^-(20)));
+        zones = medfilt2(zones, [5 5]);
+        bits = max(zones(:)) - min(zones(:));
+        
+        if (bits > 3)
+            bits2 = round(bits / 2);
+            zones = round((zones / bits) * bits2);
+        end
+        
+        lst = unique(zones);
+        
+        %vis = (zones - min(zones(:)))/(max(zones(:))- min(zones(:)));
+        %imshow(vis)
+        
+        stack_exposure = [];
+        for i=1:length(lst)
+            zone_i = lst(i);
+            zone_i_m = mean(L(zones == zone_i));
+            exposure_i = 1.0 / (2 * zone_i_m);
+            stack_exposure = [stack_exposure, exposure_i];
+        end
+            
     case 'uniform'
         minL = min(L(L > 0));
         maxL = max(L(L > 0));

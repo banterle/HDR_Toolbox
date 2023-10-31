@@ -70,7 +70,7 @@ end
 
 if(~isempty(img)) %convert the HDR image into a imageStack
     checkNegative(img);
-    [imageStack, ~] = CreateLDRStackFromHDR(img, 1, 'uniform');
+    [imageStack, ~] = CreateLDRStackFromHDR(img, 1, 'zone');
     
 else
     if(isa(imageStack, 'single'))
@@ -93,6 +93,8 @@ end
 total  = zeros(r, c);
 weight = ones(r, c, n);
 for i=1:n
+    img_i = imageStack(:,:,:,i);
+    
     if(wE > 0.0)
         weightE = MertensWellExposedness(imageStack(:,:,:,i));
         weight(:,:,i) = weight(:,:,i) .* weightE.^wE;
