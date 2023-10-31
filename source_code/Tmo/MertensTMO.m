@@ -147,8 +147,8 @@ for i=1:col
 end
 
 %clamp to values in [0,1]
-min_i = min(imgOut(:))
-max_i = max(imgOut(:))
+min_i = min(imgOut(:));
+max_i = max(imgOut(:));
 imgOut = ClampImg((imgOut - min_i) / (max_i - min_i),  0.0, 1.0);
 
 if(bWarning)
