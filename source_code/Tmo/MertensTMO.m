@@ -93,8 +93,7 @@ end
 total  = zeros(r, c);
 weight = ones(r, c, n);
 for i=1:n
-    img_i = imageStack(:,:,:,i);
-    
+   
     if(wE > 0.0)
         weightE = MertensWellExposedness(imageStack(:,:,:,i));
         weight(:,:,i) = weight(:,:,i) .* weightE.^wE;
