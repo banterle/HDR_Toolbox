@@ -33,11 +33,11 @@ mtx = mtx / sum(mtx(:));
 %Convolution
 imgB = imfilter(img, mtx, 'replicate');
 
-%Downsampling
+%downsample
 [r, c] = size(img);
 L0 =  imgB(1:2:r, 1:2:c); %imresize(imgB, 0.5, 'bilinear');
 
-%Upsampling
+%upsample
 imgE = imresize(L0, [r, c], 'bilinear');
 
 %Difference between the two levels

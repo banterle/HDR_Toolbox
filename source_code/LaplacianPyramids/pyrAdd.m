@@ -27,7 +27,7 @@ function pOut = pyrAdd(pA, pB)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%checking lenght of the pyramids
+%check lenght of the pyramids
 nA = length(pA.list);
 nB = length(pA.list);
 
@@ -35,11 +35,11 @@ if(nA ~= nB)
     error('pyrAdd error: pA and pB are different size pyramids.');
 end
 
-%adding base levels
+%add base levels
 pOut.base = pA.base + pB.base;
 pOut.list = pA.list;
 
-%adding the detail of each level
+%add the detail of each level
 for i=1:nA
     pOut.list(i).detail = pA.list(i).detail + pB.list(i).detail;
 end

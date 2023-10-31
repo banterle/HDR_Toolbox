@@ -31,7 +31,7 @@ mtx = kernel' * kernel;
 mtx = mtx / sum(mtx(:));
 
 %Convolution
-imgB = imfilter(img, mtx, 'replicate');
+imgB = imfilter(img, mtx, 'symmetric');
 
 %Downsampling
 [r, c] = size(img);
