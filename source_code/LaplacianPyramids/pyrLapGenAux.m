@@ -31,11 +31,15 @@ mtx = kernel' * kernel;
 mtx = mtx / sum(mtx(:));
 
 %Convolution
-imgB = imfilter(img, mtx, 'replicate');
+imgB = imfilter(img, mtx, 0, 'same');
 
 %downsample
+[r,c] = size(img);
+r2 = round(r / 2);
+c2 = round(c / 2);
+
 [r, c] = size(img);
-L0 =  imgB(1:2:r, 1:2:c); %imresize(imgB, 0.5, 'bilinear');
+L0 = imresize(imgB, [r2, c2], 'bilinear');
 
 %upsample
 imgE = imresize(L0, [r, c], 'bilinear');
