@@ -27,8 +27,8 @@ function wp = ReinhardWhitePoint(L)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-LMin = MaxQuart(L, 0.01);
-LMax = MaxQuart(L, 0.99);
+LMin = min(L(L>0));
+LMax = max(L(:));
 
 log2Min     = log2(LMin + 1e-9);
 log2Max     = log2(LMax + 1e-9);
