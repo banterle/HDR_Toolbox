@@ -28,10 +28,10 @@ function wp = ReinhardWhitePoint(L)
 %
 
 LMin = min(L(L>0));
-LMax = max(L(:));
+LMax = max(L(L>0));
 
-log2Min     = log2(LMin + 1e-9);
-log2Max     = log2(LMax + 1e-9);
+log2Min = log2(LMin + 1e-6);
+log2Max = log2(LMax + 1e-6);
 
 wp = 1.5 * 2^(log2Max - log2Min - 5);
 
