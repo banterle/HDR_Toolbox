@@ -89,5 +89,3 @@ Please, send your pull requests to the develop branch. Requests sent to the Mast
 Contact:
 ========
 e-mail: support@advancedhdrbook.com
-
-facebook: https://www.facebook.com/pages/Advanced-High-Dynamic-Range-Imaging-Book/166905003358276
