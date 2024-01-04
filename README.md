@@ -15,8 +15,7 @@ Version: 1.1.0
 
 REFERENCE:
 ==========
-When you use the HDR Toolbox for your research, please DO NOT reference the URL of this website as many people wrongly do.
-Please reference the book in your work/papers:
+When you use the HDR Toolbox for your research, please reference the book in your work/papers:
 
 @book{Banterle:2017,
  
@@ -35,6 +34,10 @@ Please reference the book in your work/papers:
  address = {Natick, MA, USA},
  
 } 
+
+Please DO NOT reference the URL of this website as many people wrongly do.
+
+There are many papers in the HDR Deep-learning-based community using this toolbox without referencing it. This toolbox has required a lot of efforts, it is free and available to everyone, and we only ask to reference it.
 
 HOW TO INSTALL:
 ===============
