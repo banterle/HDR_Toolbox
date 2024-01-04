@@ -1,6 +1,6 @@
 function [lin_fun, gamma_param] = MannPicardCRF(stack, stack_exposure)
 %
-%       lin_fun = MannPicardCRF(stack, stack_exposure)
+%       [lin_fun, gamma_param] = MannPicardCRF(stack, stack_exposure)
 %
 %       This function computes camera response function using Mann and
 %       Picard methods.
@@ -44,18 +44,13 @@ end
 
 [stack, stack_exposure] = SortStack( stack, stack_exposure, 'ascend');
 
+%find the image with most pixels in the range [0.05, 0.95]
 if(n > 2)
     vec = zeros(n - 1, 1);
     
     for i=2:n             
-        tot = 0;
-        for c=1:col
-            img = stack(:,:,c,i);
-
-            tot = tot + length(find(img > 0.05 & img < 0.95));
-        end
-        
-        vec(i - 1) = tot;
+        img = stack(:,:,:,i);
+        vec(i - 1) = length(find(img > 0.05 & img < 0.95));        
     end
 
     [~, i] = max(vec);
@@ -73,9 +68,9 @@ k = stack_exposure(i + 1) / stack_exposure(i);
 for c=1:col
     img1 = stack(:,:,c,i);
     img2 = stack(:,:,c,i + 1);
-
+    
     try
-        f = fit(img1(:), img2(:), 'poly1');
+        f = fit(img1(img2<0.95), img2(img2<0.95), 'poly1');
 
         %
         % y = f.p1 * x + f.p2

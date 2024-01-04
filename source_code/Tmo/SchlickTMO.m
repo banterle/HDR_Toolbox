@@ -43,7 +43,7 @@ check13Color(img);
 check3Color(img);
 
 if(~exist('s_mode', 'var'))
-    s_mode = 'automatic';
+    s_mode = 'manual';
 end
 
 if(~exist('nBit', 'var'))
@@ -69,19 +69,24 @@ L = lum(img);
 LMin = min(L(L > 0.0));
 
 %compute the max luminance
-LMax = max(L(L>0.0));
+LMax = max(L(L > 0.0));
 
 %mode selection
 switch s_mode
     case 'manual'
-        p = max([p, 1]);        
+        p = max([p, 1]);
         
     case 'automatic'
         p = L0 * LMax / (2^nBit * LMin);
         
     case 'nonuniform'
-        p = L0 * LMax / (2^nBit * LMin);     
+        p = L0 * LMax / (2^nBit * LMin);   
         p = p * (1 - k + k * L / sqrt(LMax * LMin));
+
+    case 'nonuniform_bilateral'
+        p = L0 * LMax / (2^nBit * LMin);   
+        Lbil = bilateralFilter(L);
+        p = p * (1 - k + k * Lbil / sqrt(LMax * LMin));
 end
 
 %dynamic range reduction

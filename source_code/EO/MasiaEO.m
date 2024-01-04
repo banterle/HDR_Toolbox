@@ -103,8 +103,7 @@ Lexp = Lexp * maxOutput;
 imgOut = ChangeLuminance(img, L, Lexp);
 
 if(m_gamma <= 0.0)
-    warning(['m_gamma value is negative (', num2str(m_gamma)
-        ') so the image may have a false color appearance.']);
+    warning(['m_gamma value is negative (', num2str(m_gamma), ') so the image may have a false color appearance.']);
     bWarning = 1;
 end
 

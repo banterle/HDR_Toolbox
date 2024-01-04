@@ -1,17 +1,19 @@
-function imgOut = ChangeLuminance(img, Lold, Lnew)
+function imgOut = ChangeLuminance(img, Lold, Lnew, bEpsilon)
 %
-%       imgOut = ChangeLuminance(img, Lold, Lnew)
+%       imgOut = ChangeLuminance(img, Lold, Lnew, bEpsilon)
 %
 %
 %       Input:
 %           -img: input image
 %           -Lold: old luminance
 %           -Lnew: new luminance
+%           -bEpsilon: a boolean value to avoid division by zero, 
+%                      this add e=1e-6 to Lold
 %
 %       Output
 %           -imgOut: output image with Lnew luminance
 % 
-%     Copyright (C) 2013  Francesco Banterle
+%     Copyright (C) 2013-2023  Francesco Banterle
 %
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -33,10 +35,22 @@ col_new = size(Lnew, 3);
 
 imgOut = zeros(size(img));
 
+if ~exist('bEpsilon', 'var')
+    bEpsilon = 0;
+end
+
+if bEpsilon
+    Lold = Lold + 1e-6;
+end
+
 switch col_new
     case 1
-        for i=1:col
-            imgOut(:,:,i) = (img(:,:,i) .* Lnew) ./ Lold;
+        if (col == col_new)
+            imgOut = Lnew;
+        else
+            for i=1:col
+                imgOut(:,:,i) = (img(:,:,i) .* Lnew) ./ Lold;
+            end
         end
         
     case 3

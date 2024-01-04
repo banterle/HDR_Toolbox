@@ -28,18 +28,19 @@ list = pyramid.list;
 base = pyramid.base;
 
 n = length(list);
+kernel = [1, 4, 6, 4, 1];
+mtx = kernel' * kernel;
+mtx = mtx / sum(mtx(:));
 
-img=[];
 for i=1:n
     ind = n - i + 1;
     [r, c] = size(list(ind).detail);
-    if(i == 1)        
-        base = imresize(base, [r, c], 'bilinear');
-        img  = base + list(ind).detail;
-    else
-        img = imresize(img, [r, c], 'bilinear');
-        img = img + list(ind).detail;        
+    if(i == 1)      
+        img = base;
     end
+    
+    img = imresize(img, [r, c], 'bilinear');
+    img = img + list(ind).detail;        
 end
 
 end

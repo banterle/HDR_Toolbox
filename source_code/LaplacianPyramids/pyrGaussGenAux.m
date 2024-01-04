@@ -31,10 +31,10 @@ mtx = kernel' * kernel;
 mtx = mtx / sum(mtx(:));
 
 %Convolution
-imgB = imfilter(img, mtx, 'replicate');
+imgB = imfilter(img, mtx, 'symmetric');
 
 %Downsampling
 [r, c] = size(img);
-imgOut = imgB(1:2:r, 1:2:c); %imresize(imgB, 0.5, 'bilinear');
+imgOut = imresize(imgB, 0.5, 'bilinear');
 
 end

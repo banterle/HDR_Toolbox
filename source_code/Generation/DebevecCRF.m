@@ -62,7 +62,7 @@ if(isempty(stack_exposure))
 end
 
 if(~exist('smoothing_term', 'var'))
-    smoothing_term = 20;
+    smoothing_term = 128;
 end
 
 if(~exist('bNormalize', 'var'))

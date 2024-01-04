@@ -1,7 +1,7 @@
-function [imgDet, imgLum, imgRec] = HDRMonitorDriver(img, vMax)
+function [imgDet, imgLum, imgRec] = HDRMonitorDriver(img, peakMonitor, vMax)
 %
 %
-%       [imgDet, imgLum, imgRec] = HDRMonitorDriver(img, vMax)
+%       [imgDet, imgLum, imgRec] = HDRMonitorDriver(img, peakMonitor, vMax)
 %
 %
 %        Input:
@@ -38,22 +38,28 @@ if(~exist('vMax', 'var'))
     vMax = -1;
 end
 
+if(~exist('peakMonitor', 'var'))
+    peakMonitor = 3000;
+end
+
 %Computing maximum value
+L = lum(img);
+
 if((vMax > 0.0) & (vMax < 1.0))
-    maxImg = MaxQuart(img, vMax);
+    maxImg = MaxQuart(L, vMax);
 else
-    maxImg = max(img(:));
+    maxImg = max(L(:));
 end
 
 %Normalization
-if(maxImg > 1.0)
+if(maxImg > 0.0)
     img = img / maxImg;
 end
 
 img = ClampImg(img, 0.0, 1.0);
 
 %Luminance channel
-L = sqrt(lum(img));
+L = sqrt(L);
 
 %32x32 Gaussian Filter. In the general case the PSF of the projector has to
 %be measured and employed to have a precise result.
@@ -88,6 +94,6 @@ for i=1:col
     imgRec(:,:,i) = maxImg * (imgDet(:,:,i).^2.2) .* (imgLum.^2.2);
 end
 
-imgRec = RemoveSpecials(imgRec);
+imgRec = peakMonitor * RemoveSpecials(imgRec);
 
 end
