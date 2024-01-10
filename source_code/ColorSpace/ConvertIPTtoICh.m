@@ -5,7 +5,7 @@ function imgOut = ConvertIPTtoICh(img, inverse)
 %
 %        Input:
 %           -img: image to convert from IPT to ICh or from ICh to IPT.
-%           -inverse: takes as values 0 or 1. If it is set to 1 the
+%           -inverse: takes as values 0 or 1. If it is set to 0 the
 %                     transformation from IPT to ICh is applied, otherwise
 %                     the transformation from IChto IPT.
 %
