@@ -1,4 +1,4 @@
-function mean_hue_diff = distHue(img_dst, img_ref)
+function [mean_hue_diff, deltaH] = distHue(img_dst, img_ref)
 %
 %       mean_hue_diff = distHue(img_dst, img_ref)
 %
@@ -10,6 +10,7 @@ function mean_hue_diff = distHue(img_dst, img_ref)
 %
 %       output:
 %         - mean_hue_diff: mean hue difference.
+%         - deltaH:
 %
 %
 %     Copyright (C) 2023  Francesco Banterle
@@ -56,12 +57,12 @@ img_dst_IPT = ConvertXYZtoIPT(img_dst_XYZ, 0);
 img_ref_ICh = ConvertIPTtoICh(img_ref_IPT, 0);
 img_dst_ICh = ConvertIPTtoICh(img_dst_IPT, 0);
 
-deltaH = abs(img_dst_ICh(:,:,3) - img_ref_ICh(:,:,3));
+deltaH = img_dst_ICh(:,:,3) - img_ref_ICh(:,:,3);
 %deltaC = abs(img_dst_ICh(:,:,2) - img_ref_ICh(:,:,2));
 %deltaI = abs(img_dst_ICh(:,:,1) - img_ref_ICh(:,:,1));
 %mean_C_diff = mean(deltaC(:));
 %mean_I_diff = mean(deltaI(:));
 
-mean_hue_diff = mean(deltaH(:));
+mean_hue_diff = mean(abs(deltaH(:)));
 
 end

@@ -39,14 +39,19 @@ if(~exist('tue', 'var'))
     tue =   7 / 255;
 end
 
-[r, c, ~] = size(img);
-
-over_exp = max(img, [], 3);
-under_exp = min(img, [], 3);
-    
+[r, c, col] = size(img);
 mask = zeros(r, c);
-mask(over_exp >= toe) = 1;
-mask(under_exp <= tue) = -1;
+
+if col > 1
+    L = lum(img);
+    mask(L >= toe) = 1;
+    mask(L <= tue) = -1;    
+else
+    mask(img >= toe) = 1;
+    mask(img <= tue) = -1;  
+end
+
+
 
 nPixels = r * c;
 pO = length(find(mask > 0.5))  / nPixels;
