@@ -1,15 +1,12 @@
-function deltaE = distCIELAB(img_dst, img_ref)
+function deltaE = distCIELAB(img_dst, img_dst)
 %
 %       deltaE = distCIELAB(img_dst, img_ref)
 %
 %       This function assumes REC.709 primaries for the RGB color space
 %
 %        Input:
-%           -img: image to convert from linear RGB to sRGB or from sRGB to
-%                 linear RGB.
-%           -inverse: takes as values 0 or 1. If it is set to 0 the
-%                     transformation from linear RGB to sRGB is applied,
-%                     otherwise the transformation from sRGB linear RGB.
+%           -img_dst: linear RGB image with sRGB color space. 
+%           -img_dst: linear RGB image with sRGB color space.
 %
 %        Output:
 %           -imgOut: converted image in sRGB or linear RGB.
@@ -29,9 +26,6 @@ function deltaE = distCIELAB(img_dst, img_ref)
 %     You should have received a copy of the GNU General Public License
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-
-img_dst = ConvertRGBtosRGB(img_dst, 1);
-img_ref = ConvertRGBtosRGB(img_ref, 1);
 
 img_dst = ConvertRGBtoXYZ(img_dst, 0);
 img_ref = ConvertRGBtoXYZ(img_ref, 0);
