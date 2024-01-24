@@ -33,6 +33,6 @@ delta_hue = abs(delta_hue + pi);
 delta_hue(delta_hue > pi) = pi - (delta_hue(delta_hue > pi) - pi);
 delta_hue = pi - delta_hue;
 
-imgOut = FalseColor(delta_hue, 'lin', 1, -1, 1, 'Delta Hue', 0, 'Delta Hue');
+imgOut = FalseColor(delta_hue, 'lin', 1, -1, pi, 'Delta Hue', 0, 'Delta Hue');
 
 end
