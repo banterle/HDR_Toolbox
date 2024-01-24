@@ -27,10 +27,12 @@ function imgOut = showHueDiff(img_dst, img_ref)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-[d, delta_hue] = distHue(img_dst, img_ref);
+[~, delta_hue] = distHue(img_dst, img_ref);
 
-delta_hue(delta_hue > (2 * pi)) = delta_hue(delta_hue > (2 * pi)) - 2*pi;
-delta_hue = abs(delta_hue);
+delta_hue = abs(delta_hue + pi);
+delta_hue(delta_hue > pi) = pi - (delta_hue(delta_hue > pi) - pi);
+delta_hue = pi - delta_hue;
+
 imgOut = FalseColor(delta_hue, 'lin', 1, -1, 1, 'Delta Hue', 0, 'Delta Hue');
 
 end
