@@ -31,6 +31,6 @@ function imgOut = showHueDiff(img_dst, img_ref)
 
 delta_hue(delta_hue > (2 * pi)) = delta_hue(delta_hue > (2 * pi)) - 2*pi;
 delta_hue = abs(delta_hue);
-imgOut = FalseColor(delta_hue, 'lin', 1, -1, 1, 'Delta Hue', 0, 'Delta Hue');
+imgOut = FalseColor(delta_hue, 'lin', 1, pi, 1, 'Delta Hue', 0, 'Delta Hue');
 
 end
