@@ -1,4 +1,4 @@
-function deltaE = distCIELAB(img_dst, img_dst)
+function deltaE = distCIELAB(img_dst, img_ref)
 %
 %       deltaE = distCIELAB(img_dst, img_ref)
 %

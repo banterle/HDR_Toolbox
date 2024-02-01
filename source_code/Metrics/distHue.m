@@ -1,6 +1,6 @@
-function [mean_hue_diff, deltaH] = distHue(img_dst, img_ref)
+function [mean_hue_diff, delta_hue] = distHue(img_dst, img_ref)
 %
-%       mean_hue_diff = distHue(img_dst, img_ref)
+%       [mean_hue_diff, delta_hue] = distHue(img_dst, img_ref)
 %
 %       This function outputs hue differences.
 %
@@ -57,12 +57,12 @@ img_dst_IPT = ConvertXYZtoIPT(img_dst_XYZ, 0);
 img_ref_ICh = ConvertIPTtoICh(img_ref_IPT, 0);
 img_dst_ICh = ConvertIPTtoICh(img_dst_IPT, 0);
 
-deltaH = img_dst_ICh(:,:,3) - img_ref_ICh(:,:,3);
-%deltaC = abs(img_dst_ICh(:,:,2) - img_ref_ICh(:,:,2));
-%deltaI = abs(img_dst_ICh(:,:,1) - img_ref_ICh(:,:,1));
-%mean_C_diff = mean(deltaC(:));
-%mean_I_diff = mean(deltaI(:));
+delta_hue = img_dst_ICh(:,:,3) - img_ref_ICh(:,:,3);
 
-mean_hue_diff = mean(abs(deltaH(:)));
+delta_hue = abs(delta_hue + pi);
+delta_hue(delta_hue > pi) = pi - (delta_hue(delta_hue > pi) - pi);
+delta_hue = (pi - delta_hue) / pi;
+
+mean_hue_diff = mean(abs(delta_hue(:)));
 
 end
