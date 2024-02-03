@@ -1,12 +1,14 @@
-function imgTMO_c = ColorCorrectionPouli(imgHDR, imgTMO)
+function imgTMO_c = ColorCorrectionPouli(imgHDR, imgTMO, bClampTMO)
 %
-%       imgTMO_c = ColorCorrectionPouli(imgHDR, imgTMO)
+%       imgTMO_c = ColorCorrectionPouli(imgHDR, imgTMO, bClampTMO)
 %
 %       This function saturates/desaturates colors in an imgTMO
 %
 %       input:
 %         - imgHDR: an HDR image in RGB color space.
 %         - imgTMO: a tone mapped version of imgHDR in a linear RGB color space.
+%         - bClampTMO: enables normalization for the tone mapped image. By
+%         default this is disabled.
 %
 %       output:
 %         - imgTMO_c: imgTMO with color correction in a linear RGB color
@@ -38,6 +40,10 @@ if(~isSameImage(imgHDR, imgTMO))
     error('ERROR: imgHDR and imgTMO have different spatial resolutions.');
 end
 
+if(~exist('bClampTMO', 0))
+    bClampTMO = 0;
+end
+
 check3Color(imgHDR);
 
 checkNegative(imgTMO);
@@ -48,10 +54,10 @@ max_TMO = max(imgTMO(:));
 max_HDR = max(imgHDR(:));
 imgHDR = imgHDR / max_HDR;
 
-if(max_TMO > 1.0)
-   imgTMO = ClampImg(imgTMO, 0.0, 1.0);
-   max_TMO = 1.0;
+if (bClampTMO && (max_TMO > 1.0))
+    max_TMO = 1.0;
 end
+
 imgTMO = imgTMO / max_TMO;
 
 %conversion from RGB to XYZ
@@ -86,7 +92,9 @@ imgTMO_c_IPT = ConvertIPTtoICh(imgTMO_ICh, 1);
 %conversion from IPT to LMS
 imgTMO_c_XYZ = ConvertXYZtoIPT(imgTMO_c_IPT, 1);
 %conversion from XYZ to RGB
-imgTMO_c = RemoveSpecials(ConvertRGBtoXYZ(imgTMO_c_XYZ, 1)) * max_TMO;
+imgTMO_c = RemoveSpecials(ConvertRGBtoXYZ(imgTMO_c_XYZ, 1));
+
+imgTMO_c =  imgTMO_c * max_TMO;
 imgTMO_c(imgTMO_c < 0.0) = 0.0;
 
 end
