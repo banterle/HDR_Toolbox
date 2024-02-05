@@ -1,7 +1,7 @@
-function alpha = ReinhardAlpha(L)
+function alpha = ReinhardAlpha(L, delta)
 %
 %
-%      alpha = ReinhardAlpha(L)
+%      alpha = ReinhardAlpha(L, delta)
 %
 %       This function estimates the exposure, \alpha, for ReinhardTMO
 %
@@ -27,13 +27,17 @@ function alpha = ReinhardAlpha(L)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
+if(~exist('delta', 'var'))
+    delta = 1e-6;
+end
+
 LMin = MaxQuart(L, 0.01);
 LMax = MaxQuart(L, 0.99);
 
-log2Min     = log2(LMin + 1e-9);
-log2Max     = log2(LMax + 1e-9);
+log2Min     = log2(LMin + delta);
+log2Max     = log2(LMax + delta);
 logAverage  = logMean(L);
-log2Average = log2(logAverage + 1e-9);
+log2Average = log2(logAverage + delta);
 
 alpha = 0.18*4^((2.0*log2Average - log2Min - log2Max)/( log2Max - log2Min));
 

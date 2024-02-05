@@ -1,7 +1,7 @@
-function Lav = logMean(img)
+function Lav = logMean(img, delta)
 %
 %
-%        Lav = logMean(img)
+%        Lav = logMean(img, delta)
 %
 %       This function computes the geometric mean.
 %
@@ -27,7 +27,10 @@ function Lav = logMean(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-delta = 1e-6;
+if(~exist('delta', 'var'))
+    delta = 1e-6;
+end
+
 img_delta = log(img + delta);
 
 Lav = exp(mean(img_delta(:)));

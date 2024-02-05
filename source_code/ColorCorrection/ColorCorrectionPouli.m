@@ -40,7 +40,7 @@ if(~isSameImage(imgHDR, imgTMO))
     error('ERROR: imgHDR and imgTMO have different spatial resolutions.');
 end
 
-if(~exist('bClampTMO', 0))
+if(~exist('bClampTMO','var'))
     bClampTMO = 0;
 end
 
