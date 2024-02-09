@@ -84,7 +84,7 @@ switch(sampling_mode)
         
     case 'zone'
         L = lum(img);
-        zones = floor(log2(L + 2^-(20)));
+        zones = floor(log2(L + 2^(-20)));
         zones = medfilt2(zones, [5 5]);
         bits = max(zones(:)) - min(zones(:));
         

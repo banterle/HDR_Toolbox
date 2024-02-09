@@ -1,4 +1,4 @@
-function [imgOut, pAlpha] = ReinhardRobustTMO(img, pAlpha)
+function [imgOut, pAlpha, Lwa] = ReinhardRobustTMO(img, pAlpha, Lwa)
 %
 %
 %      [imgOut, pAlpha] = ReinhardRobustTMO(img, pAlpha)
@@ -42,7 +42,9 @@ Lmax 	= MaxQuart(L, 0.99);
 %clamp luminance using percentiles; i.e., 1-st and 99-th.
 L_c = ClampImg(L, Lmin, Lmax);
 
-Lwa = logMean(L_c, delta);
+if (~exist('Lwa', 'var'))
+    Lwa = logMean(L_c, delta);
+end
 
 if (~exist('pAlpha', 'var'))
     pAlpha = ReinhardAlpha(L_c, delta);
