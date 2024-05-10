@@ -52,7 +52,9 @@ gamma_inv = 1.0 / 2.2;
     end
 
 exposure_start = 1.0;
-exposure_value = fminsearch(@residual, exposure_start, getOpts);
+opts = optimset('Display','iter','TolFun', 1e-9, 'TolX', 1e-9, 'MaxIter', 200, 'MaxFunEvals', 2000);
+
+exposure_value = fminsearch(@residual, exposure_start, opts);
 
 imgOut = ClampImg(img * exposure_value, 0.0, 1.0);
 
