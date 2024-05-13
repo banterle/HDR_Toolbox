@@ -34,6 +34,8 @@ function [angle, check] = WardSimpleRotAux(img1, img2, rect)
 maxDivergence = 0.005;
 
 %First block
+rect(2) = min([r,rect(2)]);
+rect(4) = min([c,rect(4)]);
 r_img1  = img1(rect(1):rect(2),rect(3):rect(4),:);
 r_img2  = img2(rect(1):rect(2),rect(3):rect(4),:);
 r1_shift = WardGetExpShift(r_img1, r_img2);
