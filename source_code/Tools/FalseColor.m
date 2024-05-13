@@ -1,4 +1,4 @@
-function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_figure, FC_title, FC_lin, FC_title_color_map)
+function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LRange, FC_figure, FC_title, FC_lin, FC_title_color_map)
 %
 %
 %       [imgOut, FC_MAX_L] = FalseColor(img, compress, FC_Vis, LMax)
@@ -22,7 +22,7 @@ function [imgOut, FC_MAX_L] = FalseColor(img, FC_compress, FC_Vis, FC_LMax, FC_f
 %           -FC_Vis: a boolean parameter. If it is set to 1, it will show.
 %           Default values is 1, so the image will visualized
 %           the image as a complete figure including the visualization bar
-%           -FC_LMax: the maximum luminance for the color re-mapping functions.
+%           -FC_LRange: the minimum and maximum luminance for the color re-mapping functions.
 %               This needs to be used when creating false color images with the same scale. 
 %           -FC_figure: index for the figure
 %           -FC_title: title for the false color window
@@ -81,21 +81,25 @@ end
 LMin = min(L(:));
 
 %maximum luminance
-if(~exist('FC_LMax', 'var'))
+if(~exist('FC_LRange', 'var'))
     LMax = max(L(:));
 else
-    if(FC_LMax < 0)
+    if(isempty(FC_LRange))
         LMax = max(L(:));
     else
-        tLMax = max(L(:));
-        if(FC_LMax < tLMax)
-            LMax = tLMax;
-        else
-            LMax = FC_LMax - LMin;
-        end
+        %tLMax = max(L(:));
+
+        %if(FC_LMax < tLMax)
+        %    LMax = tLMax;
+        %else
+        %    LMax = FC_LMax - LMin;
+        %end
+        LMin = FC_LRange(1);
+        LMax = FC_LRange(2);
     end
 end
 
+FC_MIN_L = LMin;
 FC_MAX_L = LMax;
 
 %luminance compression
@@ -103,28 +107,28 @@ epsilon = 1e-6; %for avoiding singularities
 switch FC_compress
     case 'log2'
         L = log2(L + epsilon);
-        LMax = log2(LMax + epsilon);
         LMin = log2(LMin + epsilon);   
+        LMax = log2(LMax + epsilon);
         
     case 'log'
         L = log(L + epsilon);    
-        LMax = log(LMax + epsilon);
         LMin = log(LMin + epsilon);
+        LMax = log(LMax + epsilon);
         
     case 'log10'
         L = log10(L + epsilon);
-        LMax = log10(LMax + epsilon);
         LMin = log10(LMin + epsilon);
+        LMax = log10(LMax + epsilon);
         
     case 'sigmoid'
         L = (L ./ (L + 1.0)).^(1.0 / 2.2);
-        LMax = (LMax ./ (LMax + 1.0)).^(1.0 / 2.2);
         LMin = (LMin ./ (LMax + 1.0)).^(1.0 / 2.2);
+        LMax = (LMax ./ (LMax + 1.0)).^(1.0 / 2.2);
         
     otherwise
 end
 
-%creating ticks for the visualization
+%create ticks for the visualization
 if(FC_Vis)
     delta = LMax - LMin;
     yticks = LMin:(delta / 4):LMax;
