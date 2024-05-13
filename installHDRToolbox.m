@@ -20,7 +20,7 @@
 disp('Installing the HDR Toolbox...');
 
 folder = cellstr('Alignment');
-folder = cellstr('Analysis');
+folder = [folder, cellstr('Analysis')];
 folder = [folder, cellstr('Alignment/util')];
 folder = [folder, cellstr('BatchFunctions')];
 folder = [folder, cellstr('ColorCorrection')];
