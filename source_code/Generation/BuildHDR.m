@@ -213,7 +213,7 @@ if(strcmp(merge_type, 'log') == 1)
     imgOut = exp(imgOut);
 end
 
-%checking for saturated pixels
+%check for saturated pixels
 saturation = 1e-4;
 
 if(~isempty(totWeight <= saturation))
