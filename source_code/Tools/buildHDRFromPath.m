@@ -30,7 +30,7 @@ if ~isfolder(path_images)
 end
 
 bSame = 0;
-if path_crf == "" 
+if (strcmp(path_crf, "") == 0) 
     if ~isfolder(path_crf)
         error('path_images is not a folder');
     end
@@ -46,6 +46,7 @@ stack_exposure = ReadLDRStackInfo(path_images, format);
 if bSame == 1
     [lin_fun, ~] = DebevecCRF(stack, stack_exposure, 256);
 else
+    disp(path_crf);
     [stack_crf, ~] = ReadLDRStack(path_crf, format, 1);
     stack_crf_exposure = ReadLDRStackInfo(path_crf, format);
     
