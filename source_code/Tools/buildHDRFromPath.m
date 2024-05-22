@@ -1,7 +1,7 @@
-function imgHDR = buildHDRFromPath(path_images, path_crf)
+function imgHDR = buildHDRFromPath(path_images, path_crf, path_out)
 %
 %
-%        imgHDR = buildHDRFromPath(path_images, path_crf)
+%        imgHDR = buildHDRFromPath(path_images, path_crf, path_out)
 %
 %        This builds a HDR image from path_images, if we have a color
 %        checker for calibrating the CRF please set it to
@@ -55,5 +55,7 @@ end
 
 %build the HDR image
 imgHDR = BuildHDR(stack, stack_exposure, 'LUT', lin_fun, 'Deb97', 'log');
+
+hdrimwrite(imgHDR, path_out);
 
 end
