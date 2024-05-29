@@ -1,7 +1,7 @@
-function imgHDR = buildHDRFromPath(path_images, path_crf, path_out)
+function buildHDRFromPathManyFolders(path_stacks, path_crf, path_out)
 %
 %
-%        imgHDR = buildHDRFromPath(path_images, path_crf, path_out)
+%        buildHDRFromPathManyFolders(path_stacks, path_crf, path_out)
 %
 %        This builds a HDR image from path_images, if we have a color
 %        checker for calibrating the CRF please set it to
@@ -23,35 +23,21 @@ function imgHDR = buildHDRFromPath(path_images, path_crf, path_out)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-format = 'jpg';
+lst = dir([path_stacks, '/*']);
 
-if ~isfolder(path_images)
-    error('path_images is not a folder');
-end
+path_out_full = [path_stacks, '/', path_out];
+mkdir(path_out_full)
 
-bSame = strcmp(path_crf, "");
+for i= 1:length(lst)
+    name = lst(i).name;
 
-%read data for stack
-[stack, ~] = ReadLDRStack(path_images, format, 1);
-stack_exposure = ReadLDRStackInfo(path_images, format);
-
-%compute the crf
-if bSame == 1
-    [lin_fun, ~] = DebevecCRF(stack, stack_exposure, 256);
-else
-    if isfolder(path_crf)
-        [stack_crf, ~] = ReadLDRStack(path_crf, format, 1);
-        stack_crf_exposure = ReadLDRStackInfo(path_crf, format);
-    
-        [lin_fun, ~] = DebevecCRF(stack_crf, stack_crf_exposure, 256);
-    else
-        lin_fun = textread(path_crf);
+    path_images_full = [path_stacks, '/', name];
+    path_images_full = strrep(path_images_full, '//', '/');
+    if isfolder(path_images_full)
+        if (strcmp(name, '.') == 0) && (strcmp(name, '..') == 0)
+            buildHDRFromPath(path_images_full, path_crf, [path_out_full, '/', name, '.hdr']);
+        end
     end
 end
-
-%build the HDR image
-imgHDR = BuildHDR(stack, stack_exposure, 'LUT', lin_fun, 'Deb97', 'log');
-
-hdrimwrite(imgHDR, path_out);
 
 end

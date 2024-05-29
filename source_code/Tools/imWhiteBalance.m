@@ -39,8 +39,8 @@ end
 if(isempty(color_wb))
     patchSize = 8;
     
-    hf = figure(4001);
-    imshow(img);
+    hf = figure();
+    imshow(ReinhardRobustTMO(img).^(1.0/2.2));
     [x,y,button] = ginput(1);
     color_wb = mean(mean(img( (y - patchSize):(y + patchSize), (x - patchSize):(x + patchSize), :)));
     pos_wb = [x y];    
