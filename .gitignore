@@ -9,3 +9,5 @@ source_code/Tools/test.png
 source_code/.DS_Store
 source_code/Metrics/.DS_Store
 .DS_Store
+*.mexmaca64
+*.exr
