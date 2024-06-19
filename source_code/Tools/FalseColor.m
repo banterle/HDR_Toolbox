@@ -157,11 +157,11 @@ L = L.^(1.0 / contrast);
 %Create a color map
 n_bit = 8;
 res = 2^n_bit;
-color_map = colormap(jet(res));
+color_map = jet(res);
 %color_map = ldrimread('fc_colormap.png');
 
 
-%Coloring using the colormap
+%Color using the colormap
 L = ClampImg(round(L * res), 1, res);
 imgOut = ind2rgb(L, color_map);
 
