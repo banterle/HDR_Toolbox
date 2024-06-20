@@ -73,7 +73,7 @@ ext  = fileExtension(filenameOutput);
 bVideo = 0;
 writerObj = 0;
 
-if(strcmp(ext, 'avi') == 1 | strcmp(ext, 'mp4') == 1)
+if(strcmp(ext, 'avi') == 1 || strcmp(ext, 'mp4') == 1)
     bVideo = 1;
     writerObj = VideoWriter(filenameOutput, tmo_video_profile);
     writerObj.FrameRate = hdrv.FrameRate;
@@ -81,7 +81,7 @@ if(strcmp(ext, 'avi') == 1 | strcmp(ext, 'mp4') == 1)
     open(writerObj);
 end
 
-hdrv = hdrvopen(hdrv, 'r');
+hdrv = hdrvopen(hdrv);
 
 disp('Tone Mapping...');
 
@@ -91,11 +91,11 @@ for i=1:hdrv.totalFrames
     disp(['Processing frame ', num2str(i)]);
     [frame, hdrv] = hdrvGetFrame(hdrv, i);
         
-    %Only physical values
+    %only physical values allowed from this point
     frame = RemoveSpecials(frame);
     frame(frame < 0) = 0;
      
-    %computing statistics for the current frame
+    %compute statistics for the current frame
     L = lum(frame);
     Lav_cur = logMean(L);
    
@@ -123,9 +123,10 @@ for i=1:hdrv.totalFrames
         imwrite(frameOut, [name, sprintf('%.10d',i), '.', ext]);
     end
     
-    %updating for the next frame
+    %update for the next frame
     Lav_prev = Lav;
 end
+
 disp('OK');
 
 if(bVideo)

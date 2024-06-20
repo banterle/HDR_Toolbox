@@ -27,7 +27,7 @@ function hdrv = hdrvread(filename)
 
 hdrv = [];
 
-if(isdir(filename))
+if(isfolder(filename))
     if(filename(end) == '/')
        filename(end) = []; 
     end
