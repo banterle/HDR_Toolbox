@@ -115,6 +115,8 @@ for i=1:hdrv.totalFrames
         frameOut = GammaTMO(frameOut, tmo_gamma, 0, 0);
     end
     
+    frameOut = ColorCorrection(frameOut, 0.9);
+    
     frameOut = ClampImg(frameOut, 0.0, 1.0);
         
     if(bVideo)

@@ -120,7 +120,7 @@ for i=1:hdrv.totalFrames
         %compute CDF's histogram 
         [histo, bound, ~] = HistogramHDR(L, 256, 'log10', [], 1);  
         histo_cdf = cumsum(histo);
-        histo_cdf = histo_cdf/max(histo_cdf(:));
+        histo_cdf = histo_cdf / max(histo_cdf(:));
         [~, ind] = min(abs(histo_cdf - beta_clamping));
         maxL = 10^(ind * (bound(2) - bound(1)) / 256 + bound(1));
 
