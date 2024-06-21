@@ -7,7 +7,7 @@ function [Base, Detail] = bilateralSeparation(img, sigma_s, sigma_r, bilateral_d
 %       Input:
 %           -img: input image
 %           -sigma_r: range sigma
-%           -sigma_s: spatial sigmatmp
+%           -sigma_s: spatial sigma
 %           -bilateral_domain: domain of the values' computations
 %               'linear'
 %               'sigmoid'
