@@ -17,23 +17,17 @@ REFERENCE:
 ==========
 When you use the HDR Toolbox for your research, please reference the book in your work/papers:
 
-@book{Banterle:2017,
- 
+```
+@book{Banterle:2017, 
  author = {Banterle, Francesco and Artusi, Alessandro and Debattista, Kurt and Chalmers, Alan},
- 
  title = {Advanced High Dynamic Range Imaging (2nd Edition)},
- 
  year = {2017},
- 
  month={July},
- 
  isbn = {9781498706940},
- 
  publisher = {AK Peters (CRC Press)},
- 
  address = {Natick, MA, USA},
- 
-} 
+}
+```
 
 Please DO NOT reference the URL of this website as many people wrongly do.
 
