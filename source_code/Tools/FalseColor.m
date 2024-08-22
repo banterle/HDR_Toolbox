@@ -166,7 +166,6 @@ L = ClampImg(round(L * res), 1, res);
 imgOut = ind2rgb(L, color_map);
 
 if(FC_Vis)%Visualization  
-    close(FC_figure);
     h = figure(FC_figure);
     axes1 = axes('Parent', h);
     axis off

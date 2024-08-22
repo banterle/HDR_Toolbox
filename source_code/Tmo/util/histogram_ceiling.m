@@ -29,17 +29,17 @@ function H = histogram_ceiling(H, k)
 %
 
 tolerance = sum(H) * 0.025;
-trimmings = 0;
-val = 1;
+trimmings = tolerance + 1;
+bFlag = 1;
 n = length(H);
 
 trimmed_vec = [];
 
-while((trimmings <= tolerance) & val)
+while((trimmings > tolerance) && bFlag)
     trimmings = 0;
     T = sum(H);
     if(T < tolerance)
-        val = 0;
+        bFlag = 0;
     else
         ceiling = T * k;
         bTrimmed = 0;
@@ -57,10 +57,10 @@ while((trimmings <= tolerance) & val)
         b1 = (trimmed_vec(end) == 0);
         b2 = (trimmed_vec(end - 1) == 0);
         if(b1 & b2)
-            val = 0;
+            bFlag = 0;
         end
     end
-    
+ 
 end
 
 end
