@@ -49,9 +49,15 @@ switch comparison_domain
         data_out  = log10(data_in);
         bNeg = 0;         
         
-    case 'pu'
+    case 'pu08'
         L_data = lum(data_in);
         data_out = pu2_encode(L_data);
+        bNeg = 0;
+
+    case 'pu21'
+        L_data = lum(data_in);
+        pu = pu21_encoder();
+        data_out = pu.encode(L_data);
         bNeg = 0;
 
     otherwise

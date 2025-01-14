@@ -12,7 +12,8 @@ function psnr = PSNR(img_ref, img_dist, comparison_domain, max_value, mask)
 %                   'log2': log base 2
 %                   'log': natural logarithm
 %                   'log10': log base 10
-%                   'pu': perceptual uniform encoding
+%                   'pu08': perceptual uniform encoding
+%                   'pu21': perceptual uniform encoding
 %           -max_value: maximum value (in the linear domain) of the images domain
 %           -mask: a binary image for masked computations.
 %
