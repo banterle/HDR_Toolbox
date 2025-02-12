@@ -14,9 +14,9 @@
 
 clear all;
 
-name_folder = 'demos/stack_alignment';
+name_folder = 'demos/stack';
 if ~isfolder(name_folder)
-    name_folder = 'stack_alignment';
+    name_folder = 'stack';
     output_folder = 'output';
 else
     output_folder = 'demos/output';

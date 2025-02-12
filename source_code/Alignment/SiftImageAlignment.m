@@ -50,129 +50,118 @@ function [imgOut, H] = SiftImageAlignment(img1, img2, maxIterations)
 %   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %
 
-if(~exist('vl_colsubset') || ~exist('vl_sift') || ~exist('vl_ubcmatch'))
-    error('This function needs VL Feat. Please download it from http://www.vlfeat.org/');
-end
-
 if(~exist('maxIterations', 'var'))
-    maxIterations = 64;
+    maxIterations = 1000;
 end
 
 if(maxIterations < 1)
-    maxIterations = 64;
+    maxIterations = 1000;
 end
 
-%converting into luminance
-ratio_2_1 = RemoveSpecials(img2 ./ img1);
-img1 = img1 * mean(ratio_2_1(:));
+im1g = single(lum(img1));
+im2g = single(lum(img2));
 
-try
-    im1g = single(lum(img1));
-    im2g = single(lum(img2));
-catch e
-    disp(e);
-    im1g = single(lum(img1));
-    im2g = single(lum(img2));
+m1 = mean(im1g(:));
+m2 = mean(im2g(:));
+
+if (m1 <= 0.0) || (m2 <= 0.0)
+    error('One of the two images has only 0 or negative values.')
 end
 
-%do we have out of range values?
-max_1 = max(im1g(:));
-max_2 = max(im2g(:));
-
-if(max_1 > 1.0 || max_2 > 1.0)
-    min_1 = min(im1g(:));
-    min_2 = min(im2g(:));
-    
-    r_1 = max_1 / min_1;
-    r_2 = max_2 / min_2;
-    
-    if(r_1 > 1000 || r_2 > 1000)
-        Lwa = max([logMean(im1g), logMean(im2g)]);
-        im1g = im1g / Lwa;
-        im2g = im2g / Lwa;
-
-        im1g = im1g ./ (im1g + 1.0);
-        im2g = im2g ./ (im2g + 1.0);
-    else
-        max_val = max([max_1, max_2]);
-        im1g = im1g / max_val;
-        im2g = im2g / max_val;
-        
-    end   
+if(m1 > m2)
+    im2g = ClampImg(im2g * m1 / m2, 0, 1);
+else
+    im1g = ClampImg(im1g * m2 / m1, 0, 1);
 end
 
 im1g = RemoveSpecials(im1g);
 im2g = RemoveSpecials(im2g);
 
-%SIFT matches
-[f1,d1] = vl_sift(im1g) ;
-[f2,d2] = vl_sift(im2g) ;
+%extract points features
+points1 = detectBRISKFeatures(im1g);
+points2 = detectBRISKFeatures(im2g);
 
-[matches, ~] = vl_ubcmatch(d1, d2) ;
+%extract descriptors
+[features1,valid_points1] = extractFeatures(im1g,points1, "Method","SIFT");
+[features2,valid_points2] = extractFeatures(im2g,points2, "Method","SIFT");
 
-numMatches = size(matches,2) ;
+%match descriptors
+indexPairs = matchFeatures(features1, features2);
 
-X1 = f1(1:2,matches(1,:)); X1(3,:) = 1;
-X2 = f2(1:2,matches(2,:)); X2(3,:) = 1;
+%get matched points
+matchedPoints1 = valid_points1(indexPairs(:,1),:);
+matchedPoints2 = valid_points2(indexPairs(:,2),:);
+%showMatchedFeatures(im1g,im2g, matchedPoints1, matchedPoints2);
 
-% RANSAC with homography model
-%clear H score ok ;
-score = -1;
-H = zeros(3, 3);
-ok = [];
+n = length(matchedPoints1);
 
-for t = 1:maxIterations
+X1 = [];
+X2 = [];
+thr = 0.3 * max([size(img1), size(img2)]);
+for i=1:n
+    x1 = [matchedPoints1(i).Location, 1];
+    x2 = [matchedPoints2(i).Location, 1];
+
+    d = x1 - x2;
+    l = sqrt(sum(d.*d));
+
+    if (l < thr)    
+        X1 = [X1; x1];
+        X2 = [X2; x2];
+    end
+end
+n = max(size(X1));
+
+%compute homography using robustly with RANSAC
+inliers = [];
+
+for i = 1:maxIterations
   % estimate homography
-  subset = vl_colsubset(1:numMatches, 4);
-  A = [] ;
-  for i = subset
-    A = cat(1, A, kron(X1(:,i)', vl_hat(X2(:,i))));
-  end
-  
-  [~, ~, V] = svd(A);
-  H_t = reshape(V(:,9),3,3);
+  subset = randperm(n, 4);
 
-  %score homography
-  X2_ = H_t * X1;
-  du = X2_(1,:) ./ X2_(3,:) - X2(1,:)./X2(3,:);
-  dv = X2_(2,:) ./ X2_(3,:) - X2(2,:)./X2(3,:);
-  ok_t = (du.*du + dv.*dv) < 4;
-  
-  score_t = sum(ok_t);
-  if(score_t > score) 
-      H = H_t;
-      score = score_t;
-      ok = ok_t;
+  H_i = estimateHomography(X2(subset, :), X1(subset,:));
+
+  %compute homography error
+  inliers_i = [];
+  for j=1:n
+      p1_j = X1(j,:)';
+      p2_j = X2(j,:)';
+      Hp2_j = H_i * p2_j;
+      Hp2_j = Hp2_j / Hp2_j(3);
+      d = (Hp2_j - p1_j);
+      d_sq = sum(d.*d);
+      if (d_sq < 4)
+          inliers_i = [inliers_i, j];
+      end
+  end
+
+  if length(inliers_i) > length(inliers)
+      inliers = inliers_i;
   end
 end
+
+X2i = X2(inliers, :);
+X1i = X1(inliers, :);
+H = estimateHomography(X2i, X1i);
 
 %optional refinement
 function err = residual(H)
-    u = H(1) * X1(1,ok) + H(4) * X1(2,ok) + H(7);
-    v = H(2) * X1(1,ok) + H(5) * X1(2,ok) + H(8);
-	d = H(3) * X1(1,ok) + H(6) * X1(2,ok) + 1;
-	du = X2(1,ok) - u ./ d;
-	dv = X2(2,ok) - v ./ d;
+    u = H(1) * X2i(:,1) + H(4) * X2i(:,2) + H(7);
+    v = H(2) * X2i(:,1) + H(5) * X2i(:,2) + H(8);
+	d = H(3) * X2i(:,1) + H(6) * X2i(:,2) + 1;
+	du = X1i(:,1) - u ./ d;
+	dv = X1i(:,2) - v ./ d;
 	err = sum(du.*du + dv.*dv);
 end
 
-if(exist('fminsearch') ~= 0)
-    try
-        H = H / H(3, 3);
-        opts = optimset('Display', 'none', 'TolFun', 1e-8, 'TolX', 1e-8);
-        H(1:8) = fminsearch(@residual, H(1:8)', opts);
-    catch err
-        disp(err);
-    end
-else
-    disp('Refinement disabled as fminsearch was not found.') ;
-end
+opts = optimset('Display', 'none', 'TolFun', 1e-9, 'TolX', 1e-9);
+H(1:8) = fminsearch(@residual, H(1:8)', opts);
 
-H = H / H(3,3);
+H = inv(H);
 
 %apply homography H
-ur = 1:size(img1, 2);
-vr = 1:size(img1, 1);
+ur = 1:size(img2, 2);
+vr = 1:size(img2, 1);
 [u, v] = meshgrid(ur,vr) ;
 
 z_ =  H(3,1) * u + H(3,2) * v + H(3,3) ;
