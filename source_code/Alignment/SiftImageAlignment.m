@@ -82,8 +82,8 @@ points1 = detectBRISKFeatures(im1g);
 points2 = detectBRISKFeatures(im2g);
 
 %extract descriptors
-[features1,valid_points1] = extractFeatures(im1g,points1, "Method","SIFT");
-[features2,valid_points2] = extractFeatures(im2g,points2, "Method","SIFT");
+[features1,valid_points1] = extractFeatures(im1g,points1, 'Method', 'SIFT');
+[features2,valid_points2] = extractFeatures(im2g,points2, 'Method', 'SIFT');
 
 %match descriptors
 indexPairs = matchFeatures(features1, features2);
@@ -121,15 +121,17 @@ for i = 1:maxIterations
 
   H_i = estimateHomography(X2(subset, :), X1(subset,:));
 
-  %compute homography error
+  %compute homography inliers
   inliers_i = [];
   for j=1:n
       p1_j = X1(j,:)';
       p2_j = X2(j,:)';
       Hp2_j = H_i * p2_j;
       Hp2_j = Hp2_j / Hp2_j(3);
+
       d = (Hp2_j - p1_j);
       d_sq = sum(d.*d);
+
       if (d_sq < 4)
           inliers_i = [inliers_i, j];
       end
@@ -144,7 +146,7 @@ X2i = X2(inliers, :);
 X1i = X1(inliers, :);
 H = estimateHomography(X2i, X1i);
 
-%optional refinement
+%non-linear refinement
 function err = residual(H)
     u = H(1) * X2i(:,1) + H(4) * X2i(:,2) + H(7);
     v = H(2) * X2i(:,1) + H(5) * X2i(:,2) + H(8);
@@ -157,19 +159,26 @@ end
 opts = optimset('Display', 'none', 'TolFun', 1e-9, 'TolX', 1e-9);
 H(1:8) = fminsearch(@residual, H(1:8)', opts);
 
-H = inv(H);
-
 %apply homography H
+H = inv(H);
 ur = 1:size(img2, 2);
 vr = 1:size(img2, 1);
-[u, v] = meshgrid(ur,vr) ;
+[u1, v1] = meshgrid(ur, vr) ;
 
-z_ =  H(3,1) * u + H(3,2) * v + H(3,3) ;
-u_ = (H(1,1) * u + H(1,2) * v + H(1,3)) ./ z_ ;
-v_ = (H(2,1) * u + H(2,2) * v + H(2,3)) ./ z_ ;
+z2 =  H(3,1) * u + H(3,2) * v + H(3,3) ;
+u2 = (H(1,1) * u + H(1,2) * v + H(1,3)) ./ z2 ;
+v2 = (H(2,1) * u + H(2,2) * v + H(2,3)) ./ z2 ;
+
+imgOut = zeros(size(img1));
 
 for i=1:size(img2, 3)
-    imgOut(:,:,i) = RemoveSpecials(interp2(u, v, img2(:,:,i), u_, v_, 'linear', NaN));
+    imgOut(:,:,i) = RemoveSpecials(interp2(u1, v1, img2(:,:,i), u2, v2, 'linear', NaN));
 end
+
+%mask = zeros(size(imgOut));
+%for j=1:3
+%    mask(imgOut(:,:,j) <= 0) = mask(imgOut(:,:,j) <= 0) + 1;
+%end
+%imgOut = CriminisiInpainting(imgOut, ClampImg(lum(mask)*4, 0,1), 15);
 
 end
