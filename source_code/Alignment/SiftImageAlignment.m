@@ -165,20 +165,14 @@ ur = 1:size(img2, 2);
 vr = 1:size(img2, 1);
 [u1, v1] = meshgrid(ur, vr) ;
 
-z2 =  H(3,1) * u + H(3,2) * v + H(3,3) ;
-u2 = (H(1,1) * u + H(1,2) * v + H(1,3)) ./ z2 ;
-v2 = (H(2,1) * u + H(2,2) * v + H(2,3)) ./ z2 ;
+z2 =  H(3,1) * u1 + H(3,2) * v1 + H(3,3) ;
+u2 = (H(1,1) * u1 + H(1,2) * v1 + H(1,3)) ./ z2 ;
+v2 = (H(2,1) * u1 + H(2,2) * v1 + H(2,3)) ./ z2 ;
 
 imgOut = zeros(size(img1));
 
 for i=1:size(img2, 3)
     imgOut(:,:,i) = RemoveSpecials(interp2(u1, v1, img2(:,:,i), u2, v2, 'linear', NaN));
 end
-
-%mask = zeros(size(imgOut));
-%for j=1:3
-%    mask(imgOut(:,:,j) <= 0) = mask(imgOut(:,:,j) <= 0) + 1;
-%end
-%imgOut = CriminisiInpainting(imgOut, ClampImg(lum(mask)*4, 0,1), 15);
 
 end
