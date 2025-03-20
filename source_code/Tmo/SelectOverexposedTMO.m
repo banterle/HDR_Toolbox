@@ -33,26 +33,36 @@ function [imgOut, exposure_value] = SelectOverexposedTMO(img, percent)
 %
 
 if ~exist('percent', 'var')
-    percent = 0.1;
+    percent = 5.0;
 end
+
+percent = percent / 100.0;
 
 gamma_inv = 1.0 / 2.2;
 
-    function err = residual(c)    
-        
-        if c > 0.0
-            tmp = ClampImg((img * c).^gamma_inv, 0.0, 1.0); 
-            L = lum(tmp);
-            tmp_percent = length(find(L >= 0.95)) / numel(L);
-        
-            err = abs(tmp_percent - percent);
-        else
-            err = 1e9;
-        end
+%
+%
+%
+function err = residual(c)    
+    if c > 0.0
+        tmp_img = ClampImg((img * c).^gamma_inv, 0.0, 1.0); 
+        tmp_percent = length(find(tmp_img >= 0.95)) / numel(tmp_img);
+    
+        err = abs(tmp_percent - percent);
+    else
+        err = 1e9;
     end
+end
 
-exposure_start = 1.0;
-opts = optimset('Display','iter','TolFun', 1e-9, 'TolX', 1e-9, 'MaxIter', 200, 'MaxFunEvals', 2000);
+L = lum(img);
+mL = mean(L(:));
+if mL > 0.0
+    exposure_start = 1.0 / (2.0 * mL);
+else
+    exposure_start = 1.0;
+end
+
+opts = optimset('Display','iter','TolFun', 1e-9, 'TolX', 1e-9, 'MaxIter', 1200, 'MaxFunEvals', 2000);
 
 exposure_value = fminsearch(@residual, exposure_start, opts);
 
