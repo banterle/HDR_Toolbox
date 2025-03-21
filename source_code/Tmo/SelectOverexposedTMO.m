@@ -16,7 +16,7 @@ function [imgOut, exposure_value] = SelectOverexposedTMO(img, percent)
 %
 %
 % 
-%     Copyright (C) 2022 Francesco Banterle
+%     Copyright (C) 2022-25 Francesco Banterle
 % 
 %     This program is free software: you can redistribute it and/or modify
 %     it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ else
     exposure_start = 1.0;
 end
 
-opts = optimset('Display','iter','TolFun', 1e-9, 'TolX', 1e-9, 'MaxIter', 1200, 'MaxFunEvals', 2000);
+opts = optimset('TolFun', 1e-9, 'TolX', 1e-9, 'MaxIter', 1200, 'MaxFunEvals', 2000);
 
 exposure_value = fminsearch(@residual, exposure_start, opts);
 
