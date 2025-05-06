@@ -35,7 +35,7 @@ if(~exist('bRobust', 'var'))
     bRobust = 0.01;
 end
 
-%Calculate image statistics
+%calculate image statistics
 L = lum(img);
 Lav  = logMean(L);
 

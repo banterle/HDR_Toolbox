@@ -1,6 +1,6 @@
-function imgOut = AkyuzAbsoluteCalibration(img)
+function [imgOut, f] = AkyuzAbsoluteCalibration(img)
 %
-%       imgOut = AkyuzAbsoluteCalibration(img)
+%       [imgOut, f] = AkyuzAbsoluteCalibration(img)
 %
 %
 %        Input:
@@ -26,12 +26,14 @@ function imgOut = AkyuzAbsoluteCalibration(img)
 %
 
 L = lum(img);
-[key, ~] = imKey(img, 0.05);
+percentile = 0.001;
 
-max_L_Q95 = MaxQuart(L, 0.95);
+[key, ~] = imKey(img, percentile);
 
-if (max_L_Q95 > 0.0) && (key > 0.0)
-    f = 10^4 * key / max_L_Q95;
+max_L = MaxQuart(L, 1 - percentile);
+
+if (max_L > 0.0) && (key > 0.0)
+    f = 10^4 * key / max_L;
 else
     f = 1.0;
 end
