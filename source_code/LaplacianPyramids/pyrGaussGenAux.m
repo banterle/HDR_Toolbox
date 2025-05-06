@@ -25,16 +25,15 @@ function imgOut = pyrGaussGenAux(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%5x5 Gaussian Kernel
+%5x5 Gaussian kernel (Burt and Adelson)
 kernel = [1, 4, 6, 4, 1];
 mtx = kernel' * kernel;
 mtx = mtx / sum(mtx(:));
 
-%Convolution
+%convolution
 imgB = imfilter(img, mtx, 'symmetric');
 
-%Downsampling
-[r, c] = size(img);
-imgOut = imresize(imgB, 0.5, 'bilinear');
+%downsampling
+imgOut = imgB(1:2:end,1:2:end,:);
 
 end

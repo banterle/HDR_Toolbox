@@ -128,24 +128,21 @@ end
 pyrAcc = [];
 for i=1:n
     %Laplacian pyramid: image
-    pyrImg = pyrImg3(imageStack(:,:,:,i), @pyrLapGen);
+    pyrImg = pyrLapGen(imageStack(:,:,:,i));
     %Gaussian pyramid: weight   
     pyrW   = pyrGaussGen(weight(:,:,i));
     %image times weight
-    pyrImgW = pyrLstS2OP(pyrImg, pyrW, @pyrMul);
+    pyrImgW = pyrMul(pyrImg, pyrW);
    
     if(i == 1)
         pyrAcc = pyrImgW;
     else %accumulate
-        pyrAcc = pyrLst2OP(pyrAcc, pyrImgW, @pyrAdd);
+        pyrAcc = pyrAdd(pyrAcc, pyrImgW);
     end
 end
 
 %reconstruction
-imgOut = zeros(r, c, col);
-for i=1:col
-    imgOut(:,:,i) = pyrVal(pyrAcc(i));
-end
+imgOut = pyrVal(pyrAcc);
 
 %clamp to values in [0,1]
 min_i = min(imgOut(:));

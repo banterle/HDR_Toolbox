@@ -21,7 +21,7 @@ imgTMO = MertensTMO(img);
 disp('3) Show the image after fusion, note that there is no need of gamma correction!');
 h = figure(1);
 set(h,'Name','Exposure fusion by Mertens et al.');
-GammaTMO(imgTMO, 1.0, 0.5, 1);
+GammaTMO(imgTMO, 1.0, 0.0, 1);
 
 disp('4) Save the tone mapped image as a PNG.');
 imwrite(imgTMO, 'demos/output/Bottles_Small_TMO_fusion.png');

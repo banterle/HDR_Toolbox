@@ -1,7 +1,7 @@
-function p = pyrLapGen(img)
+function p = pyrLapGen(img, maxLevels)
 %
 %
-%        p = pyrLapGen(img)
+%        p = pyrLapGen(img, maxLevels)
 %
 %
 %        Input:
@@ -24,21 +24,33 @@ function p = pyrLapGen(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
+if ~exist('maxLevels', 'var')
+    maxLevels = -1;
+end
+
 [r, c, ~] = size(img);
-levels = floor(log2(min(r, c)));
+
+levels_log2 = floor(log2(min(r, c)));
+
+if maxLevels < 0 
+    levels = levels_log2;
+else
+    levels = min([levels_log2, maxLevels]);
+end
+
 list = [];
 
 for i=1:levels
-    %Calculating detail and base layers
+    %calculate detail and base layers
     [tL0, tB0] = pyrLapGenAux(img);
     img = tL0;
     
-    %Detail layer
+    %store detail layer
     ts   = struct('detail', tB0);
     list = [list, ts];  
 end
 
-%Base layer
+%store base layer
 p = struct('list', list, 'base', tL0);
 
 end

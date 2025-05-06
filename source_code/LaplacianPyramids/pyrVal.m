@@ -34,13 +34,19 @@ mtx = mtx / sum(mtx(:));
 
 for i=1:n
     ind = n - i + 1;
-    [r, c] = size(list(ind).detail);
+    r = size(list(ind).detail, 1);
+    c = size(list(ind).detail, 2);
+    
     if(i == 1)      
         img = base;
     end
+
+    detail = list(ind).detail;
     
-    img = imresize(img, [r, c], 'bilinear');
-    img = img + list(ind).detail;        
+    imgE = imresize(img, [size(detail,1),size(detail,2)],'nearest');
+    imgE = imfilter(imgE, mtx, 'symmetric');
+
+    img = imgE + detail;        
 end
 
 end
