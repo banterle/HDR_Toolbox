@@ -15,12 +15,13 @@
 clear all;
 
 name = 'stack_alignment';
+
+output_folder = 'demos/output';
 name_folder = ['demos/',name];
 if ~isfolder(name_folder)
     name_folder = name;
     output_folder = 'output';
 else
-    output_folder = 'demos/output';
 end
 
 format = 'jpg';
@@ -35,7 +36,7 @@ disp('3) Read exposure values from the exif');
 stack_exposure = ReadLDRStackInfo(name_folder, format);
 
 disp('4) Estimate the Camera Response Function (CRF)');
-[lin_fun, ~] = DebevecCRF(stackOut, stack_exposure);    
+[lin_fun, ~] = DebevecCRF(stackOut, stack_exposure, 256, 'Grossberg', 128, 0);    
 h = figure(1);
 set(h, 'Name', 'The Camera Response Function (CRF)');
 plot(0:255, lin_fun(:,1), 'r', 0:255, lin_fun(:,2),'g', 0:255, lin_fun(:,3), 'b');

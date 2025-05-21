@@ -16,7 +16,15 @@ clear all;
 
 x = (0:255) / 255;
 
-name_folder = 'demos/stack';
+name = 'stack';
+output_folder = 'demos/out';
+name_folder = ['demos/', name];
+
+if ~isfolder(name_folder)
+    name_folder = name;
+    output_folder = 'output';
+end
+
 format = 'jpg';
 
 disp('1) Read a stack of LDR images');
