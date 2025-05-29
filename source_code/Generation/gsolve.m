@@ -45,8 +45,8 @@ for i=1:n-2
 end
 
 %Solve the system using SVD
-%[x, ~] = linsolve(A, b);
-x = A \ b;
+[x, ~] = linsolve(A, b);
+%x = A \ b;
 g = x(1:n);
 
 end

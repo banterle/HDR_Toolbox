@@ -183,15 +183,14 @@ for i=1:n
     end
         
     weight = WeightFunction(tmpStack, weight_type_i, bMeanWeight);
-    
-    weight(tmpStack <= delta_value) = 0.0;
+    %weight(tmpStack <= delta_value) = 0.0;
 
     %linearization of the image
     tmpStack = RemoveCRF(tmpStack, lin_type, lin_fun);
       
     %sum things up...
     dt_i = stack_exposure(i);    
-              
+             
     switch merge_type
         case 'linear'
             imgOut = imgOut + (weight .* tmpStack) / dt_i;
