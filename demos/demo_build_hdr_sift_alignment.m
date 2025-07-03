@@ -3,7 +3,7 @@
 %	   1) Read a stack of LDR images
 %	   2) Read exposure values from the EXIF
 %	   3) Estimate the Camera Response Function (CRF)
-%      4) Align image using VLFeat''s SIFT
+%      4) Align image using SIFT
 %	   5) Build the radiance map using the stack and stack_exposure
 %	   6) Save the radiance map in .hdr format
 %	   7) Show the tone mapped version of the radiance map
@@ -24,7 +24,7 @@ disp('1) Read a stack of LDR images');
 disp('2) Read exposure values from the EXIF');
 stack_exposure = ReadLDRStackInfo(name_folder, format);
 
-disp('3) Align the stack using VLFeat''s SIFT');
+disp('3) Align the stack using SIFT');
 stackOut = SiftAlignment(stack, 1);
 
 disp('4) Estimage the CRF');
