@@ -12,8 +12,17 @@
 
 clear all;
 
+folder = 'demos/';
+
+if ~isfolder(folder)
+   folder = './';
+   output_folder = 'output';
+else
+    output_folder = 'demos/output';
+end
+
 disp('1) Load the image Bottles_Small.pfm using hdrimread');
-img = hdrimread('demos/Bottles_Small.hdr');
+img = hdrimread([folder,'Bottles_Small.hdr']);
 
 disp('2) Apply Fusion Operator by Mertens et al.');
 imgTMO = MertensTMO(img);
@@ -24,4 +33,4 @@ set(h,'Name','Exposure fusion by Mertens et al.');
 GammaTMO(imgTMO, 1.0, 0.0, 1);
 
 disp('4) Save the tone mapped image as a PNG.');
-imwrite(imgTMO, 'demos/output/Bottles_Small_TMO_fusion.png');
+imwrite(imgTMO, [output_folder, '/Bottles_Small_TMO_fusion.png']);
