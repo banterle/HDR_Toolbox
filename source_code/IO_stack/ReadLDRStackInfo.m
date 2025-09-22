@@ -68,37 +68,46 @@ for i=1:n
     % Check if exposure values don't exist or if they are zero, e.g. manual
     % lens -> no recorded FNumber
 
-    if(~isfield(img_info.DigitalCamera, 'ISOSpeedRatings') ...
-        || img_info.DigitalCamera.ISOSpeedRatings == 0)
 
-        img_info.DigitalCamera.ISOSpeedRatings = 1.0;
-    end
+    try
+        if(~isfield(img_info.DigitalCamera, 'ISOSpeedRatings') ...
+            || img_info.DigitalCamera.ISOSpeedRatings == 0)
     
-    if(~isfield(img_info.DigitalCamera, 'ExposureTime') ...
-        || img_info.DigitalCamera.ExposureTime == 0)
-
-        img_info.DigitalCamera.ExposureTime = 1.0;
-    end
-
-    if(~isfield(img_info.DigitalCamera, 'FNumber') ...
-        || img_info.DigitalCamera.FNumber == 0)
-
-        img_info.DigitalCamera.FNumber = 1.0;
-    end
+            img_info.DigitalCamera.ISOSpeedRatings = 1.0;
+        end
+        
+        if(~isfield(img_info.DigitalCamera, 'ExposureTime') ...
+            || img_info.DigitalCamera.ExposureTime == 0)
     
-    if(~isempty(img_info)) 
-        if(isfield(img_info, 'DigitalCamera'))
-            exposure_time = img_info.DigitalCamera.ExposureTime;
-            aperture = img_info.DigitalCamera.FNumber;
-            iso = img_info.DigitalCamera.ISOSpeedRatings;
-
-            [~, value] = EstimateAverageLuminance(exposure_time, aperture, iso);
-            exposure(i) = value;
-        else
-            warning('The LDR image does not have camera information');
+            img_info.DigitalCamera.ExposureTime = 1.0;
+        end
+    
+        if(~isfield(img_info.DigitalCamera, 'FNumber') ...
+            || img_info.DigitalCamera.FNumber == 0)
+    
+            img_info.DigitalCamera.FNumber = 1.0;
+        end
+        
+        if(~isempty(img_info)) 
+            if(isfield(img_info, 'DigitalCamera'))
+                exposure_time = img_info.DigitalCamera.ExposureTime;
+                aperture = img_info.DigitalCamera.FNumber;
+                iso = img_info.DigitalCamera.ISOSpeedRatings;
+    
+                [~, value] = EstimateAverageLuminance(exposure_time, aperture, iso);
+                exposure(i) = value;
+            else
+                warning('The LDR image does not have camera information');
+            end
+        end
+    catch expr
+        name = RemoveExt(list(i).name);
+        index = strfind(name, '_f_');
+        if(index > 1)
+            name = name((index+3):end);
+            exposure(i) = 2^str2double(name);
         end
     end
-    
 end
 
 end
