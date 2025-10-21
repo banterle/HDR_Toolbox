@@ -38,7 +38,7 @@ sizeX = round(c / blocksX);
 
 angle = [];
 
-%Analyzing blocks
+%analyze blocks
 for i=1:blocksY
     rect  = [sizeY * (i - 1) + 1, sizeY * i, 1, sizeX];
     [tmpAngle, check] = WardSimpleRotAux(img1, img2, rect);
@@ -47,7 +47,7 @@ for i=1:blocksY
     end
 end
 
-%Final Merging
+%final merge
 if(isempty(angle))
     angle_rot = 0.0;
     bCheck = 0;

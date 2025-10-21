@@ -1,6 +1,6 @@
-function [imgOut, exposure_value] = SelectOverexposedTMO(img, percent)
+function [imgOut, exposure_value] = SelectOverexposedTMO(img, percent, threshold)
 %
-%        [imgOut, exposure_value] = SelectOverexposedTMO(img, percent)
+%        [imgOut, exposure_value] = SelectOverexposedTMO(img, percent, threshold)
 %
 %       
 %        A simple TMO that generates an SDR image with a given percentage
@@ -9,6 +9,8 @@ function [imgOut, exposure_value] = SelectOverexposedTMO(img, percent)
 %        Input:
 %           -img: input HDR image
 %           -percent: percentage of overexposed pixels.
+%           -threshold: value over which the pixel is considered saturated.
+%           The default is 0.95.
 %
 %        Output:
 %           -imgOut: a single exposure with the selected percentage of
@@ -36,6 +38,10 @@ if ~exist('percent', 'var')
     percent = 5.0;
 end
 
+if ~exist('threshold', 'var')
+    percent = 0.95;
+end
+
 percent = percent / 100.0;
 
 gamma_inv = 1.0 / 2.2;
@@ -46,7 +52,7 @@ gamma_inv = 1.0 / 2.2;
 function err = residual(c)    
     if c > 0.0
         tmp_img = ClampImg((img * c).^gamma_inv, 0.0, 1.0); 
-        tmp_percent = length(find(tmp_img >= 0.95)) / numel(tmp_img);
+        tmp_percent = length(find(tmp_img >= threshold)) / numel(tmp_img);
     
         err = abs(tmp_percent - percent);
     else
@@ -57,7 +63,7 @@ end
 L = lum(img);
 mL = mean(L(:));
 if mL > 0.0
-    exposure_start = 1.0 / (2.0 * mL);
+    exposure_start = 1.0 / (4.0 * mL);
 else
     exposure_start = 1.0;
 end

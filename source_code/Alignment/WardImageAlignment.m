@@ -1,7 +1,7 @@
 function [imgOut, alignment_info] = WardImageAlignment(img1, img2, bRotation, ward_percentile)
 %
 %
-%       [imgOut, alignment_info] = WardImageAlignment(img1, img2, bRotation)
+%       [imgOut, alignment_info] = WardImageAlignment(img1, img2, bRotation, ward_percentile)
 %
 %       This function shifts pixels on the right with wrapping of the moved
 %       pixels. This can be used as rotation on the Y-axis for environment

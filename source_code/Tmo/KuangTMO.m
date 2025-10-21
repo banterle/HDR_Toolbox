@@ -64,7 +64,7 @@ if(~exist('average_surrond_param', 'var'))
 end
 
 if(~exist('bilateral_type', 'var'))
-   bilateral_type = 'approx_importance';
+   bilateral_type = 'approx_bil_grid';
 end
 
 %converting from RGB to XYZ

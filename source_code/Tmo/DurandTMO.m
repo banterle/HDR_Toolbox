@@ -42,7 +42,7 @@ if(~exist('target_contrast', 'var'))
 end
 
 if(~exist('filter_type', 'var'))
-    filter_type = 'approx_importance';
+    filter_type = 'approx_bil_grid';
 end
 
 %compute luminance channel
