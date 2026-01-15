@@ -1,12 +1,14 @@
-function [out, exposure_value] = estimateExposureAtGivenSaturationLevel(img, percentage)
+function [out, exposure_value] = estimateExposureAtGivenSaturationLevel(img, percentage, threshold_oe)
 %
-%       [out, exposure_value] = estimateExposureAtGivenSaturationLevel(img, percentage)
+%       [out, exposure_value] = estimateExposureAtGivenSaturationLevel(img, percentage, threshold_oe)
 %
 %       This function estimates a homography matrix from p1 to p2.
 %
 %        Input:
 %           -img: an input HDR image.
 %           -percentage: the percentage of over-exposed pixel.
+%           -threshold_oe: is the value above which a pixel is considered
+%           over-exposed. The default is 0.99.
 %
 %        Output:
 %           -out: img at 'exposure_level' with gamma correction 2.2 and
@@ -42,6 +44,10 @@ if (percentage > 1.0)
     percentage = 1;
 end
 
+if ~exist('threshold_oe', 'var')
+    threshold_oe = 0.99;
+end
+
 [~, exposure_value_start] = BestExposureTMO(img);
 
 opts = optimset('TolFun', 1e-8, 'TolX', 1e-8, 'MaxIter', 300, 'MaxFunEvals', 3000);
@@ -49,7 +55,7 @@ opts = optimset('TolFun', 1e-8, 'TolX', 1e-8, 'MaxIter', 300, 'MaxFunEvals', 300
     function err = residual(exposure_value_res)
         img_out = round(255 * ClampImg((img * exposure_value_res).^(1.0/2.2), 0.0, 1.0)) / 255;      
 
-        percentage_res = length(find(img_out >= 0.99)) / numel(img);
+        percentage_res = length(find(img_out >= threshold_oe)) / numel(img);
 
         err = abs(percentage_res - percentage);
 
@@ -62,7 +68,7 @@ exposure_value = fminsearch(@residual, [exposure_value_start], opts);
 
 out = round(ClampImg((img * exposure_value).^(1.0/2.2), 0.0, 1.0) * 255)/255;
 
-percent = length(find(out >= 0.99)) / numel(img);
-disp([exposure_value_start, exposure_value, percent]);
+%percent = length(find(out >= threshold_oe)) / numel(img);
+%disp([exposure_value_start, exposure_value, percent]);
 
 end
