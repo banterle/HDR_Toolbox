@@ -1,16 +1,16 @@
-function mtx = CreateMatrixFromPrimaries_xy(R, G, B, Wp)
+function mtx = CreateMatrixFromPrimaries_xy(R_xy, G_xy, B_xy, Wp_xy)
 %
-%       mtx = CreateMatrixFromPrimaries_xy(R, G, B, Wp)
+%       mtx = CreateMatrixFromPrimaries_xy(R_xy, G_xy, B_xy, Wp_xy)
 %
 %
 %        Input:
-%           -R: the red primary for the given color space expressed as an
+%           -R_xy: the red primary for the given color space expressed as an
 %           xy color.
-%           -G: the green primary for the given color space expressed as an
+%           -G_xy: the green primary for the given color space expressed as an
 %           xy color.
-%           -B: the blue primary for the given color space expressed as an
+%           -B_xy: the blue primary for the given color space expressed as an
 %           xy color.
-%           -Wp: the white-point primary for the given color space expressed as an
+%           -Wp_xy: the white-point primary for the given color space expressed as an
 %           xy color.
 %
 %        Output:
@@ -34,12 +34,18 @@ function mtx = CreateMatrixFromPrimaries_xy(R, G, B, Wp)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
+R_xyz = Conv(R_xy, 1.0);
+G_xyz = Conv(G_xy, 1.0);
+B_xyz = Conv(B_xy, 1.0);
+Wp_xyz = Conv(Wp_xy, 1.0);
 
-R  = ConvertXYZtoYxy(reshape([1.0,  R], 1, 1, 3), 1);
-G  = ConvertXYZtoYxy(reshape([1.0,  G], 1, 1, 3), 1);
-B  = ConvertXYZtoYxy(reshape([1.0,  B], 1, 1, 3), 1);
-Wp = ConvertXYZtoYxy(reshape([1.0, Wp], 1, 1, 3), 1);
+mtx = CreateMatrixFromPrimaries(R_xyz, G_xyz, B_xyz, Wp_xyz);
 
-mtx = CreateMatrixFromPrimaries(R, G, B, Wp);
+end
 
+function out = Conv(p, Y_val)
+    out = zeros(3,1);
+    out(1) = p(1) / p(2);
+    out(2) = Y_val;
+    out(3) = (1.0 - p(1) - p(2)) / p(2);
 end

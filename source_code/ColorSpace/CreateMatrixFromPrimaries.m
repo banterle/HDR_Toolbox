@@ -14,7 +14,7 @@ function mtx = CreateMatrixFromPrimaries(R, G, B, Wp)
 %           XYZ color.
 %
 %        Output:
-%           -mtx: a conversion matrix from XYZ color space to the color
+%           -mtx: a conversion matrix from RGB color space to the color
 %           space defined by the three input primaries (R, G, and B) and
 %           white point (Wp).
 %
@@ -34,32 +34,14 @@ function mtx = CreateMatrixFromPrimaries(R, G, B, Wp)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-A_R = [R(1) R(2) R(3) 0 0 0 0 0 0; ...
-       0 0 0 R(1) R(2) R(3) 0 0 0; ...
-       0 0 0 0 0 0 R(1) R(2) R(3)];
-b_R = [1; 0; 0];
+P = [R G B];
+scaling = inv(P) * Wp;
 
-A_G = [G(1) G(2) G(3) 0 0 0 0 0 0; ...
-       0 0 0 G(1) G(2) G(3) 0 0 0; ...
-       0 0 0 0 0 0 G(1) G(2) G(3)];
-b_G = [0; 1; 0];
+mtx_scaling = zeros(3,3);
+mtx_scaling(1,1) = scaling(1);
+mtx_scaling(2,2) = scaling(2);
+mtx_scaling(3,3) = scaling(3);
 
-A_B = [B(1) B(2) B(3) 0 0 0 0 0 0; ...
-       0 0 0 B(1) B(2) B(3) 0 0 0; ...
-       0 0 0 0 0 0 B(1) B(2) B(3)];
-b_B = [0; 0; 1];
-
-A_Wp = [Wp(1) Wp(2) Wp(3) 0 0 0 0 0 0; ...
-       0 0 0 Wp(1) Wp(2) Wp(3) 0 0 0; ...
-       0 0 0 0 0 0 Wp(1) Wp(2) Wp(3)];
-   
-b_Wp = [1; 1; 1];
-
-A = [A_R; A_G; A_B; A_Wp];
-b = [b_R; b_G; b_B;  b_Wp];
-
-mtx = A \ b;
-
-mtx = reshape(mtx, 3, 3)';
+mtx = P * mtx_scaling;
 
 end
