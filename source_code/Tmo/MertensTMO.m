@@ -70,7 +70,7 @@ end
 
 if(~isempty(img)) %convert the HDR image into a imageStack
     checkNegative(img);
-    [imageStack, ~] = CreateLDRStackFromHDR(img, 1, 'zone');
+    [imageStack, ~] = CreateLDRStackFromHDR(img, 1, 'zone', 'gamma', 2.2);
     
 else
     if(isa(imageStack, 'single'))
@@ -129,8 +129,10 @@ pyrAcc = [];
 for i=1:n
     %Laplacian pyramid: image
     pyrImg = pyrLapGen(imageStack(:,:,:,i));
+    
     %Gaussian pyramid: weight   
     pyrW   = pyrGaussGen(weight(:,:,i));
+
     %image times weight
     pyrImgW = pyrMul(pyrImg, pyrW);
    

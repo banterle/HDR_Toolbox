@@ -28,14 +28,11 @@ list = pyramid.list;
 base = pyramid.base;
 
 n = length(list);
-kernel = [1, 4, 6, 4, 1];
-mtx = kernel' * kernel;
-mtx = mtx / sum(mtx(:));
+%5x5 Gaussian kernel (Burt and Adelson)
+mtx = pyrGetBurtAdelsonKernel();
 
 for i=1:n
     ind = n - i + 1;
-    r = size(list(ind).detail, 1);
-    c = size(list(ind).detail, 2);
     
     if(i == 1)      
         img = base;
@@ -43,6 +40,7 @@ for i=1:n
 
     detail = list(ind).detail;
     
+    %upsample
     imgE = imresize(img, [size(detail,1),size(detail,2)],'nearest');
     imgE = imfilter(imgE, mtx, 'symmetric');
 

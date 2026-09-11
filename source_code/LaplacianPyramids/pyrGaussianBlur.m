@@ -25,11 +25,11 @@ function pOut=pyrGaussianBlur(pA,kernelSize)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%multiplying base levels
+%multiply base levels
 pOut.base = filterGaussianWindow(pA.base, kernelSize);
 pOut.list = pA.list;
 
-%multiplying the detail of each level
+%multiply the detail of each level
 for i=1:length(pA.list)
     pOut.list(i).detail = filterGaussianWindow(pA.list(i).detail, kernelSize);
 end

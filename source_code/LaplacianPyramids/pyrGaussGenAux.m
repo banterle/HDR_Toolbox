@@ -26,9 +26,7 @@ function imgOut = pyrGaussGenAux(img)
 %
 
 %5x5 Gaussian kernel (Burt and Adelson)
-kernel = [1, 4, 6, 4, 1];
-mtx = kernel' * kernel;
-mtx = mtx / sum(mtx(:));
+mtx = pyrGetBurtAdelsonKernel();
 
 %convolution
 imgB = imfilter(img, mtx, 'symmetric');

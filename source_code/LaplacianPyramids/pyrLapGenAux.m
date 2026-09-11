@@ -25,20 +25,11 @@ function [L0, B0] = pyrLapGenAux(img)
 %     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-%5x5 Gaussian kernel (Burt and Adelson)
-kernel = [1, 4, 6, 4, 1];
-mtx = kernel' * kernel;
-mtx = mtx / sum(mtx(:));
-
-%convolution
-imgB = imfilter(img, mtx, 'symmetric');
-
-%downsample
-L0 = imgB(1:2:end,1:2:end,:);
+L0 = pyrGaussGenAux(img);
 
 %upsample
 imgE = imresize(L0, [size(img,1),size(img,2)],'nearest');
-imgE = imfilter(imgE, mtx, 'symmetric');
+imgE = imfilter(imgE, pyrGetBurtAdelsonKernel(), 'symmetric');
 
 %difference between the two levels
 B0 = img - imgE;
